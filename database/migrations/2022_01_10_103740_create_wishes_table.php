@@ -15,10 +15,10 @@ class CreateWishesTable extends Migration
     {
         Schema::create('wishes', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('store_id');
-            $table->foreign('store_id')->references('id')->on{'stores'};
-            $table->bigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on{'users'};
+            $table->unsignedbigInteger('store_id');
+            $table->foreign('store_id')->references('id')->on('stores');
+            $table->unsignedbigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
 
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));

@@ -17,8 +17,7 @@ class CreateCountiesTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedbigInteger('address_id');
             $table->string('county');
-
-            $table->foreign('address_id')->references('id')->on{'addresses'};
+            $table->foreign('address_id')->references('id')->on('addresses');
 
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));

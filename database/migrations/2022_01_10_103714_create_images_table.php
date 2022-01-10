@@ -15,8 +15,8 @@ class CreateImagesTable extends Migration
     {
         Schema::create('images', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('store_id');
-            $table->foreign('store_id')->references('id')->on{'stores'};
+            $table->unsignedbigInteger('store_id');
+            $table->foreign('store_id')->references('id')->on('stores');
             $table->text('path');
 
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
