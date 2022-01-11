@@ -10,7 +10,7 @@ class County extends Model
 
     use SoftDeletes;
 
-   /**
+    /**
      * The table associated with the model.
      *
      * @var string
@@ -18,7 +18,7 @@ class County extends Model
     protected $table = 'counties';
 
 
-         /**
+    /**
      * The primary key associated with the table.
      *
      * @var string
@@ -31,7 +31,9 @@ class County extends Model
      *
      * @var array
      */
-    protected $fillable = ['county'];
+    protected $fillable = [
+        'address_id', 'county'
+    ];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -39,8 +41,7 @@ class County extends Model
      * @var array
      */
     protected $hidden = [
-        'id',
-        'address_id'
+        'id', 'address_id', 'created_at', 'updated_at'
     ];
 
     /**
@@ -51,5 +52,23 @@ class County extends Model
         return $this->belongsTo(Address::class);
     }
 
+    /**
+     * Create the model.
+     *
+     * @param  array
+     * @return \App\Models\County
+     */
+    public static function create($attributes)
+    {
+        $model = new static;
 
+        $model->address_id =  $attributes['address_id'];
+
+        $model->county =  $attributes['county']; 
+
+        $model->save();
+
+        return $model;
+
+    }
 }

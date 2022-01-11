@@ -10,15 +10,14 @@ class LocalCode extends Model
 
     use SoftDeletes;
 
-   /**
+    /**
      * The table associated with the model.
      *
      * @var string
      */
     protected $table = 'local_codes';
 
-
-         /**
+    /**
      * The primary key associated with the table.
      *
      * @var string
@@ -31,7 +30,9 @@ class LocalCode extends Model
      *
      * @var array
      */
-    protected $fillable = ['number'];
+    protected $fillable = [
+        'number'
+    ];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -39,7 +40,7 @@ class LocalCode extends Model
      * @var array
      */
     protected $hidden = [
-        'id'
+        'id', 'created_at', 'updated_at'
     ];
 
     /**
@@ -50,5 +51,22 @@ class LocalCode extends Model
         return $this->hasMany(Store::class);
     }
 
+    /**
+     * Create the model.
+     *
+     * @param  array
+     * @return \App\Models\LocalCode
+     */
+    public static function create($attributes)
+    {
+        $model = new static;
+
+        $model->number =  $attributes['number'];
+
+        $model->save();
+
+        return $model;
+
+    }
 
 }

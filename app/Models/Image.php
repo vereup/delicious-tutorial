@@ -10,7 +10,7 @@ class Image extends Model
 
     use SoftDeletes;
 
-   /**
+    /**
      * The table associated with the model.
      *
      * @var string
@@ -18,7 +18,7 @@ class Image extends Model
     protected $table = 'images';
 
 
-         /**
+    /**
      * The primary key associated with the table.
      *
      * @var string
@@ -31,16 +31,18 @@ class Image extends Model
      *
      * @var array
      */
-    protected $fillable = ['path'];
+    protected $fillable = [
+        'store_id',
+        'path'
+    ];
 
-  /**
+    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
     protected $hidden = [
-        'id',
-        'store_id'
+        'id', 'store_id', 'created_at', 'updated_at'
     ];
 
     /**
@@ -50,4 +52,25 @@ class Image extends Model
     {
         return $this->belongsTo(Store::class);
     }
+
+    /**
+     * Create the model.
+     *
+     * @param  array
+     * @return \App\Models\Image
+     */
+    public static function create($attributes)
+    {
+        $model = new static;
+
+        $model->store_id =  $attributes['store_id'];
+
+        $model->path =  $attributes['path'];
+
+        $model->save();
+
+        return $model;
+
+    }
+
 }

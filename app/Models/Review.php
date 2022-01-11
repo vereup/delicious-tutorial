@@ -10,7 +10,7 @@ class Review extends Model
 
     use SoftDeletes;
 
-   /**
+    /**
      * The table associated with the model.
      *
      * @var string
@@ -18,7 +18,7 @@ class Review extends Model
     protected $table = 'reviews';
 
 
-         /**
+    /**
      * The primary key associated with the table.
      *
      * @var string
@@ -32,22 +32,17 @@ class Review extends Model
      * @var array
      */
     protected $fillable = [
-        'title',
-        'contents',
-        'rating',
-        'written_date',
-        'been_date'
+        'store_id', 'user_id',
+        'title', 'contents', 'rating', 'been_date'
     ];
 
-     /**
+    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
     protected $hidden = [
-        'id',
-        'store_id',
-        'user_id'
+        'id', 'store_id', 'user_id', 'created_at', 'updated_at'
     ];
 
     /**
@@ -58,7 +53,7 @@ class Review extends Model
         return $this->belongsTo(User::class);
     }
 
-      /**
+    /**
      * Get the store that owns the reviews.
      */
     public function store()
@@ -66,4 +61,27 @@ class Review extends Model
         return $this->belongsTo(Store::class);
     }
 
+    /**
+     * Create the model.
+     *
+     * @param  array
+     * @return \App\Models\Review
+     */
+    public static function create($attributes)
+    {
+        $model = new static;
+
+        $model->store_id =  $attributes['store_id'];
+        $model->user_id =  $attributes['user_id'];
+
+        $model->title =  $attributes['title'];
+        $model->contents =  $attributes['contents'];
+        $model->rating =  $attributes['rating'];
+        $model->been_date =  $attributes['been_date'];
+
+        $model->save();
+
+        return $model;
+
+    }
 }

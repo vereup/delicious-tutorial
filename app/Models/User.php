@@ -13,7 +13,7 @@ class User extends Authenticatable
     use SoftDeletes;
 
 
-       /**
+    /**
      * The table associated with the model.
      *
      * @var string
@@ -26,7 +26,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password'
     ];
 
     /**
@@ -35,16 +35,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
+        'id', 'password', 'created_at', 'updated_at'
     ];
 
     /**
@@ -55,7 +46,7 @@ class User extends Authenticatable
         return $this->hasMany(Review::class);
     }
 
-      /**
+    /**
      * Get the wishes for user.
      */
     public function wishes()
@@ -63,4 +54,23 @@ class User extends Authenticatable
         return $this->hasMany(Wish::class);
     }
 
+    /**
+     * Create the model.
+     *
+     * @param  array
+     * @return \App\Models\User
+     */
+    public static function create($attributes)
+    {
+        $model = new static;
+
+        $model->name =  $attributes['name'];
+        $model->email =  $attributes['email'];
+        $model->password =  $attributes['password'];
+
+        $model->save();
+
+        return $model;
+
+    }
 }

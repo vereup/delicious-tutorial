@@ -10,7 +10,7 @@ class Category extends Model
 
     use SoftDeletes;
 
-   /**
+    /**
      * The table associated with the model.
      *
      * @var string
@@ -18,7 +18,7 @@ class Category extends Model
     protected $table = 'categories';
 
 
-         /**
+    /**
      * The primary key associated with the table.
      *
      * @var string
@@ -31,25 +31,43 @@ class Category extends Model
      *
      * @var array
      */
-    protected $fillable = ['name'];
+    protected $fillable = [
+        'name'
+    ];
 
-  /**
+    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
     protected $hidden = [
-        'id'
+        'id', 'created_at', 'updated_at'
     ];
 
     /**
-    * Get the categories for store.
-    */
+     * Get the categories for store.
+     */
     public function stores()
     {
         return $this->hasMany(Stores::class);
     }
 
+    /**
+     * Create the model.
+     *
+     * @param  array
+     * @return \App\Models\Category
+     */
+    public static function create($attributes)
+    {
+        $model = new static;
 
+        $model->name =  $attributes['name'];
+
+        $model->save();
+
+        return $model;
+
+    }
 
 }

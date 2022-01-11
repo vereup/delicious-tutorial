@@ -9,7 +9,7 @@ class Wish extends Model
 {
     use SoftDeletes;
 
-   /**
+    /**
      * The table associated with the model.
      *
      * @var string
@@ -17,25 +17,31 @@ class Wish extends Model
     protected $table = 'wishes';
 
 
-         /**
+    /**
      * The primary key associated with the table.
      *
      * @var string
      */
     protected $primaryKey = 'id';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'store_id', 'user_id'
+    ];
 
-  
 
-  /**
+    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
     protected $hidden = [
-        'id',
-        'store_id',
-        'user_id',
+        'id', 'store_id', 'user_id', 
+        'created_at', 'updated_at'
     ];
 
     /**
@@ -54,4 +60,23 @@ class Wish extends Model
         return $this->belongsTo(Store::class);
     }
 
+
+    /**
+     * Create the model.
+     *
+     * @param  array
+     * @return \App\Models\Wish
+     */
+    public static function create($attributes)
+    {
+        $model = new static;
+
+        $model->store_id =  $attributes['store_id'];
+        $model->user_id =  $attributes['user_id'];
+
+        $model->save();
+
+        return $model;
+
+    }
 }

@@ -20,7 +20,7 @@ class CreateStoresTable extends Migration
             $table->unsignedbigInteger('local_code_id');
             $table->string('name');
             $table->text('introduction');
-            $table->unsignedInteger('telephone_number');
+            $table->string('telephone_number');
             $table->unsignedDecimal('rating_average', 1, 1);
             $table->unsignedInteger('review_count');
             $table->string('address');
