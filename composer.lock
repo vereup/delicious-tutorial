@@ -4,8 +4,57 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6e4a9dd2476552506dba12be3b05aeec",
+    "content-hash": "15134b0887e4432cb5b12b68177a7caf",
     "packages": [
+        {
+            "name": "coreui/coreui",
+            "version": "v4.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/coreui/coreui.git",
+                "reference": "3a72bac0cc5bbe3dc66509a1d02af5d8b9a1ac64"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/coreui/coreui/zipball/3a72bac0cc5bbe3dc66509a1d02af5d8b9a1ac64",
+                "reference": "3a72bac0cc5bbe3dc66509a1d02af5d8b9a1ac64",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "The CoreUI Team",
+                    "homepage": "https://github.com/orgs/coreui/people"
+                }
+            ],
+            "description": "The most popular front-end framework for developing responsive, mobile-first projects on the web rewritten and maintain by the CoreUI Team",
+            "homepage": "https://coreui.io/",
+            "keywords": [
+                "JS",
+                "css",
+                "framework",
+                "front-end",
+                "mobile-first",
+                "responsive",
+                "sass",
+                "web"
+            ],
+            "support": {
+                "issues": "https://github.com/coreui/coreui/issues",
+                "source": "https://github.com/coreui/coreui/tree/v4.1.0"
+            },
+            "funding": [
+                {
+                    "url": "https://coreui.io/pro/",
+                    "type": "custom"
+                }
+            ],
+            "time": "2021-11-29T09:32:52+00:00"
+        },
         {
             "name": "doctrine/inflector",
             "version": "2.0.4",
