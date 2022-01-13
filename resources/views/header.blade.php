@@ -17,23 +17,27 @@
             <img src="/images/magnifying-glass.png"></button>
     </form>
 </div>
-{{-- ·Î±×ÀÎ¸ğ´Ş --}}
+{{-- ë¡œê·¸ì¸ëª¨ë‹¬ --}}
 <div class="modal" id="loginModal" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">·Î±×ÀÎ</h5>
+          <h5 class="modal-title">ë¡œê·¸ì¸</h5>
           <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <label for="inputEmail" class="form-label">Email</label>
-          <input type="email" class="form-control" id="inputEmail" placeholder="email@email.com">
+          <input type="email" class="form-control" id="inputEmail" placeholder="id@email.com">
           <label for="inputPassword" class="form-label">Password</label>
-          <input type="password" class="form-control" id="inputPassword" placeholder="6~12ÀÚ¸®ÀÇ ¼ıÀÚ,¿µ¹®, Æ¯¼ö¹®ÀÚ Æ÷ÇÔ">
+          <input type="password" class="form-control" id="inputPassword" placeholder="6~12ìë¦¬ ìˆ«ì ì˜ë¬¸">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-coreui-dismiss="modal">Close</button>
           <button type="button" class="btn btn-primary">Save changes</button>
+          <button id="signIn-btn"
+          class="common-btn main-color mb-2 rounded-pill fw-bold fs-3 py-3 mt-3">ë¡œê·¸ì¸</button>
+          <a class="d-flex flex-column" href="/signUp">
+            <button class="common-btn main-color2 mb-2 rounded-pill fw-bold fs-3 py-3" type="button">íšŒì›ê°€ì…</button></a>
         </div>
       </div>
     </div>
