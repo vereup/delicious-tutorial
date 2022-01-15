@@ -14,3 +14,23 @@
 Route::get('/', function () {
     return view('main',['name' => 'Justin']);
 });
+
+Route::get('/signup', function () {
+    return view('signup',['name' => 'Justin']);
+});
+
+Route::get('/review', function () {
+    return view('review',['name' => 'Justin']);
+});
+
+Route::get('/mypage', function () {
+    return view('mypage',['name' => 'Justin']);
+});
+
+Route::get('/detail', function () {
+    return view('detail',['name' => 'Justin']);
+});
+
+Route::get('/write', function () {
+    return view('write',['name' => 'Justin']);
+});
