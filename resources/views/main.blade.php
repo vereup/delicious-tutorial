@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="kr">
+<html lang="ko">
     <head>
         <!-- Required meta tags -->
         <meta charset="utf-8">
@@ -10,7 +10,9 @@
             href="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.0.2/dist/css/coreui.min.css"
             rel="stylesheet">
 
-        <style></style>
+            <style>
+
+                </style>
         <title>Delicious</title>
     </head>
 

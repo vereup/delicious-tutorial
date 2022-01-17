@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="kr">
+<html lang="ko">
     <head>
         <!-- Required meta tags -->
         <meta charset="utf-8">
@@ -31,7 +31,6 @@
                 <div class="container-fluid p-2">
                     <div class="d-flex flex-column docs-highlight bg-white">
                         <div class="d-flex">
-
                             <div class="col-11 ps-3 py-4">
                                 <p class="card-title fs-3 fw-bold">베이커리&샌드위치
                                     <img src="/images/star.png">
@@ -55,31 +54,31 @@
                     </div>
                     <div class="p-2 docs-highlight">
                         <div class="d-flex flex-row border-top border-bottom">
-                            <div class="p-2 border-end">
+                            <div class="col-6 p-2 border-end text-center">
                                 <div
                                     id="carouselExampleFade"
                                     class="carousel slide carousel-fade"
                                     data-coreui-ride="carousel"
-                                    style="width: 550px; height:350px;">
+                                    >
                                     <div class="carousel-inner">
-                                        <div class="carousel-item active">
+                                        <div class="carousel-item active text-center">
                                             <img
                                                 src="/images/sample-1.png"
-                                                class="d-block w-100"
-                                                style="width: 550px; height:350px;"
-                                                alt="..."></div>
-                                        <div class="carousel-item">
+                                                width="550"
+                                                height="350"
+                                            ></div>
+                                        <div class="carousel-item text-center">
                                             <img
                                                 src="/images/star.png"
-                                                class="d-block w-100"
-                                                style="width: 550px; height:350px;"
-                                                alt="..."></div>
-                                        <div class="carousel-item">
+                                                width="550"
+                                                height="350"
+                                                ></div>
+                                        <div class="carousel-item text-center">
                                             <img
                                                 src="/images/telephone.png"
-                                                class="d-block w-100"
-                                                style="width: 550px; height:350px;"
-                                                alt="..."></div>
+                                                width="550"
+                                                height="350"
+                                                ></div>
                                     </div>
                                     <button
                                         class="carousel-control-prev"
@@ -109,58 +108,12 @@
                         </div>
 
                     </div>
-                    <div class="p-2 docs-highlight">
-                        <div class="row">
-                            <h2 class="fs-5 fw-bold ps-4 pt-4 pb-2">리뷰 &#40;리뷰개수&#41;</h2>
+                    <div class="p-2 docs-highlight pb-0">
+                        <div class="row border-bottom">
+                            <h2 class="fs-5 fw-bold ps-4 pt-4">리뷰 &#40;리뷰개수&#41;</h2>
                         </div>
-                        <form class="pb-4">
-                            <div class="row mb-3 px-2">
-                                <label for="inputTitle" class="col-sm-1 ps-3 pt-0 col-form-label"><p style="font-size: 20px;">평점</p></label>
-                                <div class="col-sm-11">
-                                 <div>
-                                    <button class="m-0 p-0" type="summit" style="background-color:transparent; border:transparent;" id="rating1"> <img src="/images/emptystar.png"
-                                    style="width:25px; height:25px;"></button>
-                                    <button class="m-0 p-0" type="summit" style="background-color:transparent; border:transparent;" id="rating2"> <img src="/images/emptystar.png"
-                                    style="width:25px; height:25px;"></button>
-                                    <button class="m-0 p-0" type="summit" style="background-color:transparent; border:transparent;" id="rating3"> <img src="/images/emptystar.png"
-                                    style="width:25px; height:25px;"></button>
-                                    <button class="m-0 p-0" type="summit" style="background-color:transparent; border:transparent;" id="rating4"> <img src="/images/emptystar.png"
-                                    style="width:25px; height:25px;"></button>
-                                    <button class="m-0 p-0" type="summit" style="background-color:transparent; border:transparent;" id="rating5"> <img src="/images/emptystar.png"
-                                    style="width:25px; height:25px;"></button>
-                                  </div>
-                                </div>
-                              </div>
-                            <div class="row mb-3 px-2">
-                              <label for="inputTitle" class="col-sm-1 ps-3 pt-0 col-form-label"><p style="font-size: 20px;">제목</p></label>
-                              <div class="col-sm-11">
-                                <input type="text" class="form-control" id="inputTitle">
-                              </div>
-                            </div>
-                            <div class="row mb-3 px-2">
-                              <label for="inputTitle" class="col-sm-1 ps-3 pt-0 col-form-label">
-                                <p style="font-size: 20px;">내용</p>
-                                </label>
-                              <div class="col-sm-11">
-                                <textarea class="form-control" id="inputPassword3" rows="7"></textarea>
-                              </div>
-                            </div>
-                            <div class="row px-3">
-                                <center>
-                                <button class="btn btn-dark rounded-pill w-50" type="button" data-coreui-target="#loginModal" 
-                                data-coreui-toggle="modal">리뷰 작성
-                                </center>
-                                </div>
-                            <div class="row mb-3 px-2">
-                            <label for="inputTitle" class="col-sm-1 ps-3 pt-0 col-form-label">
-                                <p style="font-size: 20px;">방문 일자</p>
-                                </label>
-                            <div class="col-sm-11">
-                                <input type="" class="form-control" id="inputPassword3" rows="7"></textarea>
-                            </div>
-                            </div>    
-                          </form>
-                        <div class="d-flex border-top border-bottom">
+                        <div class="d-flex border-bottom text-white" data-coreui-target="#modifyModal"
+                        data-coreui-toggle="modal" style="background: #455A64; cursor:pointer;">
                             <div class="col-9 ps-3 py-2">
                                 <p class="card-text">2일전</p>
                                 <h5 class="card-title">카츠샌드짱</h5>
@@ -170,12 +123,78 @@
                         
                         </div>
                     </div>
+                    <div class="p-2 docs-highlight my-0 py-0">
+                        <div class="d-flex border-bottom">
+                            <div class="col-9 ps-3 py-2">
+                                <p class="card-text">2일전</p>
+                                <h5 class="card-title">카츠샌드짱</h5>
+                                <p class="card-text">엄청맛있어요~!</p>
+                                <p class="card-text">방문 날짜 : 2021-09-10</p>
+                            </div>
+                        </div>
+                    </div>
+
+
                     <div class="p-2 docs-highlight">
                         pignation
                     </div>
                 </div>
             </div>
 
+                            {{-- 리뷰 수정 모달 --}}
+                            <div class="modal" tabindex="-1" id="modifyModal">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title fw-bold fs-3">리뷰수정</h5>
+                                            <button
+                                                type="button"
+                                                class="btn-close"
+                                                data-coreui-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mb-3">
+                                                <label for="reviewTitle" class="form-label">제목</label>
+                                                <input type="email" class="form-control" id="reviewTitle" placeholder="제목">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="reviewContents" class="form-label">내용</label>
+                                                <textarea class="form-control" id="reviewContents" rows="7" placeholder="내용"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer" style="justify-content: center;">
+                                            <button
+                                                type="button"
+                                                class="btn btn-dark rounded-pill btn-primary px-4"
+                                                data-coreui-target="#modifyCheckModal"
+                                                data-coreui-toggle="modal">확인</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-gray rounded-pill btn-secondary px-4"
+                                                data-coreui-dismiss="modal">취소</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            {{-- 수정 확인 모달 --}}
+                            <div class="modal" tabindex="-1" id="modifyCheckModal">
+                                <div class="modal-dialog modal-dialog-centered modalSize350">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <p class="fw-bold text-center">리뷰를 수정하시겠습니까?</p>
+                                        </div>
+                                        <div class="modal-footer" style="justify-content: center;">
+                                            <button type="button" class="btn btn-dark rounded-pill btn-primary px-4">확인</button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-gray rounded-pill btn-secondary px-4"
+                                                data-coreui-dismiss="modal">취소</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
         </div>
         <footer class="c-footer">

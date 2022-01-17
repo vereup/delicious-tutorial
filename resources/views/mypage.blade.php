@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="kr">
+<html lang="ko">
     <head>
         <!-- Required meta tags -->
         <meta charset="utf-8">
@@ -14,6 +14,18 @@
             .modalSize350 {
                 width: 350px;
             }
+            
+            .nav-pills {
+                --cui-nav-link-color : black;
+                --cui-nav-pills-link-active-bg : #455A64;
+                --cui-nav-link-hover-color : black;
+            }
+            .pagination{
+                --cui-pagination-color: black;
+                --cui-pagination-active-bg: #455A64;
+                --cui-pagination-active-border-color:#455A64;
+            }
+
         </style>
         <title>Delicious</title>
     </head>
@@ -116,7 +128,9 @@
                                             {{-- 찜버튼 --}}
                                             <button
                                                 class="p-2 bg-white"
-                                                style="border: 1px solid #A0A0A0; border-radius: 50%;">
+                                                style="border: 1px solid #A0A0A0; border-radius: 50%;"
+                                                data-coreui-target="#wishDeleteCheckModal"
+                                                data-coreui-toggle="modal">
                                                 <div>
                                                     <img src="/images/redheart.png" width="25" height="25"></a>
                                             </div>
@@ -159,7 +173,7 @@
                     </div>
                 </div>
 
-                {{-- 수정 모달 --}}
+                {{-- 리뷰 수정 모달 --}}
                 <div class="modal" tabindex="-1" id="modifyModal">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
@@ -214,6 +228,24 @@
                     </div>
                 </div>
 
+
+                {{-- 찜삭제 확인 모달 --}}
+                <div class="modal" tabindex="-1" id="wishDeleteCheckModal">
+                    <div class="modal-dialog modal-dialog-centered modalSize350">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <p class="fw-bold text-center">찜 목록에서 삭제하시겠습니까?</p>
+                            </div>
+                            <div class="modal-footer" style="justify-content: center;">
+                                <button type="button" class="btn btn-dark rounded-pill btn-primary px-4">확인</button>
+                                <button
+                                    type="button"
+                                    class="btn btn-gray rounded-pill btn-secondary px-4"
+                                    data-coreui-dismiss="modal">취소</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>      
             </div>
 
             <footer class="c-footer">

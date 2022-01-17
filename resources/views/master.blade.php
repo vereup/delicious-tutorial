@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="kr">
+<html lang="ko">
     <head>
         <!-- Required meta tags -->
         <meta charset="utf-8">

@@ -31,6 +31,10 @@ Route::get('/detail', function () {
     return view('detail',['name' => 'Justin']);
 });
 
-Route::get('/write', function () {
-    return view('write',['name' => 'Justin']);
+Route::get('/detailWrite', function () {
+    return view('detailWrite',['name' => 'Justin']);
+});
+
+Route::get('/detailReview', function () {
+    return view('detailReview',['name' => 'Justin']);
 });
