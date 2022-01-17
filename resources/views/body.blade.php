@@ -1,6 +1,7 @@
 
 
 
+
 <main class="c-main">
     <div class="container-fluid pb-3">
 
@@ -138,19 +139,6 @@
                     </div>
 
 
-                    <div class="sidebar sidebar-show">
-                        <ul class="sidebar-nav" data-coreui="navigation">
-                          <li class="nav-title" style="font-size: 18px;">카테고리</li>
-                          <li class="nav-item nav-group bg-white">
-                            <a type="check" class="nav-link nav-group-toggle border-bottom" href="#" aria-expanded="false" style="color: black;">한식</a>
-                            <ul class="nav-group-items">
-                              <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="nav-icon cil-puzzle"></i>
-                                    <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="koreanAll" value="option1">
-                                    <label class="form-check-label" for="koreanAll" style="color: black;">전체</label>
-                                  </div></a>
-                              </li>
                     <div class="row m-2 shadow p-0 mb-5 bg-body rounded">
 
 
@@ -191,14 +179,14 @@
 
                     <div class="m-2 docs-highlight">
                         <div class="d-flex flex-wrap">
-                            @for($k=0;$k<10;$k++)
+                            @for($k=0;$k<6;$k++)
                             {{-- 맛집카드 --}}
                             <div class="card rounded me-2 my-1" style="width: 275px; height: 350px;">
                                 <img
-                                    src="..."
+                                    src="/images/store_thum_{{ $k+1 }}.png"
                                     class="card-img-top border-bottom"
                                     alt="store->name"
-                                    style="width: 275px; height: 236.49px;">
+                                    style="width: 273px; height: 236.49px;">
                                 <div
                                     class="p-2 bg-white"
                                     style="position: absolute; top: 10px; right: 10px; border: 1px solid #A0A0A0; border-radius: 50%;">
@@ -207,7 +195,7 @@
                                 </div>
                                 <div class="card-body" onclick="">
                                     {{-- 클릭하면 상세로 이동 --}}
-                                    <h5 class="card-title">store->name</h5>
+                                    <h5 class="card-title">...</h5>
                                     <img src="/images/star.png">
                                         {{--  찜 카운트에 따라 변경  --}}
                                         <span class="ms-1">ratingcount</span>
@@ -233,3 +221,8 @@
 
 
 
+<script>
+    
+    var storeArray = new Array ("수박화채 1호점", "라멘짐", "베이커리&샌드위치", "샤브샤브&훠궈", "도너츠", "스테이크");
+    var store = store[0];
+</script>
