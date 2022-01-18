@@ -27,11 +27,9 @@
             </header>
 
             <div class="c-body" style="background-color: #E5E5E5">
-
                 <div class="container-fluid p-2">
                     <div class="d-flex flex-column docs-highlight bg-white">
                         <div class="d-flex">
-
                             <div class="col-11 ps-3 py-4">
                                 <p class="card-title fs-3 fw-bold">베이커리&샌드위치
                                     <img src="/images/star.png">
@@ -49,12 +47,12 @@
                                     style="border: 1px solid #A0A0A0; border-radius: 50%;">
                                     <div>
                                         <img src="/images/redheart.png" width="25" height="25"></a>
-                                </div>
-                            </button>
+                                    </div>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="p-2 docs-highlight">
-                        <div class="d-flex flex-row border-top border-bottom">
+                        <div class="p-2 docs-highlight">
+                            <div class="d-flex flex-row border-top border-bottom">
                             <div class="col-6 p-2 border-end text-center">
                                 <div
                                     id="carouselExampleFade"
@@ -117,49 +115,49 @@
                             <div class="row mb-3 px-2">
                                 <label for="inputTitle" class="col-sm-1 ps-3 pt-0 col-form-label"><p style="font-size: 20px;">평점</p></label>
                                 <div class="col-sm-11">
-                                 <div>
-                                    <button class="m-0 p-0" type="summit" style="background-color:transparent; border:transparent;" id="rating1"> <img src="/images/emptystar.png"
-                                    style="width:25px; height:25px;"></button>
-                                    <button class="m-0 p-0" type="summit" style="background-color:transparent; border:transparent;" id="rating2"> <img src="/images/emptystar.png"
-                                    style="width:25px; height:25px;"></button>
-                                    <button class="m-0 p-0" type="summit" style="background-color:transparent; border:transparent;" id="rating3"> <img src="/images/emptystar.png"
-                                    style="width:25px; height:25px;"></button>
-                                    <button class="m-0 p-0" type="summit" style="background-color:transparent; border:transparent;" id="rating4"> <img src="/images/emptystar.png"
-                                    style="width:25px; height:25px;"></button>
-                                    <button class="m-0 p-0" type="summit" style="background-color:transparent; border:transparent;" id="rating5"> <img src="/images/emptystar.png"
-                                    style="width:25px; height:25px;"></button>
-                                  </div>
+                                    <div>
+                                        <button class="m-0 p-0" type="summit" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="oneStar"
+                                        style="width:25px; height:25px;"></button>
+                                        <button class="m-0 p-0" type="summit" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="twoStar"
+                                        style="width:25px; height:25px;"></button>
+                                        <button class="m-0 p-0" type="summit" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="threeStar"
+                                        style="width:25px; height:25px;"></button>
+                                        <button class="m-0 p-0" type="summit" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="fourStar"
+                                        style="width:25px; height:25px;"></button>
+                                        <button class="m-0 p-0" type="summit" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="fiveStar"
+                                        style="width:25px; height:25px;"></button>
+                                    </div>
                                 </div>
-                              </div>
-                            <div class="row mb-3 px-2">
-                              <label for="inputTitle" class="col-sm-1 ps-3 pt-0 col-form-label"><p style="font-size: 20px;">제목</p></label>
-                              <div class="col-sm-11">
-                                <input type="text" class="form-control" id="inputTitle">
-                              </div>
                             </div>
                             <div class="row mb-3 px-2">
-                              <label for="inputTitle" class="col-sm-1 ps-3 pt-0 col-form-label">
-                                <p style="font-size: 20px;">내용</p>
+                                <label for="inputTitle" class="col-sm-1 ps-3 pt-0 col-form-label"><p style="font-size: 20px;">제목</p></label>
+                                <div class="col-sm-11">
+                                <input type="text" class="form-control" id="inputTitle">
+                                </div>
+                            </div>
+                            <div class="row mb-3 px-2">
+                                <label for="inputTitle" class="col-sm-1 ps-3 pt-0 col-form-label">
+                                    <p style="font-size: 20px;">내용</p>
                                 </label>
-                              <div class="col-sm-11">
-                                <textarea class="form-control" id="inputPassword3" rows="7"></textarea>
-                              </div>
+                                <div class="col-sm-11">
+                                    <textarea class="form-control" id="inputPassword3" rows="7"></textarea>
+                                </div>
                             </div>
                             <div class="row mb-3 px-2">
                             <label for="inputTitle" class="col-sm-1 ps-3 pt-0 col-form-label">
                                 <p style="font-size: 20px;">방문 일자</p>
                                 </label>
                                 <div class="col-sm-11">
-                                    <input type="date" class="form-control w-25" id="inputPassword3" rows="7"></textarea>
+                                    <input type="date" class="form-control w-25" id="inputPassword4" rows="7">
                                 </div>
                             </div>    
                             <div class="row px-3">
                                 <center>
-                                <button class="btn btn-dark rounded-pill w-50" type="button" data-coreui-target="#WriteCheckModal" 
-                                data-coreui-toggle="modal">리뷰 작성
+                                    <button class="btn btn-dark rounded-pill w-50" type="button" data-coreui-target="#WriteCheckModal" 
+                                    data-coreui-toggle="modal">리뷰 작성
                                 </center>
-                                </div>
-                          </form>
+                            </div>
+                        </form>
                         <div class="d-flex border-top border-bottom">
                             <div class="col-9 ps-3 py-2">
                                 <p class="card-text">2일전</p>
@@ -167,7 +165,6 @@
                                 <p class="card-text">엄청맛있어요~!</p>
                                 <p class="card-text">방문 날짜 : 2021-09-10</p>
                             </div>
-                        
                         </div>
                     </div>
                     <div class="p-2 docs-highlight">
@@ -192,10 +189,7 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
-
         </div>
         <footer class="c-footer">
             <div class="footer bg-white py-4 justify-content-center">
@@ -207,7 +201,58 @@
     </div>
 
     <!-- Option 1: CoreUI for Bootstrap Bundle with Popper -->
-    <script
-        src="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.0.2/dist/js/coreui.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.0.2/dist/js/coreui.bundle.min.js"></script>
 </body>
 </html>
+
+
+<script>
+
+// 평점 클릭시 별 변경
+let oneStar = document.getElementById('oneStar');
+let twoStar = document.getElementById('twoStar');
+let threeStar = document.getElementById('threeStar');
+let fourStar = document.getElementById('fourStar');
+let fiveStar = document.getElementById('fiveStar');
+    
+function star_listener(event){
+    switch(event.target.id){
+        case 'oneStar':
+            oneStar.setAttribute('src','/images/star.png'); 
+        break;
+
+        case 'twoStar':
+            oneStar.setAttribute('src','/images/star.png');
+            twoStar.setAttribute('src','/images/star.png');
+        break;
+
+        case 'threeStar':
+            oneStar.setAttribute('src','/images/star.png');
+            twoStar.setAttribute('src','/images/star.png');
+            threeStar.setAttribute('src','/images/star.png');
+        break;
+
+        case 'fourStar':
+            oneStar.setAttribute('src','/images/star.png');
+            twoStar.setAttribute('src','/images/star.png'); 
+            threeStar.setAttribute('src','/images/star.png');
+            fourStar.setAttribute('src','/images/star.png');
+        break;
+
+        case 'fiveStar':
+            oneStar.setAttribute('src','/images/star.png');
+            twoStar.setAttribute('src','/images/star.png'); 
+            threeStar.setAttribute('src','/images/star.png');
+            fourStar.setAttribute('src','/images/star.png');
+            fiveStar.setAttribute('src','/images/star.png'); 
+        break;
+
+    }
+}
+
+oneStar.addEventListener('click', star_listener);
+twoStar.addEventListener('click', star_listener);
+threeStar.addEventListener('click', star_listener);
+fourStar.addEventListener('click', star_listener);
+fiveStar.addEventListener('click', star_listener);
+</script>

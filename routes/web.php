@@ -38,3 +38,8 @@ Route::get('/detailWrite', function () {
 Route::get('/detailReview', function () {
     return view('detailReview',['name' => 'Justin']);
 });
+
+Route::get('/test', function () {
+    return view('test',['name' => 'Justin']);
+});
+

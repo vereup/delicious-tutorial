@@ -75,7 +75,7 @@
                                 </div>
                                 <div class="p-2 docs-highlight">
                                     <label for="inputName4" class="form-label">이름</label>
-                                    <input type="password" class="form-control" id="inputName4" placeholder="이름">
+                                    <input type="text" class="form-control" id="inputName4" placeholder="이름">
                                 </div>
                                 <div class="p-2 docs-highlight">
                                     <input class="form-check-input ms-3" type="checkbox" id="agreeCheck">
