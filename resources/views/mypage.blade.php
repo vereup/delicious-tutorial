@@ -93,13 +93,13 @@
                                             <button
                                                 type="submit"
                                                 class="btn btn-primary fs-4 btn-dark rounded-pill"
-                                                style="width: 117px; height:60px;"
+                                                style="width: 100px; height:50px;"
                                                 data-coreui-target="#modifyModal"
                                                 data-coreui-toggle="modal">수정</button>
                                             <button
                                                 type="submit"
                                                 class="btn btn-secondary fs-4 btn-gray text-white rounded-pill ms-2"
-                                                style="width: 117px; height:60px;"
+                                                style="width: 100px; height:50px;"
                                                 data-coreui-target="#deleteCheckModal"
                                                 data-coreui-toggle="modal">삭제</button>
                                         </div>
@@ -113,11 +113,11 @@
                                     <div class="row">
                                         <h2 class="fs-5 fw-bold ps-4 pt-4 pb-2">찜 목록 &#40;찜개수&#41;</h2>
                                     </div>
-                                    <div class="d-flex border-top border-bottom">
+                                    <div class="d-flex border-top border-bottom align-items-center">
                                         <div class="col-2 ps-3 py-2">
-                                            <img src="..." class="img-thumbnail" alt="...">
+                                            <img src="/images/wish_thum_1.png" class="img-thumbnail" alt="...">
                                         </div>
-                                        <div class="col-9 ps-3 py-2">
+                                        <div class="col-9 ps-3 py-2 align-middle">
                                             <h5 class="card-title">베이커리&샌드위치</h5>
                                             <div>
                                                 <img src="/images/star.png">&#40;리뷰개수&#41;

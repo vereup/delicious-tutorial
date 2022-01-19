@@ -47,7 +47,7 @@
                                     class="p-2 bg-white"
                                     style="border: 1px solid #A0A0A0; border-radius: 50%;">
                                     <div>
-                                        <img src="/images/redheart.png" width="25" height="25"></a>
+                                        <img src="/images/redheart.png" onclick="heartChange(this.id)" value="2" width="25" height="25" id="heart">
                                 </div>
                             </button>
                         </div>
@@ -211,3 +211,31 @@
         src="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.0.2/dist/js/coreui.bundle.min.js"></script>
 </body>
 </html>
+
+<script>
+
+// 찜하트 변경
+
+function heartChange(id){
+    let heart;
+    let value;
+    heart = document.getElementById(id);
+    value = heart.getAttribute('value');
+    switch(value){
+        case '1':
+            heart.setAttribute('src','/images/redheart.png');
+            heart.setAttribute('value','2'); 
+            break;
+        case '2':
+            heart.setAttribute('src','/images/whiteheart.png'); 
+            heart.setAttribute('value','1');
+            break;    
+    
+    }
+    console.log(value);
+    console.log(heart.src);
+    console.log(id);
+}
+
+
+</script>

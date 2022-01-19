@@ -46,7 +46,7 @@
                                     class="p-2 bg-white"
                                     style="border: 1px solid #A0A0A0; border-radius: 50%;">
                                     <div>
-                                        <img src="/images/redheart.png" width="25" height="25"></a>
+                                        <img src="/images/redheart.png" onclick="heartChange(this.id)" value="2" width="25" height="25" id="heart">
                                     </div>
                                 </button>
                             </div>
@@ -116,15 +116,15 @@
                                 <label for="inputTitle" class="col-sm-1 ps-3 pt-0 col-form-label"><p style="font-size: 20px;">평점</p></label>
                                 <div class="col-sm-11">
                                     <div>
-                                        <button class="m-0 p-0" type="summit" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="oneStar"
+                                        <button class="m-0 p-0" type="button" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="oneStar"
                                         style="width:25px; height:25px;"></button>
-                                        <button class="m-0 p-0" type="summit" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="twoStar"
+                                        <button class="m-0 p-0" type="button" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="twoStar"
                                         style="width:25px; height:25px;"></button>
-                                        <button class="m-0 p-0" type="summit" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="threeStar"
+                                        <button class="m-0 p-0" type="button" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="threeStar"
                                         style="width:25px; height:25px;"></button>
-                                        <button class="m-0 p-0" type="summit" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="fourStar"
+                                        <button class="m-0 p-0" type="button" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="fourStar"
                                         style="width:25px; height:25px;"></button>
-                                        <button class="m-0 p-0" type="summit" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="fiveStar"
+                                        <button class="m-0 p-0" type="button" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="fiveStar"
                                         style="width:25px; height:25px;"></button>
                                     </div>
                                 </div>
@@ -218,18 +218,27 @@ let fiveStar = document.getElementById('fiveStar');
 function star_listener(event){
     switch(event.target.id){
         case 'oneStar':
-            oneStar.setAttribute('src','/images/star.png'); 
+            oneStar.setAttribute('src','/images/star.png');
+            twoStar.setAttribute('src','/images/emptystar.png'); 
+            threeStar.setAttribute('src','/images/emptystar.png');
+            fourStar.setAttribute('src','/images/emptystar.png');
+            fiveStar.setAttribute('src','/images/emptystar.png');  
         break;
 
         case 'twoStar':
             oneStar.setAttribute('src','/images/star.png');
-            twoStar.setAttribute('src','/images/star.png');
+            twoStar.setAttribute('src','/images/star.png'); 
+            threeStar.setAttribute('src','/images/emptystar.png');
+            fourStar.setAttribute('src','/images/emptystar.png');
+            fiveStar.setAttribute('src','/images/emptystar.png');
         break;
 
         case 'threeStar':
             oneStar.setAttribute('src','/images/star.png');
-            twoStar.setAttribute('src','/images/star.png');
+            twoStar.setAttribute('src','/images/star.png'); 
             threeStar.setAttribute('src','/images/star.png');
+            fourStar.setAttribute('src','/images/emptystar.png');
+            fiveStar.setAttribute('src','/images/emptystar.png');
         break;
 
         case 'fourStar':
@@ -237,6 +246,7 @@ function star_listener(event){
             twoStar.setAttribute('src','/images/star.png'); 
             threeStar.setAttribute('src','/images/star.png');
             fourStar.setAttribute('src','/images/star.png');
+            fiveStar.setAttribute('src','/images/emptystar.png');
         break;
 
         case 'fiveStar':
@@ -255,4 +265,29 @@ twoStar.addEventListener('click', star_listener);
 threeStar.addEventListener('click', star_listener);
 fourStar.addEventListener('click', star_listener);
 fiveStar.addEventListener('click', star_listener);
+
+
+// 찜하트 변경
+
+function heartChange(id){
+    let heart;
+    let value;
+    heart = document.getElementById(id);
+    value = heart.getAttribute('value');
+    switch(value){
+        case '1':
+            heart.setAttribute('src','/images/redheart.png');
+            heart.setAttribute('value','2'); 
+            break;
+        case '2':
+            heart.setAttribute('src','/images/whiteheart.png'); 
+            heart.setAttribute('value','1');
+            break;    
+    
+    }
+    console.log(value);
+    console.log(heart.src);
+    console.log(id);
+}
+
 </script>

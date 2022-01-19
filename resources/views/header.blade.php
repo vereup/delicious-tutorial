@@ -8,18 +8,23 @@
             alt="Deliciuos Logo">
             <span class="align-middle fw-bolder fs-3 fst-italic">Delicious</span>
         </a>
+        <button class="header-toggler" type="button">
+            <span class="header-toggler-icon"></span>
+        </button>
 
-        <div class="header-nav mr-auto align-items-end">
-            <a
-                class="nav-item nav-link active"
-                data-coreui-target="#loginModal"
-                data-coreui-toggle="modal"
-                style="cursor: pointer">Login
-                <span class="visually-hidden">(current)</span>
-            </a>
+        <ul class="header-nav mr-auto align-items-end">
+           <li class="nav-item active"> 
+                <a class="nav-link" data-coreui-target="#loginModal" data-coreui-toggle="modal" style="cursor: pointer">Login
+                    <span class="visually-hidden">(current)</span>
+                </a>
 
-            <a class="nav-item nav-link" href="/mypage">Mypage</a>
-        </div>
+            <li class="nav-item"> 
+                <a class ="nav-link" href="/mypage">Mypage</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Logout</a>
+            </li>
+        </ul>
         <form class="d-flex">
             <input
                 class="form-control"
