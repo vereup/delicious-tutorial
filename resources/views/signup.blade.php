@@ -1,39 +1,11 @@
-<!doctype html>
-<html lang="ko">
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.main')
 
-        <!-- CoreUI for Bootstrap CSS -->
-        <link
-            href="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.0.2/dist/css/coreui.min.css"
-            rel="stylesheet">
-
-        <style>
-            .modalSize350 {
-                width: 350px;
-            }
-        </style>
-        <title>Delicious</title>
-    </head>
-
-    <body class="c-app">
-
-        <div class="c-wrapper">
-            <header class="c-header">
-                @include('header')
-            </header>
-
+@section('content')
             <div class="c-body" style="background-color: #E5E5E5">
                 <div class="container-fluid">
-
-                    <div class="row py-3">
-                        <div class="col-3">
-                            <div class="col"></div>
-                        </div>
-                        <div class="col-6">
-                            <div class="d-flex flex-column docs-highlight p-3 mb-3"
+                    <div class="d-flex justify-content-center"
+                        <div class="p-2 docs-highlight">
+                            <div class="d-flex flex-column docs-highlight p-3 my-3 w-50"
                                 style="background:white;">
                                 <div class="p-2 docs-highlight border-bottom">
                                     <h5 class="fw-bold fs-3">회원가입</h5>
@@ -92,12 +64,12 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-3">
-                            <div class="col"></div>
-                        </div>
+                    </div>  
                     </div>
                 </div>
+            </div>
+@endsection
+
                 {{-- 회원가입확인모달 --}}
                 <div class="modal" tabindex="-1" id="signCheckModal">
                     <div class="modal-dialog modal-dialog-centered modalSize350">
@@ -115,19 +87,4 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <footer class="c-footer">
-            <div class="footer bg-white py-4 justify-content-center">
-                <div>
-                    <span>Hug management &copy; 2021</span>
-                </div>
-            </div>
-        </footer>
-
-        <!-- Option 1: CoreUI for Bootstrap Bundle with Popper -->
-        <script
-            src="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.0.2/dist/js/coreui.bundle.min.js"></script>
-    </body>
-</html>
+            

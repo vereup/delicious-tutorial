@@ -13,7 +13,7 @@
         </button>
 
         <ul class="header-nav mr-auto align-items-end">
-           <li class="nav-item active"> 
+            <li class="nav-item active"> 
                 <a class="nav-link" data-coreui-target="#loginModal" data-coreui-toggle="modal" style="cursor: pointer">Login
                     <span class="visually-hidden">(current)</span>
                 </a>

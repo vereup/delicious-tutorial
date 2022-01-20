@@ -35,7 +35,13 @@ Resources
     <h1>Hello, world!</h1>
     <input type="button" id="test" img src="/images/emptystar.png" style="width:25px; height:25px;">
     <input type="button" id="test2" img src="/images/emptystar.png" style="width:25px; height:25px;">
+    
 
+    @section('abc')
+    <input type="text">abcd
+    @endsection
+
+@yield('abc')
 
 
     <button class="m-0 p-0" type="summit" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="rating1"
