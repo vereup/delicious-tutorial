@@ -4,12 +4,18 @@
             <li class="nav-title" style="font-size: 18px;">카테고리</li>
             <li class="nav-item nav-group bg-white">
                 <ul class="list-group p-0">
-                    @for($i=0;$i<7;$i++) 
+                    @foreach ($categories as $category)
+                    <li class="list-group-item">
+                        <input class="form-check-input me-1" type="checkbox" value="{{ $category->id }}" id="category_{{ $category->id }}">
+                        <label class="form-check-label" style="color: black; font-size:15px;">{{ $category->name }}</label>
+                    </li>
+                    @endforeach
+                    {{-- @for($i=0;$i<7;$i++) 
                     <li class="list-group-item">
                         <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
                         <label class="form-check-label" style="color: black; font-size:15px;" id="categoryName{{ $i }}"></label>
                     </li>
-                    @endfor
+                    @endfor --}}
                 </ul>
             </li>
         </ul>
@@ -38,7 +44,7 @@
 </div>
 
 
-<script>
+{{-- <script>
 
 
 // 카테고리명 출력
@@ -50,5 +56,6 @@ while(i<categories.length){
 }
 
 
-</script>
+
+</script> --}}
 

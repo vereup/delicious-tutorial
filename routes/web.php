@@ -11,9 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('master',['name' => 'Justin']);
-});
+
+Route::get('/','MainController@getMainDatas');
 
 Route::get('/signup', function () {
     return view('signup',['name' => 'Justin']);
