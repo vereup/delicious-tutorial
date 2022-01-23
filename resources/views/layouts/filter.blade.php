@@ -9,3 +9,12 @@
         <button type="button" class="btn bg-white btn-light rounded-pill px-4 w-25" id="filterkeyword">검색어 : </button>
     </div>
 </div>
+
+<script>
+
+
+// // 검색결과 출력
+// document.getElementById('resultCount').innerText = storeArray.length;
+
+
+</script>

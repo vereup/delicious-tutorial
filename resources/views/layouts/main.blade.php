@@ -44,7 +44,8 @@
         </footer>
 
         <!-- Option 1: CoreUI for Bootstrap Bundle with Popper -->
-        <script src="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.0.2/dist/js/coreui.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.0.2/dist/js/coreui.bundle.min.js">
+        </script>
     </body>
     
 @yield('script')

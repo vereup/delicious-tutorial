@@ -86,6 +86,16 @@ function star_listener(event){
     test2Id.addEventListener('click', star_listener);
 
 
+    const myArr = [1, 2, 3, 4, 5];
+
+const newMyArr = myArr.forEach((currentElement, index, array) => {
+    console.log(`요소: ${currentElement}`);
+    console.log(`index: ${index}`);
+    console.log(array);
+});
+
+console.log(newMyArr); // undefined
+
 
     
     </script>
