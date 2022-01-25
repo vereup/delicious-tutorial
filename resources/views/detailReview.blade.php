@@ -4,9 +4,11 @@
 @section('detailContent')
     <div class="p-2 docs-highlight">
         <div class="row">
-            <h2 class="fs-5 fw-bold ps-4 pt-4 pb-2">리뷰 &#40;리뷰개수&#41;</h2>
+            <h2 class="fs-5 fw-bold ps-4 pt-4 pb-2">리뷰 &#40;{{$store->review_count}}&#41;</h2>
         </div>
 
+        @foreach ($reviews as $review)
+        @if($review->store_id == $store->id) 
         <div class="d-flex border-bottom text-white" data-coreui-target="#modifyModal" data-coreui-toggle="modal"
             style="background: #455A64; cursor:pointer;">
             <div class="col-9 ps-3 py-2">

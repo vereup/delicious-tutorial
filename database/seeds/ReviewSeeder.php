@@ -54,22 +54,6 @@ class ReviewSeeder extends Seeder
             ],
             [
                 'store_id' => 6,
-                'user_id' => 1,
-                'title' => '굿굿굿2',
-                'contents' => '너무 맛있더라구요2',
-                'rating' => 3,
-                'been_date' => 20220120
-            ],
-            [
-                'store_id' => 6,
-                'user_id' => 1,
-                'title' => '굿굿굿3',
-                'contents' => '너무 맛있더라구요3',
-                'rating' => 4,
-                'been_date' => 20220120
-            ],
-            [
-                'store_id' => 6,
                 'user_id' => 2,
                 'title' => '굿굿굿4',
                 'contents' => '너무 맛있더라구요4',

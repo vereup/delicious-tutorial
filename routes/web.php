@@ -22,13 +22,11 @@ Route::get('/review', function () {
     return view('review',['name' => 'Justin']);
 });
 
-Route::get('/mypage', function () {
-    return view('mypage',['name' => 'Justin']);
-});
+Route::get('/mypage','MypageController@getMypageDatas');
 
-Route::get('/detail', function () {
-    return view('detail',['name' => 'Justin']);
-});
+
+Route::get('/store/{storeId}','DetailController@getStoreDatas');
+
 
 Route::get('/detailWrite', function () {
     return view('detailWrite',['name' => 'Justin']);

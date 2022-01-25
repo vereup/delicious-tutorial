@@ -3,13 +3,13 @@
                     <div class="d-flex flex-column docs-highlight bg-white">
                         <div class="d-flex">
                             <div class="col-11 ps-3 py-4">
-                                <p class="card-title fs-3 fw-bold">베이커리&샌드위치
+                                <p class="card-title fs-3 fw-bold">{{$store->name}}
                                     <img src="/images/star.png">
-                                    <span class="text" style="font-size: 10pt;">&#40;리뷰개수&#41;</span>
+                                    <span class="text" style="font-size: 10pt;">&#40;{{$store->review_count}}&#41;</span>
                                 </p>
-                                <p class="card-text pb-2"><img src="/images/location.png">&nbsp;주소
+                                <p class="card-text pb-2"><img src="/images/location.png">&nbsp;{{$store->address}}
                                     <span class="fw-bold" style="color: #a0a0a0;">&nbsp;|</span>
-                                    <img src="/images/telephone.png">&nbsp;&nbsp;전화번호
+                                    <img src="/images/telephone.png">&nbsp;&nbsp;{{$store->telephone_number}}
                                 </p>
                             </div>
                             <div class="col-1 pt-5">
@@ -72,9 +72,14 @@
 
                             <div class="p-2 pt-3 ps-4">
                                 <p class="text-start">
-                                    카페 & 디저트</p>
+                                    @foreach ($categories as $category)
+                                        @if ($category->id == $store->category_id)
+                                            {{$category->name}}
+                                        @endif
+                                    @endforeach
+                                </p>
                                 <p class="text-start">
-                                    베이커리 & 샌드위치 맛집 소개</p>
+                                    {{$store->introduction}}</p>
                             </div>
                         </div>
 

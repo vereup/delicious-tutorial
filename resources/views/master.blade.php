@@ -4,7 +4,7 @@
 
 
 <div class="container-fluid">
-    <div class="d-flex flex-row docs-highlight mb-3" style="background-color: #E5E5E5">
+    <div class="d-flex flex-row docs-highlight mx-0 mb-0" style="background-color: #E5E5E5">
         <div class="p-2 docs-highlight">
             @include('layouts.sidebar') 
         </div>
@@ -25,23 +25,19 @@
                         
                         {{-- 맛집카드 --}}
                         <div class="card rounded me-2 my-1" style="width: 275px; height: 350px;">
-                            <a href="/detail">
-                                    {{-- @php
-                                        $imagePath = '';
-                                    @endphp
+                            <a href="/store/{{$store->id - 1}}">                                 
                                     @foreach ($images as $image)
-                                        @if ($image->store_id == $store->id)
-                                            {{ $imagePath }}{{ $image->path }}
+                                        @if($image->store_id == $store->id)
+                                            <img
+                                            src="{{$image->path}}"
+                                            {{-- src="/images/store_thum_{{ $k+1 }}.png" --}}
+                                            class="card-img-top border-bottom"
+                                            alt="store->name"
+                                            style="width: 273px; height: 236.49px;"
+                                            >
                                             @break
                                         @endif
-                                    @endforeach --}}
-                            <img
-                                src="imagePath_{{ $store->id }}"
-                                {{-- src="/images/store_thum_{{ $k+1 }}.png" --}}
-                                class="card-img-top border-bottom"
-                                alt="store->name"
-                                style="width: 273px; height: 236.49px;"
-                                >
+                                    @endforeach
                             </a>
                             <div
                                 class="p-2 bg-white"
@@ -51,11 +47,11 @@
                                     {{-- 로그인후 찜여부에따라 하트변경 --}}
                             </div>
                             <div class="card-body">
-                                <a class="card-title" href="/detail" style="color :black; text-decoration : none; font-weight: bold; font-size: 18px;"><p class="mb-0">{{ $store->name }}</p></a>
+                                <a class="card-title" href="/store/{{$store->id -1 }}" style="color :black; text-decoration : none; font-weight: bold; font-size: 18px;"><p class="mb-0">{{ $store->name }}</p></a>
                                 <a id="star_{{ $store->id }}">{{ $store->id }}<a id="starHalf_{{ $store->id }}"></a></a> 
                                     {{--  찜 카운트에 따라 변경  --}}
                                     <a id="test"></a>
-                                    <span class="ms-1">{{ $store->review_count }}</span>
+                                    <span class="ms-1">	&#40;{{ $store->review_count }}&#41;</span>
                                     <br>
                                     <p class="card-text">{{ $store->address }}</p>
                             </div>
@@ -154,11 +150,11 @@ function countingStars(rating, star, starHalf){
 
 // 평점에 따라 출력하기
 
-
-
 let stores = @json($stores);
 stores.forEach((store, index) => {
     console.log(store);
+    console.log(store.id);
+    console.log(store.name);
     let rating = store.rating_average;
     console.log(rating);
     let id = index+1;
@@ -204,22 +200,32 @@ function heartChange(id){
     console.log(id);
 }
 
-let stores = @json($stores);
-let images = @json($images);
-function printImage(stores, images){
-    let path = '';
-    images.forEach(image, id => {
-        if(image->store_id == store->id){
-            path = image->path;
-        }
-    });
-}
+// // 스토어카드 이미지출력 - 미완성
 
-let pathIndex;
-stores.forEach(store => {
-    pathIndex = store->id;
-    imagePath = document.getElementById('imagePath_'pathIndex')
-});
+// let images = @json($images);
+// function printImage(stores, images){
+//     let path = '';
+//     let image= '';
+//     images.forEach(image => {
+//         console.log(image.store_id);
+//         console.log(store.id);
+//         if(image.store_id == store.id){
+//             path = image.path;
+//         }
+//     });
+// }
+
+// let pathIndex;
+// stores.forEach(store => {
+//     console.log(store);
+//     pathIndex = store.id;
+//     imagePath = document.getElementById('imagePath_'+pathIndex+'');
+    
+//     console.log(pathIndex);
+//     console.log(imagePath);
+
+//     printImage(stores, images);
+// });
 
 
 </script>

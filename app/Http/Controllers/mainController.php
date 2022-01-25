@@ -8,7 +8,7 @@ use App\Models\Store;
 use App\Models\Image;
 
 
-class mainController extends Controller
+class MainController extends Controller
 {
     public function getMainDatas(Request $request){
 

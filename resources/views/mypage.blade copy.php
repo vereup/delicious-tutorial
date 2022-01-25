@@ -15,7 +15,6 @@
                                     @break
                                 @endif
                             @endforeach
-
                         </div>
                         <div class="p-2 docs-highlight">
                             <ul class="nav nav-pills mb-2 border-bottom" id="pills-tab" role="tablist">
@@ -55,13 +54,26 @@
                                         
                                         <h2 class="fs-5 fw-bold ps-4 pt-4 pb-2">내 리뷰 &#40;
 
+                                            @php
+                                                $reviewCount = 0;
+                                            @endphp
+
+
+                                            @foreach ($users as $user)
+                                                @if($user->email == $loginEmail )
+                                                    @break
+                                                @endif
+                                            @endforeach
+
                                             
-                                                <span>
-                                                    @php
-                                                    $reviewCount = count($userReviews);
-                                                    echo $reviewCount;
-                                                    @endphp
-                                                </span>
+                                            @foreach ($reviews as $review)
+                                                @if($review->user_id == $user->id)
+                                                <?
+                                                {{$reviewCount+=1}}
+                                                ?>
+                                            @endif
+                                            @endforeach
+                                                <span>{{$reviewCount}}</span>
                                             &#41;</h2>
                                     </div>
                                     @foreach ($reviews as $review)
