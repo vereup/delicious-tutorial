@@ -20,17 +20,48 @@ class DetailController extends Controller
         $images = Image::get();
         $reviews = Review::get();
         $users= User::get();
+
+        $store = Store::find($storeId);
         
-        $store = $stores[$storeId];
-        $user = $users[1];
+
+        $loginUser = $users[3];
+
+        $userReviews = array();
+        foreach ($reviews as $review) {
+            if($review->store_id == $storeId && $review->user_id == $loginUser->id){
+                array_push($userReviews, $review);
+            }
+        }
         
+        $hasReview = 0;
+        foreach ($reviews as $review) {
+            if($review->store_id == $storeId && $review->user_id == $loginUser->id){
+                $hasReview = 1;
+            }
+        }
+
+        $i=0;
+        foreach ($images as $image){
+            if($image->store_id == $storeId && $i == 0){
+                $firstImagePath = $image->path;
+                $i=1;
+            }            
+        }
+
+
+        $reviewCount = count($userReviews);
+
 
         return view('detail', [
             'categories' => $categories,
             'store' => $store,
+            'storeId' => $storeId,
             'images' => $images,
+            'firstImagePath' => $firstImagePath,
             'reviews' => $reviews,
-            'user' => $user
+            // 'userReviews' => $userReviews,
+            'loginUser' => $loginUser,
+            'reviewCount' => $reviewCount
         ]);
 
     }

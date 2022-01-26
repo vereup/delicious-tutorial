@@ -14,7 +14,19 @@ class ImageSeeder extends Seeder
         $images = [
             [
                 'store_id' => '1',
-                'path' => '/images/store_thum_1.png',
+                'path' => '/images/store_thum_1-1.png',
+            ],
+            [
+                'store_id' => '1',
+                'path' => '/images/store_thum_1-2.png',
+            ],
+            [
+                'store_id' => '1',
+                'path' => '/images/store_thum_1-3.png',
+            ],
+            [
+                'store_id' => '1',
+                'path' => '/images/store_thum_1-4.png',
             ],
             [
                 'store_id' => '2',

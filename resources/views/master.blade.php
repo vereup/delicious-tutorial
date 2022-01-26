@@ -25,7 +25,7 @@
                         
                         {{-- 맛집카드 --}}
                         <div class="card rounded me-2 my-1" style="width: 275px; height: 350px;">
-                            <a href="/store/{{$store->id - 1}}">                                 
+                            <a href="/store/{{$store->id}}">                                 
                                     @foreach ($images as $image)
                                         @if($image->store_id == $store->id)
                                             <img
@@ -47,7 +47,7 @@
                                     {{-- 로그인후 찜여부에따라 하트변경 --}}
                             </div>
                             <div class="card-body">
-                                <a class="card-title" href="/store/{{$store->id -1 }}" style="color :black; text-decoration : none; font-weight: bold; font-size: 18px;"><p class="mb-0">{{ $store->name }}</p></a>
+                                <a class="card-title" href="/store/{{$store->id}}" style="color :black; text-decoration : none; font-weight: bold; font-size: 18px;"><p class="mb-0">{{ $store->name }}</p></a>
                                 <a id="star_{{ $store->id }}">{{ $store->id }}<a id="starHalf_{{ $store->id }}"></a></a> 
                                     {{--  찜 카운트에 따라 변경  --}}
                                     <a id="test"></a>

@@ -32,24 +32,36 @@
                                     data-coreui-ride="carousel"
                                     >
                                     <div class="carousel-inner">
-                                        <div class="carousel-item active text-center">
+                                            <div class="carousel-item active text-center">
                                             <img
-                                                src="/images/sample-1.png"
+                                                src="{{$firstImagePath}}"
                                                 width="550"
-                                                height="350"
-                                            ></div>
-                                        <div class="carousel-item text-center">
-                                            <img
-                                                src="/images/star.png"
-                                                width="550"
-                                                height="350"
-                                                ></div>
-                                        <div class="carousel-item text-center">
-                                            <img
-                                                src="/images/telephone.png"
-                                                width="550"
-                                                height="350"
-                                                ></div>
+                                                height="350">
+                                                        
+                                            </div>
+                                        @foreach ($images as $image)
+                                            @if($image->store_id == $storeId && $image->path != $firstImagePath)
+                                            <div class="carousel-item text-center">
+                                                <img
+                                                    src="{{$image->path}}"
+                                                    width="550"
+                                                    height="350">
+                                            </div>
+                                            @endif
+                                        @endforeach
+                                    
+                                        
+                                    {{-- @php
+                                        $i=1;
+                                        while($i < $storeImages->length){
+                                            
+                                            echo '<div class="carousel-item text-center">
+                                            <img src="/images/'$storeImages[$i]->path'" width="550" height="350">
+                                            </div>';
+                                            $i = $i + 1;
+                                        }
+                                    @endphp --}}
+
                                     </div>
                                     <button
                                         class="carousel-control-prev"
@@ -95,3 +107,4 @@
 
 
 @endsection
+

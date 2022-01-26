@@ -24,26 +24,35 @@ class MypageController extends Controller
 
         $loginEmail = 'kt@kt.com';
 
+        $userStores = array();
         $userReviews = array();
         $userWishes = array();
 
         foreach ($users as $user) {
-          if($user->email == $loginEmail){
-            $loginUser = $user;
-          }
+            if($user->email == $loginEmail){
+                $loginUser = $user;
+            }
         }
 
         foreach ($reviews as $review){
-          if($review->user_id == $loginUser->id){
-            array_push($userReviews, $review);
+            if($review->user_id == $loginUser->id){
+                array_push($userReviews, $review);
+            }
+        }
+
+        foreach ($stores as $store){
+          foreach ($userReviews as $userReview) {
+            if($store->id == $userReview->store_id){
+              array_push($userStores, $store);
+            }
           }
         }
 
+
         foreach ($wishes as $wish){
-          if($wish->user_id == $loginUser->id){
-            
-            array_push($userWishes, $wish);
-          }
+            if($wish->user_id == $loginUser->id){
+                array_push($userWishes, $wish);
+            }
         }
 
 
@@ -56,6 +65,7 @@ class MypageController extends Controller
             'wishes' => $wishes,
             'loginEmail' => $loginEmail,
             'loginUser' => $loginUser,
+            'userStores' => $userStores,
             'userReviews' => $userReviews,
             'userWishes' => $userWishes
         ]);
