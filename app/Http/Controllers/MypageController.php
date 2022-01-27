@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
 use App\Models\Review;
 use App\Models\Store;
@@ -16,59 +17,48 @@ class MypageController extends Controller
 {
     public function getMypageDatas(Request $request){
 
-        $reviews = Review::get();
+        $id = Auth::id();
+        $user = Auth::user();
         $stores = Store::get();
         $images = Image::get();
-        $users = User::get();
-        $wishes = Wish::get();
 
-        $loginEmail = 'kt@kt.com';
+        if ($request->tab == 'review' || $request->tab == null) {
+            $userReviews = Review::where('user_id', $id)->paginate(2);
+            
+            return view('mypage', [
+                'id' => $id,
+                'user' => $user,
+                'stores' => $stores,
+                'images' => $images,
+                'tab' => request('tab'),
+                'userReviews' => $userReviews
+            ]);
+        } 
+        else {
+            $userWishes = Wish::where('user_id', $id)->paginate(2);
 
-        $userStores = array();
-        $userReviews = array();
-        $userWishes = array();
-
-        foreach ($users as $user) {
-            if($user->email == $loginEmail){
-                $loginUser = $user;
-            }
+            return view('mypage', [
+                'id' => $id,
+                'user' => $user,
+                'stores' => $stores,
+                'images' => $images,
+                'tab' => request('tab'),
+                'userWishes' => $userWishes
+            ]);
         }
+        
+        
+        // $userReviews = Review::get()->where('user_id', $id);
+        // $userWishes = Wish::get()->where('user_id', $id);
 
-        foreach ($reviews as $review){
-            if($review->user_id == $loginUser->id){
-                array_push($userReviews, $review);
-            }
-        }
-
-        foreach ($stores as $store){
-          foreach ($userReviews as $userReview) {
-            if($store->id == $userReview->store_id){
-              array_push($userStores, $store);
-            }
-          }
-        }
-
-
-        foreach ($wishes as $wish){
-            if($wish->user_id == $loginUser->id){
-                array_push($userWishes, $wish);
-            }
-        }
+        // $userReviewsCount = $userReviews->count();
+        // $userWishesCount = $userWishes->count();
+        
+        
+ 
 
 
 
-        return view('mypage', [
-            'reviews' => $reviews,
-            'stores' => $stores,
-            'images' => $images,
-            'users' => $users,
-            'wishes' => $wishes,
-            'loginEmail' => $loginEmail,
-            'loginUser' => $loginUser,
-            'userStores' => $userStores,
-            'userReviews' => $userReviews,
-            'userWishes' => $userWishes
-        ]);
 
     }
 }

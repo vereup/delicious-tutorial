@@ -3,18 +3,13 @@
 @section('content')
 
 
-            <div class="c-body" style="background-color: #E5E5E5">
+            <div class="c-body" style="background-color: #E5E5E5" >
 
                 <div class="container p-2">
                     <div class="d-flex flex-column" style="background-color: white">
                         <div class="p-2 docs-highlight">
                             {{-- 로그인된 사용자에 따라 변경 --}}
-                            @foreach ($users as $user)
-                                @if($user->email == $loginEmail )
                                     <p class="fs-2 fw-bold p-4">{{$user->name}} &#40;{{$user->email}}&#41;</p>
-                                    @break
-                                @endif
-                            @endforeach
                         </div>
                         <div class="p-2 docs-highlight">
                             <ul class="nav nav-pills mb-2 border-bottom" id="pills-tab" role="tablist">
@@ -54,37 +49,23 @@
                                         
                                         <h2 class="fs-5 fw-bold ps-4 pt-4 pb-2">내 리뷰 &#40;
 
-                                            @php
-                                                $reviewCount = 0;
-                                            @endphp
-
-
-                                            @foreach ($users as $user)
-                                                @if($user->email == $loginEmail )
-                                                    @break
-                                                @endif
-                                            @endforeach
-
                                             
-                                            @foreach ($reviews as $review)
-                                                @if($review->user_id == $user->id)
-                                                <?
-                                                {{$reviewCount+=1}}
-                                                ?>
-                                            @endif
-                                            @endforeach
-                                                <span>{{$reviewCount}}</span>
+                                                <span>
+                                                    @php
+                                                    echo $userReviews->count();
+                                                    @endphp
+                                                </span>
                                             &#41;</h2>
                                     </div>
-                                    @foreach ($reviews as $review)
-                                        @if($review->user_id == $user->id) 
+                                    @foreach ($userReviews as $userReview)
+                                        @if($userReview->user_id == $user->id) 
                                             
                                     <div class="d-flex border-top border-bottom">
                                         <div class="col-9 ps-3 py-2">
                                             <p class="card-text">
                                                 @php
                                                     $now = (strtotime(date('Ymd H:i:s')))/86400;
-                                                    $updated_at = (strtotime($review->updated_at))/86400;
+                                                    $updated_at = (strtotime($userReview->updated_at))/86400;
                                                     $interval = floor($now - $updated_at);
                                                     
                                                 @endphp
@@ -95,12 +76,12 @@
                                                 @endif
                                             </p>
                                             
-                                            <h5 class="card-title">{{$review->title}}</h5>
-                                            <p class="card-text">{{$review->contents}}</p>
+                                            <h5 class="card-title">{{$userReview->title}}</h5>
+                                            <p class="card-text">{{$userReview->contents}}</p>
                                             
                                             <p class="card-text">방문 날짜 : 
                                                 @php
-                                                    $date = date("Y-m-d", strtotime($review->been_date));
+                                                    $date = date("Y-m-d", strtotime($userReview->been_date));
                                                     echo $date;
                                                 @endphp</p>
                                                 
@@ -129,14 +110,19 @@
                                     role="tabpanel"
                                     aria-labelledby="wishList-tab">
                                     <div class="row">
-                                        <h2 class="fs-5 fw-bold ps-4 pt-4 pb-2">찜 목록 &#40;찜개수&#41;</h2>
+                                        <h2 class="fs-5 fw-bold ps-4 pt-4 pb-2">찜 목록 &#40;
+                                            @php
+                                                echo $userWishes->count();
+                                            @endphp
+                                            &#41;</h2>
                                     </div>
-                        @foreach ($wishes as $wish)
-                            @if($wish->user_id == $user->id) 
+                        @foreach ($userWishes as $userWish)
+                            @if($userWish->user_id == $user->id) 
                             @php
-                                $store = $stores[$wish->store_id];
-                                $image = $images[$wish->store_id];
+                                $store = $stores[$userWish->store_id];
+                                $image = $images[$userWish->store_id];
                             @endphp
+                            
                                     <div class="d-flex border-top border-bottom align-items-center">
                                         <div class="col-2 ps-3 py-2">
                                             <img src="{{$image->path}}" class="img-thumbnail">
@@ -144,7 +130,19 @@
                                         <div class="col-9 ps-3 py-2 align-middle">
                                             <h5 class="card-title">{{$store->name}}</h5>
                                             <div>
-                                                <div id="printStars" value="{{$store->rating_average}}" onload="printStars(3)"></div> 
+                                                @php
+                                                    $i = 1;
+                                                    while($i <= $store->rating_average){
+                                                        echo '<img src="/images/star.png">';
+                                                        $i = $i + 1;
+                                                    }
+                                                    $i = $i-1;
+                                                    $j = -($i - $store->rating_average);
+                                                    if($j > 0.5){
+                                                        echo '<img src="/images/star_Half.png">';
+                                                    }
+                                                @endphp
+                                                
                                                 &#40;{{$store->review_count}}&#41;
                                             </div>
                                             <p class="card-text">{{$store->address}}</p>
@@ -280,39 +278,12 @@
                     </div>
                 </div>      
             
-{{-- 
+
 @section('script')
 @parent
 
 <script>
 
-// 별출력
-
-
-
-
-function printStars(ratings){
-
-    
-    let starImg = document.createElement("img");
-    starImg.setAttribute("src","/images/star.png");
-    let printStars = document.getElementById("printStars");
-    while(ratings > 1){
-        document.body.insertBefore(starImg, printStars);
-        ratings = ratings - 1;
-    }
-
-    let starHalfImg = document.createElement("img");
-    starHalfImg.setAttribute("src","/images/star.png");
-
-    if(ratings > 0){
-        document.body.insertBefore(starHalfImg, printStars);
-    }
-}
-
-let print = document.getElementById('printStars');
-print.addEventListener("load", printStars);
-
 </script>
 
-@endsection --}}
+@endsection

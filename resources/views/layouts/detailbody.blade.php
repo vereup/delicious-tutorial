@@ -39,28 +39,17 @@
                                                 height="350">
                                                         
                                             </div>
-                                        @foreach ($images as $image)
-                                            @if($image->store_id == $storeId && $image->path != $firstImagePath)
+                                        @foreach ($storeImages as $storeImage)
+                                            @if ($loop->first)
+                                                @continue
+                                            @endif
                                             <div class="carousel-item text-center">
                                                 <img
-                                                    src="{{$image->path}}"
+                                                    src="{{$storeImage->path}}"
                                                     width="550"
                                                     height="350">
                                             </div>
-                                            @endif
                                         @endforeach
-                                    
-                                        
-                                    {{-- @php
-                                        $i=1;
-                                        while($i < $storeImages->length){
-                                            
-                                            echo '<div class="carousel-item text-center">
-                                            <img src="/images/'$storeImages[$i]->path'" width="550" height="350">
-                                            </div>';
-                                            $i = $i + 1;
-                                        }
-                                    @endphp --}}
 
                                     </div>
                                     <button
@@ -83,15 +72,8 @@
                             </div>
 
                             <div class="p-2 pt-3 ps-4">
-                                <p class="text-start">
-                                    @foreach ($categories as $category)
-                                        @if ($category->id == $store->category_id)
-                                            {{$category->name}}
-                                        @endif
-                                    @endforeach
-                                </p>
-                                <p class="text-start">
-                                    {{$store->introduction}}</p>
+                                <p class="text-start">{{$storeCategory->name}}</p>
+                                <p class="text-start">{{$store->introduction}}</p>
                             </div>
                         </div>
 

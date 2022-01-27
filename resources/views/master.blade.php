@@ -24,28 +24,40 @@
                             
                         
                         {{-- 맛집카드 --}}
-                        <div class="card rounded me-2 my-1" style="width: 275px; height: 350px;">
+                        <div class="card rounded my-1" style="width: 18rem;">
                             <a href="/store/{{$store->id}}">                                 
                                     @foreach ($images as $image)
                                         @if($image->store_id == $store->id)
                                             <img
                                             src="{{$image->path}}"
                                             {{-- src="/images/store_thum_{{ $k+1 }}.png" --}}
-                                            class="card-img-top border-bottom"
+                                            class="card-img-top border-bottom w-100"
                                             alt="store->name"
-                                            style="width: 273px; height: 236.49px;"
                                             >
                                             @break
                                         @endif
                                     @endforeach
                             </a>
+                            
+
+
+                            
                             <div
                                 class="p-2 bg-white"
                                 style="position: absolute; top: 10px; right: 10px; border: 1px solid #A0A0A0; border-radius: 50%;">
-                                <img type="button" src="/images/whiteheart.png" width="23" height="26" onclick="heartChange(this.id)" id="heart" value="1";>
-                                {{-- <img type="button" src="/images/whiteheart.png" width="23" height="26" onclick="heartChange(this.id)" id="heart{{ $k }}" value="1";> --}}
-                                    {{-- 로그인후 찜여부에따라 하트변경 --}}
-                            </div>
+
+ {{-- 로그인시 찜하트 check --}}
+                                <img type="button" src="@guest /images/whiteheart.png @else
+                                    @foreach ($userWishes as $wish)@if ($store->id == $wish->store_id)/images/redheart.png @break
+                                        @endif
+                                    @endforeach/images/whiteheart.png
+                                @endguest
+                                " width="23" height="26" onclick="heartChange(this.id)" id="heart{{ $store->id }}" value="1";>
+
+                                </div>
+
+                                
+
                             <div class="card-body">
                                 <a class="card-title" href="/store/{{$store->id}}" style="color :black; text-decoration : none; font-weight: bold; font-size: 18px;"><p class="mb-0">{{ $store->name }}</p></a>
                                 <a id="star_{{ $store->id }}">{{ $store->id }}<a id="starHalf_{{ $store->id }}"></a></a> 

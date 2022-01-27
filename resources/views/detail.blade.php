@@ -6,12 +6,12 @@
         <div class="row">
             <h2 class="fs-5 fw-bold ps-4 pt-4 pb-2">리뷰 &#40;{{$store->review_count}}&#41;</h2>
         </div>
-{{-- 비로그인시 출력 --}}
+@guest
         <div class="row px-3">
             <button class="btn btn-dark" type="button" data-coreui-target="#loginModal" data-coreui-toggle="modal">로그인 후
                 리뷰를 작성하실 수 있습니다.
         </div>
-{{-- 로그인시 출력 --}}
+@else
 @if($reviewCount < 1)
         <form class="pb-4">
             <div class="row mb-3 px-2">
@@ -61,15 +61,15 @@
             </div>
         </form>
 @else
-        @foreach ($reviews as $review)
-        @if($review->store_id == $storeId && $review->user_id == $loginUser->id)
+        @foreach ($userReviews as $userReview)
+       
 
         <div class="d-flex border-top border-bottom mx-1" style="background-color: #4f5d73">
             <div class="col-9 ps-3 py-2">
                 <p class="card-text text-white">
                     @php
                         $now = (strtotime(date('Ymd H:i:s')))/86400;
-                        $updated_at = (strtotime($review->updated_at))/86400;
+                        $updated_at = (strtotime($userReview->updated_at))/86400;
                         $interval = floor($now - $updated_at);
                     @endphp
                     @if ($interval < 1)
@@ -78,30 +78,30 @@
                         {{$interval}} 일전
                     @endif
                 </p>
-                <h5 class="card-title text-white">{{$review->title}}</h5>
-                <p class="card-text text-white">{{$review->contents}}</p>
+                <h5 class="card-title text-white">{{$userReview->title}}</h5>
+                <p class="card-text text-white">{{$userReview->contents}}</p>
                 <p class="card-text text-white">
                     방문 날짜 :
                     @php
-                        $date = date("Y-m-d", strtotime($review->been_date));
+                        $date = date("Y-m-d", strtotime($userReview->been_date));
                         echo $date;
                     @endphp
                 </p>
             </div>
         </div>
-        @endif
+    
         @endforeach
 @endif
-
-        @foreach ($reviews as $review)
-        @if($review->store_id == $storeId && $review->user_id != $loginUser->id)
+@endguest
+        @foreach ($userReviews as $review)
+        
 
         <div class="d-flex border-top border-bottom mx-1">
             <div class="col-9 ps-3 py-2">
                 <p class="card-text">
                     @php
                         $now = (strtotime(date('Ymd H:i:s')))/86400;
-                        $updated_at = (strtotime($review->updated_at))/86400;
+                        $updated_at = (strtotime($userReview->updated_at))/86400;
                         $interval = floor($now - $updated_at);
                     @endphp
                     @if ($interval < 1)
@@ -110,18 +110,18 @@
                         {{$interval}} 일전
                     @endif
                 </p>
-                <h5 class="card-title">{{$review->title}}</h5>
-                <p class="card-text">{{$review->contents}}</p>
+                <h5 class="card-title">{{$userReview->title}}</h5>
+                <p class="card-text">{{$userReview->contents}}</p>
                 <p class="card-text">
                     방문 날짜 :
                     @php
-                        $date = date("Y-m-d", strtotime($review->been_date));
+                        $date = date("Y-m-d", strtotime($userReview->been_date));
                         echo $date;
                     @endphp
                 </p>
             </div>
         </div>
-        @endif
+        
         @endforeach
 
     </div>

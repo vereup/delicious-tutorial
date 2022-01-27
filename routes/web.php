@@ -12,29 +12,17 @@
 */
 
 
-Route::get('/','MainController@getMainDatas');
+Route::get('/','MainController@getMainDatas')->name('home');
 
-Route::get('/signup', function () {
-    return view('signup',['name' => 'Justin']);
-});
+Route::get('/signup', 'SignupController@getSignupDatas');
 
 Route::get('/review', function () {
     return view('review',['name' => 'Justin']);
 });
 
-Route::get('/mypage','MypageController@getMypageDatas');
-
+Route::get('/mypage','MypageController@getMypageDatas')->middleware('auth');
 
 Route::get('/store/{storeId}','DetailController@getStoreDatas');
-
-
-Route::get('/detailWrite', function () {
-    return view('detailWrite',['name' => 'Justin']);
-});
-
-Route::get('/detailReview', function () {
-    return view('detailReview',['name' => 'Justin']);
-});
 
 Route::get('/test', function () {
     return view('test',['name' => 'Justin']);
@@ -43,4 +31,4 @@ Route::get('/test', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index');
