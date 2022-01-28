@@ -20,13 +20,18 @@ Route::get('/review', function () {
     return view('review',['name' => 'Justin']);
 });
 
-Route::get('/mypage','MypageController@getMypageDatas')->middleware('auth');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/mypage','MypageController@getMypageDatas');
+    Route::post('/mypage','MypageController@getMypageDatas')->name('modifyReview');
+});
+
+
+
 
 Route::get('/store/{storeId}','DetailController@getStoreDatas');
 
-Route::get('/test', function () {
-    return view('test',['name' => 'Justin']);
-});
+Route::get('/test','TestController@getTestDatas');
+
 
 
 Auth::routes();

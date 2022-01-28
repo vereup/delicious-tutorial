@@ -67,7 +67,16 @@ class ReviewSeeder extends Seeder
                 'contents' => '너무 맛있더라구요5',
                 'rating' => 4,
                 'been_date' => 20220120
-            ]
+            ],
+            [
+                'store_id' => 3,
+                'user_id' => 3,
+                'title' => '우왕 굿굿굿3',
+                'contents' => '너무 왕맛있더라구요3',
+                'rating' => 3,
+                'been_date' => 20220120
+            ],
+
 
         ];
 
