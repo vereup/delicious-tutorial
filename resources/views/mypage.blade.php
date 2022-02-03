@@ -56,8 +56,8 @@
                                     {{$interval}} 일전
                                 @endif
                             </p>
-                            <h5 class="card-title">{{$userReview->title}}</h5>
-                            <p class="card-text">{{$userReview->contents}}</p>
+                            <h5 class="card-title" id="reviewTitleId_{{ $userReview->id }}">{{$userReview->title}}</h5>
+                            <p class="card-text" id="reviewContentsId_{{ $userReview->id }}">{{$userReview->contents}}</p>
                             <p class="card-text">방문 날짜 : 
                                 @php
                                     $date = date("Y-m-d", strtotime($userReview->been_date));
@@ -65,10 +65,13 @@
                                 @endphp</p>
                         </div>
                         <div class="col-auto pt-5">
-                            <button type="submit" class="btn btn-primary fs-4 btn-dark rounded-pill" 
-                            style="width: 100px; height:50px;" data-coreui-target="#modifyModal" data-coreui-toggle="modal" id="{{ $userReview->id }}" onclick="selectReview(this.id);">수정</button>
+                               
+                                <button type="submit" class="btn btn-primary fs-4 btn-dark rounded-pill" 
+                                style="width: 100px; height:50px;" data-coreui-target="#modifyModal" data-coreui-toggle="modal" id="{{ $userReview->id }}" onclick="modifyClicked(this.id);">수정</button>
                             <button type="submit" class="btn btn-secondary fs-4 btn-gray text-white rounded-pill ms-2" 
-                            style="width: 100px; height:50px;" data-coreui-target="#deleteCheckModal" data-coreui-toggle="modal">삭제</button>
+                            style="width: 100px; height:50px;" data-coreui-target="#deleteCheckModal" data-coreui-toggle="modal" value="{{ $userReview->id }}" 
+                            onclick="selectReview(this.value);">삭제</button>
+                        
                         </div>
                     </div>
                 @endif
@@ -169,7 +172,11 @@
                     <p class="fw-bold text-center">리뷰를 삭제하시겠습니까?</p>
                 </div>
                 <div class="modal-footer" style="justify-content: center;">
-                    <button type="button" class="btn btn-dark rounded-pill btn-primary px-4">확인</button>
+                    <form method="POST" id="deleteReview" action="{{ route('deleteReview') }}">
+                        @csrf
+                        <input type="hidden" id="deleteTargetId" name="deleteReviewId">
+                        <button type="button" class="btn btn-dark rounded-pill btn-primary px-4" onclick="deleteReview(document.getElementById('deleteTargetId').value);">확인</button>
+                    </form>
                     <button
                         type="button"
                         class="btn btn-gray rounded-pill btn-secondary px-4"
@@ -198,14 +205,15 @@
                             <div class="modal-body">
                                 <form method="POST" id="modifyForm" action="{{ route('modifyReview') }}">
                                     @csrf
-                                <div class="mb-3">
-                                    <label for="reviewTitle" class="form-label">제목</label>
-                                    <input type="text" class="form-control" id="reviewTitle" name="reviewTitle" placeholder="제목">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="reviewContents" class="form-label">내용</label>
-                                    <textarea class="form-control" id="reviewContents" rows="7" name="reviewContents" placeholder="내용"></textarea>
-                                </div>
+                                    <input type="hidden" id="reviewId" name="reviewId">
+                                    <div class="mb-3">
+                                        <label for="reviewTitle" class="form-label">제목</label>
+                                        <input type="text" class="form-control" id="reviewTitle" name="reviewTitle">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="reviewContents" class="form-label">내용</label>
+                                        <textarea class="form-control" id="reviewContents" rows="7" name="reviewContents"></textarea>
+                                    </div>
                                 </form>
                             </div>
                             <div class="modal-footer" style="justify-content: center;">
@@ -272,27 +280,46 @@ function submit(id){
 }
 
 
-let modifyConfirm = document.getElementById('modifyConfirmOk');
-modifyConfirm.addEventListener('click',function (){
+function modifyClicked(id){
+    
+    event.preventDefault();
 
-let modifyForm = document.getElementById('modifyForm');
-    modifyForm.submit();
-})
+    let title = document.getElementById('reviewTitleId_'+id+'').innerText;
+    let contents = document.getElementById('reviewContentsId_'+id+'').innerText;
+    let reviewTitle = document.getElementById('reviewTitle');
+    let reviewContents = document.getElementById('reviewContents');
 
+    reviewId.value = id;    
+    reviewTitle.value = title;
+    reviewContents.innerText = contents;
 
-function modifyClicked(){
-    let title = document.getElementById('reviewTitle');
-    let contents = document.getElementById('reviewContents');
-
+    console.log(id);
 }
 
 
-// function selectReview(id){
+let modifyConfirm = document.getElementById('modifyConfirmOk');
+modifyConfirm.addEventListener('click',function (event){
 
-//     $.post( "test.php", { name: "John", time: "2pm" } );
+        let modifyForm = document.getElementById('modifyForm');
+
+        return modifyForm.submit();
+        
+});
 
 
-// }
+function selectReview(id){
+
+    event.preventDefault();
+    document.getElementById('deleteTargetId').value = id;
+
+}
+
+function deleteReview(id){
+
+    event.preventDefault();
+    return document.getElementById('deleteReview').submit();
+    
+}
 
 
 

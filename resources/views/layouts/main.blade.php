@@ -5,11 +5,11 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        
+        <script src="/js/jquery-3.6.0.js" crossorigin="anonymous"></script>
+
         <!-- CoreUI for Bootstrap CSS -->
         <link
-            href="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.0.2/dist/css/coreui.min.css"
+            href="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.1.0/dist/css/coreui.min.css"
             rel="stylesheet">
 
             <style>
@@ -46,8 +46,7 @@
         </footer>
 
         <!-- Option 1: CoreUI for Bootstrap Bundle with Popper -->
-        <script src="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.0.2/dist/js/coreui.bundle.min.js">
-        </script>
+        <script src="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.1.0/dist/js/coreui.bundle.min.js"></script>
     </body>
     
 @yield('script')

@@ -1,5 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,9 +24,11 @@ Route::get('/review', function () {
     return view('review',['name' => 'Justin']);
 });
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/mypage','MypageController@getMypageDatas');
-    Route::post('/mypage','MypageController@getMypageDatas')->name('modifyReview');
+Route::middleware(['auth'])->prefix('mypage')->group(function () {
+    Route::get('','MypageController@getMypageDatas')->name('mypage');
+    Route::post('modify','MypageController@modifyReview')->name('modifyReview');
+    Route::post('delete','MypageController@deleteReview')->name('deleteReview');
+
 });
 
 
