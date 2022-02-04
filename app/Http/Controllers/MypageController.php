@@ -114,16 +114,16 @@ class MypageController extends Controller
         try {
 
             // $request->validate([
-            //     'id' => 'bail',
-            //     'title' => 'bali',
-            //     'contents' => 'bali',
+            //     'reviewId' => 'bail',
+            //     'reviewTitle' => 'bali',
+            //     'reviewContents' => 'bali',
             // ]);
             
             DB::beginTransaction();
             
             $review = Review::find($request->deleteReviewId);
             
-            if ($review->id != $request->reviewId) {
+            if ($review->id != $request->deleteReviewId) {
                 return redirect()->back()->with('error','리뷰 아이디 확인필요');;
             }
             
@@ -145,6 +145,44 @@ class MypageController extends Controller
         // $id = $request->reviewId;
 
         // DB::table('reviews')->where('id',$id)->update(['title'=>$title]);
+        
+    }
+
+
+    public function deleteWish(Request $request){
+
+
+        dump($request->deleteWishId);
+
+        try {
+
+            // $request->validate([
+            //     'reviewId' => 'bail',
+            //     'reviewTitle' => 'bali',
+            //     'reviewContents' => 'bali',
+            // ]);
+            
+            DB::beginTransaction();
+            
+            $wish = Wish::find($request->deleteWishId);
+            
+            if ($wish->id != $request->deleteWishId) {
+                return redirect()->back()->with('error','찜 아이디 확인필요');;
+            }
+            
+            $wish->delete();
+            
+            DB::commit();
+
+            return redirect()->back()->with('success','찜이 삭제되었습니다.');;
+            
+        } 
+        catch (\Exception $exception) {
+            DB::rollback();
+            Session::flash('error', $exception->getMessage());
+            throw $exception;
+        }
+        
         
     }
 

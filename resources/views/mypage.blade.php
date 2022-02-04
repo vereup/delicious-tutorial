@@ -140,7 +140,7 @@
                         </div>
                         <div class="col-auto pt-4">
                             {{-- 찜버튼 --}}
-                            <button class="p-2 bg-white" style="border: 1px solid #A0A0A0; border-radius: 50%;" 
+                            <button class="p-2 bg-white" style="border: 1px solid #A0A0A0; border-radius: 50%;" value="{{ $userWish->id }}" onclick="selectWish(this.value);"
                             data-coreui-target="#wishDeleteCheckModal" data-coreui-toggle="modal">
                                 <div>
                                     <img src="/images/redheart.png" width="25" height="25">
@@ -258,7 +258,11 @@
                                 <p class="fw-bold text-center">찜 목록에서 삭제하시겠습니까?</p>
                             </div>
                             <div class="modal-footer" style="justify-content: center;">
-                                <button type="button" class="btn btn-dark rounded-pill btn-primary px-4">확인</button>
+                                <form method="POST" id="deleteWish" action="{{ route('deleteWish') }}">
+                                    @csrf
+                                    <input type="hidden" id="deleteWishTargetId" name="deleteWishId">
+                                    <button type="button" class="btn btn-dark rounded-pill btn-primary px-4" onclick="deleteWish(document.getElementById('deleteWishTargetId').value);">확인</button>
+                                </form>
                                 <button
                                     type="button"
                                     class="btn btn-gray rounded-pill btn-secondary px-4"
@@ -321,7 +325,19 @@ function deleteReview(id){
     
 }
 
+function selectWish(id){
 
+event.preventDefault();
+document.getElementById('deleteWishTargetId').value = id;
+
+}
+
+function deleteWish(id){
+
+event.preventDefault();
+return document.getElementById('deleteWish').submit();
+
+}
 
 
 </script>

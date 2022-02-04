@@ -17,6 +17,13 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/','MainController@getMainDatas')->name('home');
+Route::post('/removeWish','MainController@removeWish')->name('removeWish');
+Route::post('/addWish','MainController@addWish')->name('addWish');
+
+Route::get('/','MainController@getMainDatas')->middleware('categoryfilter')->name('category');
+Route::get('/','MainController@getMainDatas')->middleware('ratingfilter')->name('rating');
+Route::get('/','MainController@getMainDatas')->middleware('searchfilter')->name('search');
+
 
 Route::get('/signup', 'SignupController@getSignupDatas');
 
@@ -27,7 +34,8 @@ Route::get('/review', function () {
 Route::middleware(['auth'])->prefix('mypage')->group(function () {
     Route::get('','MypageController@getMypageDatas')->name('mypage');
     Route::post('modify','MypageController@modifyReview')->name('modifyReview');
-    Route::post('delete','MypageController@deleteReview')->name('deleteReview');
+    Route::post('deleteReview','MypageController@deleteReview')->name('deleteReview');
+    Route::post('deleteWish','MypageController@deleteWish')->name('deleteWish');
 
 });
 

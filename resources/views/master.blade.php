@@ -42,19 +42,37 @@
 
 
                             
-                            <div
-                                class="p-2 bg-white"
-                                style="position: absolute; top: 10px; right: 10px; border: 1px solid #A0A0A0; border-radius: 50%;">
-
- {{-- 로그인시 찜하트 check --}}
-                                <img type="button" src="@guest /images/whiteheart.png @else
-                                    @foreach ($userWishes as $wish)@if ($store->id == $wish->store_id)/images/redheart.png @break
-                                        @endif
-                                    @endforeach/images/whiteheart.png
-                                @endguest
-                                " width="23" height="26" onclick="heartChange(this.id)" id="heart{{ $store->id }}" value="1";>
-
+                                @guest
+                                <div class="p-2 bg-white" style="position: absolute; top: 10px; right: 10px; border: 1px solid #A0A0A0; border-radius: 50%;">
+                                <img type="button" src="/images/whiteheart.png" width="23" height="26" onclick="alert('login plz');" id="heart{{ $store->id }}" value="1";>
                                 </div>
+
+                                @else
+                                    @foreach ($userWishes as $wish)
+                                        @if ($store->id == $wish->store_id)
+                                            <form method="POST" id="storeSelect_{{ $store->id }}" action="{{ route('removeWish') }}">
+                                                @csrf
+                                                <input type="hidden" name="storeId" value="{{ $store->id }}">
+                                                <input type="hidden" name="wishId" value="{{ $wish->id }}">
+                                                <div class="p-2 bg-white" style="position: absolute; top: 10px; right: 10px; border: 1px solid #A0A0A0; border-radius: 50%;">
+                                                <img type="button" src="/images/redheart.png" width="23" height="26" onclick="wishChange(this.id, 'storeSelect_{{ $store->id }}')" id="heart{{ $store->id }}" value="2";>
+                                                </div>
+                                            </form>
+                                            @break
+                                        @else
+                                            <form method="POST" id="storeSelect_{{ $store->id }}" action="{{ route('addWish') }}">
+                                                @csrf
+                                                <input type="hidden" name="storeId" value="{{ $store->id }}">
+                                                <input type="hidden" name="wishId" value="{{ $wish->id }}">
+                                                <div class="p-2 bg-white" style="position: absolute; top: 10px; right: 10px; border: 1px solid #A0A0A0; border-radius: 50%;">
+                                                <img type="button" src="/images/whiteheart.png" width="23" height="26" onclick="wishChange(this.id, 'storeSelect_{{ $store->id }}')" id="heart{{ $store->id }}" value="1";>
+                                                </div>
+                                            </form>
+                                            @break
+                                        @endif
+                                    @endforeach
+                                @endguest
+
 
                                 
 
@@ -179,6 +197,66 @@ stores.forEach((store, index) => {
 });
 
 
+
+// 찜 하트 변경
+
+function wishChange(buttonId, storeIdForm){
+    
+    let heart = document.getElementById(buttonId);
+    let value = heart.getAttribute('value');
+    let storeId = document.getElementById(storeIdForm);
+
+
+    switch(value){
+        case '1':
+            heart.setAttribute('src','/images/redheart.png');
+            heart.setAttribute('value','2'); 
+            storeId.submit();
+            break;
+        case '2':
+            heart.setAttribute('src','/images/whiteheart.png'); 
+            heart.setAttribute('value','1');
+            storeId.submit();
+            break;    
+    }
+
+    console.log(storeId);
+    console.log(value);
+    console.log(buttonId);
+}
+
+
+
+
+
+
+        // // 스토어카드 이미지출력 - 미완성
+        
+        // let images = @json($images);
+        // function printImage(stores, images){
+            //     let path = '';
+            //     let image= '';
+            //     images.forEach(image => {
+                //         console.log(image.store_id);
+                //         console.log(store.id);
+                //         if(image.store_id == store.id){
+                    //             path = image.path;
+                    //         }
+                    //     });
+                    // }
+                    
+                    // let pathIndex;
+                    // stores.forEach(store => {
+                        //     console.log(store);
+                        //     pathIndex = store.id;
+                        //     imagePath = document.getElementById('imagePath_'+pathIndex+'');
+                        
+                        //     console.log(pathIndex);
+                        //     console.log(imagePath);
+                        
+                        //     printImage(stores, images);
+                        // });
+                        
 // k = 0;
 // while (k<6){
 //     let stars = 'stars_' + k;
@@ -188,58 +266,7 @@ stores.forEach((store, index) => {
 //     console.log(ratingArray[k]);
 //     k=k+1;
 // }
-
-// 찜 하트 변경
-
-function heartChange(id){
-    let heart;
-    let value;
-    heart = document.getElementById(id);
-    value = heart.getAttribute('value');
-    switch(value){
-        case '1':
-            heart.setAttribute('src','/images/redheart.png');
-            heart.setAttribute('value','2'); 
-            break;
-        case '2':
-            heart.setAttribute('src','/images/whiteheart.png'); 
-            heart.setAttribute('value','1');
-            break;    
-    
-    }
-    console.log(value);
-    console.log(heart.src);
-    console.log(id);
-}
-
-// // 스토어카드 이미지출력 - 미완성
-
-// let images = @json($images);
-// function printImage(stores, images){
-//     let path = '';
-//     let image= '';
-//     images.forEach(image => {
-//         console.log(image.store_id);
-//         console.log(store.id);
-//         if(image.store_id == store.id){
-//             path = image.path;
-//         }
-//     });
-// }
-
-// let pathIndex;
-// stores.forEach(store => {
-//     console.log(store);
-//     pathIndex = store.id;
-//     imagePath = document.getElementById('imagePath_'+pathIndex+'');
-    
-//     console.log(pathIndex);
-//     console.log(imagePath);
-
-//     printImage(stores, images);
-// });
-
-
-</script>
+                        
+                    </script>
 
 @endsection

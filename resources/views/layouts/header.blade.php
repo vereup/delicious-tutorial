@@ -34,16 +34,12 @@
             </li>
         @endguest
         </ul>
-        <form class="d-flex">
-            <input
-                class="form-control"
-                type="search"
-                id="search"
-                style="border-top-right-radius: 0; border-bottom-right-radius: 0;">
-                <button
-                    class="btn btn-outline-secondary"
-                    type="submit"
-                    style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+        <form class="d-flex" method="GET" action="{{ route('search') }}">
+            @csrf
+            <input class="form-control" type="search" id="search" name="keyword"
+            style="border-top-right-radius: 0; border-bottom-right-radius: 0;">
+                <button class="btn btn-outline-secondary" type="submit" 
+                style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
                     <img src="/images/magnifying-glass.png"></button>
         </form>
             </div>
