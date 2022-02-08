@@ -34,15 +34,14 @@
             </li>
         @endguest
         </ul>
-        <form class="d-flex" method="GET" action="{{ route('search') }}">
-            @csrf
-            <input class="form-control" type="search" id="search" name="keyword"
-            style="border-top-right-radius: 0; border-bottom-right-radius: 0;">
-                <button class="btn btn-outline-secondary" type="submit" 
+        <div class="row px-3">
+            <input class="col-10" type="text" id="search" name="keyword"
+            style="border-top-right-radius: 0; border-bottom-right-radius: 0;" @if($keyword != null) value="{{ $keyword }}"@endif>
+                <button class="col-2 btn btn-outline-secondary" type="button" id="keywordButton"
                 style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
                     <img src="/images/magnifying-glass.png"></button>
-        </form>
             </div>
+</div>
             {{-- 로그인모달 --}}
             <div class="modal" id="loginModal" tabindex="-1">
                 <div class="modal-dialog">
@@ -102,3 +101,26 @@
 
                 </div>
             </div>
+
+
+<script>
+
+
+//키워드 입력시 서버전송
+$("#keywordButton").click(function(){
+    let search = $("#search").val();
+    if (search != ''){
+    $("#keyword").val(search);
+    }
+
+    let list = new Array();
+    $("input[name=category]:checked").each(function(index, item){
+        list.push($(item).val());
+    });
+    $("#categoryList").val(list);
+
+    $("#Form").submit();
+
+});
+
+</script>

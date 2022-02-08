@@ -4,27 +4,20 @@
             <li class="nav-title" style="font-size: 18px;">카테고리</li>
             <li class="nav-item nav-group bg-white">
                 <ul class="list-group p-0">
-                    <form method="GET" id="categoryForm" action={{ route('category') }}>
+                    <form method="GET" id="Form" action={{ route('home') }}>
                         @csrf
                         <input type="hidden" id="categoryList" name="categoryList" value="">
                     @foreach ($categories as $category)
                     <li class="list-group-item">
+                        
                         <input class="form-check-input me-1 category" type="checkbox" name="category" value="{{ $category->id }}" id="category_{{ $category->id }}">
                         <label class="form-check-label" style="color: black; font-size:15px;">{{ $category->name }}</label>
                     </li>
                     @endforeach
-                    </form>
-                    {{-- @for($i=0;$i<7;$i++) 
-                    <li class="list-group-item">
-                        <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-                        <label class="form-check-label" style="color: black; font-size:15px;" id="categoryName{{ $i }}"></label>
-                    </li>
-                    @endfor --}}
                 </ul>
             </li>
         </ul>
     </div>
-
     <div class="my-2"></div>
 
     <div class="sidebar sidebar-show">
@@ -32,17 +25,18 @@
             <li class="nav-title" style="font-size: 18px;">평점</li>
             <li class="nav-item nav-group bg-white">
                 <ul class="list-group p-0">
-                    <form method="GET" id="ratingForm" action={{ route('rating') }}>
-                        @csrf
+
                         <input type="hidden" id="ratingList" name="ratingList" value="">
                     @for($i=0;$i<5;$i++)
                     <li class="list-group-item">
-                        <input class="form-check-input me-1 rating" type="checkbox" name="rating" value="{{ $i+1 }}" aria-label="...">
+                        <input class="form-check-input me-1 rating" type="checkbox" name="rating_{{ $i+1 }}" value="{{ $i+1 }}" id="rating_{{ $i }}">
                             @for($j=0;$j<=$i;$j++)
                                 <img src="/images/star.png">
                             @endfor
                     </li>
                     @endfor
+                    <input type="hidden" id="keyword" name="keyword" value="">
+                </form>
                 </ul>
             </li>
         </ul>
@@ -56,26 +50,91 @@
 
 
 
+// 카테고리변경시 서버전송
 $(".category").change(function() {
+
+    let search = $("#search").val();
+    if (search != ''){
+    $("#keyword").val(search);
+    }
+    
     let list = new Array();
     $("input[name=category]:checked").each(function(index, item){
         list.push($(item).val());
     });
-
     $("#categoryList").val(list);
-    $("#categoryForm").submit();
+    $("#Form").submit();
 });
 
-
+// 평점변경시 서버전송
 $(".rating").change(function() {
+
+    let search = $("#search").val();
+    if (search != ''){
+    $("#keyword").val(search);
+    }
+
     let list = new Array();
-    $("input[name=rating]:checked").each(function(index, item){
+    $("input[name=category]:checked").each(function(index, item){
         list.push($(item).val());
     });
-    
-    $("#ratingList").val(list);
-    $("#ratingForm").submit();
+    $("#categoryList").val(list);
+    $("#Form").submit();
 });
+
+
+let categoryList = @json($categoryList);
+
+if(categoryList != 'all'){
+categoryList.forEach(selectId => {
+    console.log(selectId);
+    document.getElementById('category_'+selectId+'').setAttribute('checked', 'checked');
+});
+}
+
+
+let rating_1 = @json($rating_1);
+if(rating_1 !== null){
+    document.getElementById('rating_0').setAttribute('checked', 'checked');
+}
+else{
+    document.getElementById('rating_0').removeAttribute('checked');
+}
+
+let rating_2 = @json($rating_2);
+if(rating_2 !== null){
+    document.getElementById('rating_1').setAttribute('checked', 'checked');
+}
+else{
+    document.getElementById('rating_1').removeAttribute('checked');
+}
+
+let rating_3 = @json($rating_3);
+if(rating_3 !== null){
+    document.getElementById('rating_2').setAttribute('checked', 'checked');
+}
+else{
+    document.getElementById('rating_2').removeAttribute('checked');
+}
+
+let rating_4 = @json($rating_4);
+if(rating_4 !== null){
+    document.getElementById('rating_3').setAttribute('checked', 'checked');
+}
+else{
+    document.getElementById('rating_3').removeAttribute('checked');
+}
+
+let rating_5 = @json($rating_5);
+if(rating_5 !== null){
+    document.getElementById('rating_4').setAttribute('checked', 'checked');
+}
+else{
+    document.getElementById('rating_4').removeAttribute('checked');
+}
+
+
+
 
 
 </script>
@@ -83,19 +142,4 @@ $(".rating").change(function() {
 
 
 
-
-{{-- <script>
-
-
-// 카테고리명 출력
-let categories = new Array ("한식", "양식", "일식", "중식", "아시안 요리", "카페&디저트", "기타");
-let i=0;
-while(i<categories.length){
-    document.getElementById('categoryName'+i+'').innerText = categories[i];
-    i= i+1;
-}
-
-
-
-</script> --}}
 

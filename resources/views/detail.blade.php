@@ -7,17 +7,66 @@
             <h2 class="fs-5 fw-bold ps-4 pt-4 pb-2">리뷰 &#40;{{$store->review_count}}&#41;</h2>
         </div>
 @guest
+{{-- 로그인안됨 --}}
         <div class="row px-3">
             <button class="btn btn-dark" type="button" data-coreui-target="#loginModal" data-coreui-toggle="modal">로그인 후
                 리뷰를 작성하실 수 있습니다.
         </div>
+
+{{-- 스토어 리뷰 출력 --}}
+        @foreach ($storeReviews as $review)
+
+        <div class="d-flex border-top border-bottom mx-1">
+            <div class="col-9 ps-3 py-2">
+                <p class="card-text">
+                    @php
+                        $now = (strtotime(date('Ymd H:i:s')))/86400;
+                        $updated_at = (strtotime($review->updated_at))/86400;
+                        $interval = floor($now - $updated_at);
+                    @endphp
+                    @if ($interval < 1)
+                        오늘
+                    @else
+                        {{$interval}} 일전
+                    @endif
+                </p>
+                <h5 class="card-title">{{$review->title}}</h5>
+                <p class="card-text">{{$review->contents}}</p>
+                <p class="card-text">
+                    방문 날짜 :
+                    @php
+                        $date = date("Y-m-d", strtotime($review->been_date));
+                        echo $date;
+                    @endphp
+                </p>
+            </div>
+        </div>
+        
+        @endforeach
 @else
+{{-- 로그인됨 --}}
+{{-- 사용자가 작성한 리뷰가 없을시 리뷰작성창 --}}
 @if($reviewCount < 1)
-        <form class="pb-4">
+        <form class="pb-4" method="POST" id="reviewForm" action="{{ route('writeReview') }}">
+            @csrf
+            <input type="hidden" name="storeId" value="{{ $store->id }}">
             <div class="row mb-3 px-2">
                 <label for="inputTitle" class="col-sm-1 ps-3 pt-0 col-form-label"><p style="font-size: 20px;">평점</p></label>
                 <div class="col-sm-11">
-                    <div>
+                    {{-- <div>
+                        <button class="m-0 p-0" type="button" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="oneStar"
+                        style="width:25px; height:25px;"></button>
+                        <button class="m-0 p-0" type="button" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="twoStar"
+                        style="width:25px; height:25px;"></button>
+                        <button class="m-0 p-0" type="button" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="threeStar"
+                        style="width:25px; height:25px;"></button>
+                        <button class="m-0 p-0" type="button" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="fourStar"
+                        style="width:25px; height:25px;"></button>
+                        <button class="m-0 p-0" type="button" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="fiveStar"
+                        style="width:25px; height:25px;"></button>
+                    </div> --}}
+                    <div class="ratingStars">
+                        <input type="hidden" id="rating" name="rating" value="">
                         <button class="m-0 p-0" type="button" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="oneStar"
                         style="width:25px; height:25px;"></button>
                         <button class="m-0 p-0" type="button" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="twoStar"
@@ -29,12 +78,13 @@
                         <button class="m-0 p-0" type="button" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="fiveStar"
                         style="width:25px; height:25px;"></button>
                     </div>
+
                 </div>
             </div>
             <div class="row mb-3 px-2">
                 <label for="inputTitle" class="col-sm-1 ps-3 pt-0 col-form-label"><p style="font-size: 20px;">제목</p></label>
                 <div class="col-sm-11">
-                <input type="text" class="form-control" id="inputTitle">
+                <input type="text" class="form-control" name="title" id="title">
                 </div>
             </div>
             <div class="row mb-3 px-2">
@@ -42,7 +92,7 @@
                     <p style="font-size: 20px;">내용</p>
                 </label>
                 <div class="col-sm-11">
-                    <textarea class="form-control" id="inputPassword3" rows="7"></textarea>
+                    <textarea class="form-control" name="contents" id="contents" rows="7"></textarea>
                 </div>
             </div>
             <div class="row mb-3 px-2">
@@ -50,17 +100,19 @@
                 <p style="font-size: 20px;">방문 일자</p>
                 </label>
                 <div class="col-sm-11">
-                    <input type="date" class="form-control w-25" id="inputPassword4" rows="7">
+                    <input type="date" class="form-control w-25" name="reviewDate" id="reviewwDate">
                 </div>
             </div>
             <div class="row px-3">
                 <center>
-                    <button class="btn btn-dark rounded-pill w-50" type="button" data-coreui-target="#WriteCheckModal"
+                    <button class="btn btn-dark rounded-pill w-50" type="submit" data-coreui-target="#WriteCheckModal"
                     data-coreui-toggle="modal">리뷰 작성
                 </center>
             </div>
         </form>
 @else
+@endif
+{{-- 사용자가 작성한 리뷰출력 --}}
         @foreach ($userReviews as $userReview)
        
 
@@ -91,38 +143,44 @@
         </div>
     
         @endforeach
-@endif
-@endguest
-        @foreach ($userReviews as $review)
-        
 
-        <div class="d-flex border-top border-bottom mx-1">
-            <div class="col-9 ps-3 py-2">
-                <p class="card-text">
-                    @php
-                        $now = (strtotime(date('Ymd H:i:s')))/86400;
-                        $updated_at = (strtotime($userReview->updated_at))/86400;
-                        $interval = floor($now - $updated_at);
-                    @endphp
-                    @if ($interval < 1)
-                        오늘
-                    @else
-                        {{$interval}} 일전
-                    @endif
-                </p>
-                <h5 class="card-title">{{$userReview->title}}</h5>
-                <p class="card-text">{{$userReview->contents}}</p>
-                <p class="card-text">
-                    방문 날짜 :
-                    @php
-                        $date = date("Y-m-d", strtotime($userReview->been_date));
-                        echo $date;
-                    @endphp
-                </p>
-            </div>
-        </div>
-        
-        @endforeach
+
+{{-- 사용자가 작성하지 않은 리뷰출력 --}}
+@foreach ($noUserReviews as $noUserReview)
+       
+
+<div class="d-flex border-top border-bottom mx-1" >
+    <div class="col-9 ps-3 py-2">
+        <p class="card-text text-black">
+            @php
+                $now = (strtotime(date('Ymd H:i:s')))/86400;
+                $updated_at = (strtotime($noUserReview->updated_at))/86400;
+                $interval = floor($now - $updated_at);
+            @endphp
+            @if ($interval < 1)
+                오늘
+            @else
+                {{$interval}} 일전
+            @endif
+        </p>
+        <h5 class="card-title text-black">{{$noUserReview->title}}</h5>
+        <p class="card-text text-black">{{$noUserReview->contents}}</p>
+        <p class="card-text text-black">
+            방문 날짜 :
+            @php
+                $date = date("Y-m-d", strtotime($noUserReview->been_date));
+                echo $date;
+            @endphp
+        </p>
+    </div>
+</div>
+
+@endforeach
+
+
+
+@endguest
+
 
     </div>
     @endsection
@@ -218,6 +276,9 @@
             console.log(id);
         }
 
+        //
+        
+$("#rating").val();
 
 
 // 평점 클릭시 별 변경

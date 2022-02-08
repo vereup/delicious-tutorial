@@ -12,8 +12,9 @@
             <div class="d-flex flex-column docs-highlight mb-3">
 
                 <div class="m-2 docs-highlight bg-white">
-                    {{-- 필터 필요시 사용 --}}
-                    @include('layouts.filter')
+                    @if ($categoryList != 'all' || $ratingList != null || $keyword != null )
+                        @include('layouts.filter')
+                    @endif
                 </div>
 
                 <div class="m-2 docs-highlight">
@@ -227,6 +228,18 @@ function wishChange(buttonId, storeIdForm){
 
 
 
+
+// console.log(@json($categoryList));
+
+// console.log(categoryList);
+
+// categoryList.forEach(selectedCategoryId => {
+    //     if($(".category").val() === selectedCategoryId){
+        //         this.attr('checked', 'checked');
+        //     }
+        // });
+        
+        
 
 
 

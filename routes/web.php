@@ -20,9 +20,9 @@ Route::get('/','MainController@getMainDatas')->name('home');
 Route::post('/removeWish','MainController@removeWish')->name('removeWish');
 Route::post('/addWish','MainController@addWish')->name('addWish');
 
-Route::get('/','MainController@getMainDatas')->middleware('categoryfilter')->name('category');
-Route::get('/','MainController@getMainDatas')->middleware('ratingfilter')->name('rating');
-Route::get('/','MainController@getMainDatas')->middleware('searchfilter')->name('search');
+// Route::get('/category','MainController@category')->name('category');
+// Route::get('/rating','MainController@rating')->name('rating');
+Route::get('/search','MainController@search')->name('search');
 
 
 Route::get('/signup', 'SignupController@getSignupDatas');
@@ -43,7 +43,7 @@ Route::middleware(['auth'])->prefix('mypage')->group(function () {
 
 
 Route::get('/store/{storeId}','DetailController@getStoreDatas');
-
+Route::post('/store','DetailController@writeReview')->name('writeReview');
 Route::get('/test','TestController@getTestDatas');
 
 

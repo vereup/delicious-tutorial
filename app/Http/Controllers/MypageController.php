@@ -24,7 +24,8 @@ class MypageController extends Controller
         $user = Auth::user();
         $stores = Store::get();
         $images = Image::get();
-        
+        $keyword = null;
+
         $tabIndex = $request->tabIndex;
 
         if ($tabIndex <= 1 || $tabIndex == null){
@@ -39,7 +40,8 @@ class MypageController extends Controller
                 'userReviews' => $userReviews,
                 'userReviewsCount' => $userReviewsCount,
                 'request' => $request,
-                'tabIndex' => $tabIndex
+                'tabIndex' => $tabIndex,
+                'keyword' => $keyword
             ]);
         }
 
@@ -55,7 +57,9 @@ class MypageController extends Controller
                 'userWishes' => $userWishes,
                 'userWishesCount' => $userWishesCount,
                 'request' => $request,
-                'tabIndex' => $tabIndex
+                'tabIndex' => $tabIndex,
+                'keyword' => $keyword
+
             ]);
         }
     }
@@ -67,11 +71,11 @@ class MypageController extends Controller
         
         try {
 
-            // $request->validate([
-            //     'reviewId' => 'bail',
-            //     'reviewTitle' => 'bali',
-            //     'reviewContents' => 'bali',
-            // ]);
+            $request->validate([
+                'reviewId' => 'bail',
+                'reviewTitle' => 'bail',
+                'reviewContents' => 'bail',
+            ]);
             
             DB::beginTransaction();
             
@@ -96,12 +100,6 @@ class MypageController extends Controller
             throw $exception;
         }
         
-        // $title = $request->reviewTitle;
-        // $contents = $request->reviewContents;
-        // $id = $request->reviewId;
-
-        // DB::table('reviews')->where('id',$id)->update(['title'=>$title]);
-        
 
 
     }
@@ -113,11 +111,9 @@ class MypageController extends Controller
 
         try {
 
-            // $request->validate([
-            //     'reviewId' => 'bail',
-            //     'reviewTitle' => 'bali',
-            //     'reviewContents' => 'bali',
-            // ]);
+            $request->validate([
+                'deleteReviewId' => 'bail',
+            ]);
             
             DB::beginTransaction();
             
@@ -139,13 +135,7 @@ class MypageController extends Controller
             Session::flash('error', $exception->getMessage());
             throw $exception;
         }
-        
-        // $title = $request->reviewTitle;
-        // $contents = $request->reviewContents;
-        // $id = $request->reviewId;
 
-        // DB::table('reviews')->where('id',$id)->update(['title'=>$title]);
-        
     }
 
 
@@ -156,11 +146,9 @@ class MypageController extends Controller
 
         try {
 
-            // $request->validate([
-            //     'reviewId' => 'bail',
-            //     'reviewTitle' => 'bali',
-            //     'reviewContents' => 'bali',
-            // ]);
+            $request->validate([
+                'deleteWishId' => 'bail',
+            ]);
             
             DB::beginTransaction();
             
@@ -190,37 +178,3 @@ class MypageController extends Controller
     
 
 
-
-
-        // if (request('tab') === 'review') {
-        //     $userReviews = Review::where('user_id', $id)->paginate(2);
-            
-        //     return view('mypage', [
-        //         'id' => $id,
-        //         'user' => $user,
-        //         'stores' => $stores,
-        //         'images' => $images,
-        //         'tab' => request('tab'),
-        //         'userReviews' => $userReviews
-        //     ]);
-        // } 
-        // else {
-        //     $userWishes = Wish::where('user_id', $id)->paginate(2);
-
-        //     return view('mypage', [
-        //         'id' => $id,
-        //         'user' => $user,
-        //         'stores' => $stores,
-        //         'images' => $images,
-        //         'tab' => request('tab'),
-        //         'userWishes' => $userWishes
-        //     ]);
-        // }
-        
-        
-        // $userReviews = Review::get()->where('user_id', $id);
-        // $userWishes = Wish::get()->where('user_id', $id);
-
-        // $userReviewsCount = $userReviews->count();
-        // $userWishesCount = $userWishes->count();
-        

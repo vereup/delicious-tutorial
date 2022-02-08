@@ -82,7 +82,7 @@
 @yield('detailContent')
 
         <div class="p-2 docs-highlight">
-            pignation
+            
         </div>
     </div>
 </div>
