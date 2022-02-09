@@ -19,11 +19,12 @@ class DetailController extends Controller
 
         
         $loginUser = Auth::user();
+        $user_id = Auth::id();
         $store = Store::find($request->storeId);
         $storeCategory = Category::find($store->category_id);
         $storeImages = Image::get()->where('store_id', $request->storeId);
         $storeReviews = Review::get()->where('store_id', $request->storeId);
-        $userReviews = $storeReviews->where('user_id', $loginUser->id);
+        $userReviews = $storeReviews->where('user_id', $user_id);
         $noUserReviews = $storeReviews->diff($userReviews);
         $reviewCount = $userReviews->count();
         $firstImagePath = ($storeImages->first())->path;
@@ -67,7 +68,7 @@ class DetailController extends Controller
             DB::beginTransaction();
             
             $review = Review::insert(['user_id' =>$user_id, 'store_id' => $request->storeId, 'title' => $request->title, 
-            'contents' => $request->contents, 'been_date' => $request->reviewDate, 'rating' => 4]);
+            'contents' => $request->contents, 'been_date' => $request->reviewDate, 'rating' => $request->rating]);
 
                         
             DB::commit();

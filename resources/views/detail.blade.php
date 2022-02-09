@@ -53,29 +53,17 @@
             <div class="row mb-3 px-2">
                 <label for="inputTitle" class="col-sm-1 ps-3 pt-0 col-form-label"><p style="font-size: 20px;">평점</p></label>
                 <div class="col-sm-11">
-                    {{-- <div>
-                        <button class="m-0 p-0" type="button" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="oneStar"
-                        style="width:25px; height:25px;"></button>
-                        <button class="m-0 p-0" type="button" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="twoStar"
-                        style="width:25px; height:25px;"></button>
-                        <button class="m-0 p-0" type="button" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="threeStar"
-                        style="width:25px; height:25px;"></button>
-                        <button class="m-0 p-0" type="button" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="fourStar"
-                        style="width:25px; height:25px;"></button>
-                        <button class="m-0 p-0" type="button" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="fiveStar"
-                        style="width:25px; height:25px;"></button>
-                    </div> --}}
                     <div class="ratingStars">
                         <input type="hidden" id="rating" name="rating" value="">
-                        <button class="m-0 p-0" type="button" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="oneStar"
+                        <button class="m-0 p-0 starbutton" type="button" style="background-color:transparent; border:transparent;" value="1"> <img src="/images/emptystar.png" id="starImg_1"
+                        style="width:25px; height:25px;" ></button>
+                        <button class="m-0 p-0 starbutton" type="button" style="background-color:transparent; border:transparent;" value="2"> <img src="/images/emptystar.png" id="starImg_2"
                         style="width:25px; height:25px;"></button>
-                        <button class="m-0 p-0" type="button" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="twoStar"
+                        <button class="m-0 p-0 starbutton" type="button" style="background-color:transparent; border:transparent;" value="3"> <img src="/images/emptystar.png" id="starImg_3"
                         style="width:25px; height:25px;"></button>
-                        <button class="m-0 p-0" type="button" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="threeStar"
+                        <button class="m-0 p-0 starbutton" type="button" style="background-color:transparent; border:transparent;" value="4"> <img src="/images/emptystar.png" id="starImg_4"
                         style="width:25px; height:25px;"></button>
-                        <button class="m-0 p-0" type="button" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="fourStar"
-                        style="width:25px; height:25px;"></button>
-                        <button class="m-0 p-0" type="button" style="background-color:transparent; border:transparent;"> <img src="/images/emptystar.png" id="fiveStar"
+                        <button class="m-0 p-0 starbutton" type="button" style="background-color:transparent; border:transparent;" value="5"> <img src="/images/emptystar.png" id="starImg_5"
                         style="width:25px; height:25px;"></button>
                     </div>
 
@@ -240,9 +228,9 @@
             <div class="modal-footer" style="justify-content: center;">
                 <button type="button" class="btn btn-dark rounded-pill btn-primary px-4">확인</button>
                 <button
-                    type="button"
-                    class="btn btn-gray rounded-pill btn-secondary px-4"
-                    data-coreui-dismiss="modal">취소</button>
+                type="button"
+                class="btn btn-gray rounded-pill btn-secondary px-4"
+                data-coreui-dismiss="modal">취소</button>
             </div>
         </div>
     </div>
@@ -251,7 +239,8 @@
 @section('script')
 @parent
 
-    <script>
+<script>
+
 
         // 찜하트 변경
 
@@ -276,62 +265,73 @@
             console.log(id);
         }
 
-        //
-        
-$("#rating").val();
+        // 평점 버튼 클릭시 별변경 및 값입력
 
+        $(".starbutton").click(function(){
+            $("#rating").val($(this).val());
+            var count=$("#rating").val();
+            for(var i=1;i<=count;i++){
+                $('#starImg_'+i).attr('src','/images/star.png');
+            }
+            count = i;
+            for(var j=count;j<=5;j++){
+                $('#starImg_'+j).attr('src','/images/emptystar.png');
+            }
+        });
+        
+        
 
 // 평점 클릭시 별 변경
-let oneStar = document.getElementById('oneStar');
-let twoStar = document.getElementById('twoStar');
-let threeStar = document.getElementById('threeStar');
-let fourStar = document.getElementById('fourStar');
-let fiveStar = document.getElementById('fiveStar');
+// let oneStar = document.getElementById('oneStar');
+// let twoStar = document.getElementById('twoStar');
+// let threeStar = document.getElementById('threeStar');
+// let fourStar = document.getElementById('fourStar');
+// let fiveStar = document.getElementById('fiveStar');
 
-function star_listener(event){
-    switch(event.target.id){
-        case 'oneStar':
-            oneStar.setAttribute('src','/images/star.png');
-            twoStar.setAttribute('src','/images/emptystar.png');
-            threeStar.setAttribute('src','/images/emptystar.png');
-            fourStar.setAttribute('src','/images/emptystar.png');
-            fiveStar.setAttribute('src','/images/emptystar.png');
-        break;
+// function star_listener(event){
+//     switch(event.target.id){
+//         case 'oneStar':
+//             oneStar.setAttribute('src','/images/star.png');
+//             twoStar.setAttribute('src','/images/emptystar.png');
+//             threeStar.setAttribute('src','/images/emptystar.png');
+//             fourStar.setAttribute('src','/images/emptystar.png');
+//             fiveStar.setAttribute('src','/images/emptystar.png');
+//         break;
 
-        case 'twoStar':
-            oneStar.setAttribute('src','/images/star.png');
-            twoStar.setAttribute('src','/images/star.png');
-            threeStar.setAttribute('src','/images/emptystar.png');
-            fourStar.setAttribute('src','/images/emptystar.png');
-            fiveStar.setAttribute('src','/images/emptystar.png');
-        break;
+//         case 'twoStar':
+//             oneStar.setAttribute('src','/images/star.png');
+//             twoStar.setAttribute('src','/images/star.png');
+//             threeStar.setAttribute('src','/images/emptystar.png');
+//             fourStar.setAttribute('src','/images/emptystar.png');
+//             fiveStar.setAttribute('src','/images/emptystar.png');
+//         break;
 
-        case 'threeStar':
-            oneStar.setAttribute('src','/images/star.png');
-            twoStar.setAttribute('src','/images/star.png');
-            threeStar.setAttribute('src','/images/star.png');
-            fourStar.setAttribute('src','/images/emptystar.png');
-            fiveStar.setAttribute('src','/images/emptystar.png');
-        break;
+//         case 'threeStar':
+//             oneStar.setAttribute('src','/images/star.png');
+//             twoStar.setAttribute('src','/images/star.png');
+//             threeStar.setAttribute('src','/images/star.png');
+//             fourStar.setAttribute('src','/images/emptystar.png');
+//             fiveStar.setAttribute('src','/images/emptystar.png');
+//         break;
 
-        case 'fourStar':
-            oneStar.setAttribute('src','/images/star.png');
-            twoStar.setAttribute('src','/images/star.png');
-            threeStar.setAttribute('src','/images/star.png');
-            fourStar.setAttribute('src','/images/star.png');
-            fiveStar.setAttribute('src','/images/emptystar.png');
-        break;
+//         case 'fourStar':
+//             oneStar.setAttribute('src','/images/star.png');
+//             twoStar.setAttribute('src','/images/star.png');
+//             threeStar.setAttribute('src','/images/star.png');
+//             fourStar.setAttribute('src','/images/star.png');
+//             fiveStar.setAttribute('src','/images/emptystar.png');
+//         break;
 
-        case 'fiveStar':
-            oneStar.setAttribute('src','/images/star.png');
-            twoStar.setAttribute('src','/images/star.png');
-            threeStar.setAttribute('src','/images/star.png');
-            fourStar.setAttribute('src','/images/star.png');
-            fiveStar.setAttribute('src','/images/star.png');
-        break;
+//         case 'fiveStar':
+//             oneStar.setAttribute('src','/images/star.png');
+//             twoStar.setAttribute('src','/images/star.png');
+//             threeStar.setAttribute('src','/images/star.png');
+//             fourStar.setAttribute('src','/images/star.png');
+//             fiveStar.setAttribute('src','/images/star.png');
+//         break;
 
-    }
-}
+//     }
+// }
 //
 // oneStar.addEventListener('click', star_listener);
 // twoStar.addEventListener('click', star_listener);
@@ -342,26 +342,6 @@ function star_listener(event){
 
 // 찜하트 변경
 
-function heartChange(id){
-    let heart;
-    let value;
-    heart = document.getElementById(id);
-    value = heart.getAttribute('value');
-    switch(value){
-        case '1':
-            heart.setAttribute('src','/images/redheart.png');
-            heart.setAttribute('value','2');
-            break;
-        case '2':
-            heart.setAttribute('src','/images/whiteheart.png');
-            heart.setAttribute('value','1');
-            break;
-
-    }
-    console.log(value);
-    console.log(heart.src);
-    console.log(id);
-}
 
     </script>
 @endsection
