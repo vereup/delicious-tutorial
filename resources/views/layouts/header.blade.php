@@ -38,7 +38,7 @@
             <input class="col-10" type="text" id="search" name="keyword"
             style="border-top-right-radius: 0; border-bottom-right-radius: 0;" @if($keyword != null) value="{{ $keyword }}"@endif>
                 <button class="col-2 btn btn-outline-secondary" type="button" id="keywordButton"
-                style="border-top-left-radius: 0; border-bottom-left-radius: 0;">
+                style="border-top-left-radius: 0; border-bottom-left-radius: 0;" onclick="go()">
                     <img src="/images/magnifying-glass.png"></button>
             </div>
 </div>
@@ -105,22 +105,10 @@
 
 <script>
 
+// console.log($(location).attr('pathname'));
 
-//키워드 입력시 서버전송
-$("#keywordButton").click(function(){
-    let search = $("#search").val();
-    if (search != ''){
-    $("#keyword").val(search);
-    }
-
-    let list = new Array();
-    $("input[name=category]:checked").each(function(index, item){
-        list.push($(item).val());
-    });
-    $("#categoryList").val(list);
-
-    $("#Form").submit();
-
-});
+function go(){
+    location.href = "/?keyword=" + $("#search").val();
+}
 
 </script>

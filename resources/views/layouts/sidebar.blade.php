@@ -48,6 +48,23 @@
 
 <script>
 
+//키워드 입력시 서버전송
+$("#keywordButton").click(function(){
+
+let search = $("#search").val();
+if (search != ''){
+$("#keyword").val(search);
+}
+
+let list = new Array();
+$("input[name=category]:checked").each(function(index, item){
+    list.push($(item).val());
+});
+$("#categoryList").val(list);
+
+$("#Form").submit();
+
+});
 
 
 // 카테고리변경시 서버전송
