@@ -25,7 +25,6 @@ class TestController extends Controller
         
         $tabIndex = $request->tabIndex;
 
-    
 
         dump($tabIndex);
 

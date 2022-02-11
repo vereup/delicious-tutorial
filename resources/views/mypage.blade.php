@@ -1,3 +1,8 @@
+@php
+    use Carbon\Carbon;
+
+@endphp
+
 @extends('layouts.main')
 
 @section('content')
@@ -46,14 +51,20 @@
                         <div class="col-9 ps-3 py-2">
                             <p class="card-text">
                                 @php
-                                    $now = (strtotime(date('Ymd H:i:s')))/86400;
-                                    $updated_at = (strtotime($userReview->updated_at))/86400;
-                                    $interval = floor($now - $updated_at);
+                                    // $now = (strtotime(date('Ymd H:i:s')))/86400;
+                                    // $updated_at = (strtotime($userReview->updated_at))/86400;
+                                    // carbon
+                                    $now = Carbon::now();
+                                    $past = $userReview->updated_at;
+                                    $interval = $now->diffInDays($past);
+                                    
+                                    
                                 @endphp
                                 @if ($interval < 1)
                                     오늘
                                 @else
                                     {{$interval}} 일전
+                                    
                                 @endif
                             </p>
                             <h5 class="card-title" id="reviewTitleId_{{ $userReview->id }}">{{$userReview->title}}</h5>
@@ -65,12 +76,16 @@
                                 @endphp</p>
                         </div>
                         <div class="col-auto pt-5">
-                               
-                                <button type="submit" class="btn btn-primary fs-4 btn-dark rounded-pill" 
-                                style="width: 100px; height:50px;" data-coreui-target="#modifyModal" data-coreui-toggle="modal" id="{{ $userReview->id }}" onclick="modifyClicked(this.id);">수정</button>
+                            {{-- <button type="submit" class="btn btn-primary fs-4 btn-dark rounded-pill" 
+                            style="width: 100px; height:50px;" data-coreui-target="#modifyModal" data-coreui-toggle="modal"  id="{{ $userReview->id }}" 
+                            onclick="modifyClicked(this.id);">수정</button> --}}
+
+                            <button type="submit" class="btn btn-primary fs-4 btn-dark rounded-pill" 
+                                style="width: 100px; height:50px;" data-coreui-target="#modifyModal" data-coreui-toggle="modal"  id="{{ $userReview->id }}" 
+                                onclick="modifyClicked({{ $userReview->id }});">수정</button>
                             <button type="submit" class="btn btn-secondary fs-4 btn-gray text-white rounded-pill ms-2" 
                             style="width: 100px; height:50px;" data-coreui-target="#deleteCheckModal" data-coreui-toggle="modal" value="{{ $userReview->id }}" 
-                            onclick="selectReview(this.value);">삭제</button>
+                            onclick="selectReview({{ $userReview->id }});">삭제</button>
                         
                         </div>
                     </div>
@@ -283,6 +298,10 @@ function submit(id){
     document.getElementById(id).submit();
 }
 
+// var myModalEl = document.getElementById('myModal')
+// myModalEl.addEventListener('hidden.coreui.modal', function (event) {
+//   // do something...
+// })
 
 function modifyClicked(id){
     
@@ -313,7 +332,8 @@ modifyConfirm.addEventListener('click',function (event){
 
 function selectReview(id){
 
-    event.preventDefault();
+    event.preventDefault();일전
+    
     document.getElementById('deleteTargetId').value = id;
 
 }

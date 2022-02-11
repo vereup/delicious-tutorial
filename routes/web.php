@@ -20,10 +20,7 @@ Route::get('/','MainController@getMainDatas')->name('home');
 Route::post('/removeWish','MainController@removeWish')->name('removeWish');
 Route::post('/addWish','MainController@addWish')->name('addWish');
 
-// Route::get('/category','MainController@category')->name('category');
-// Route::get('/rating','MainController@rating')->name('rating');
 Route::get('/search','MainController@search')->name('search');
-
 
 Route::get('/signup', 'SignupController@getSignupDatas');
 
@@ -40,14 +37,13 @@ Route::middleware(['auth'])->prefix('mypage')->group(function () {
 });
 
 
-
-
 Route::get('/store/{storeId}','DetailController@getStoreDatas');
 Route::post('/store','DetailController@writeReview')->name('writeReview');
 Route::get('/test','TestController@getTestDatas');
 
 
-
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
+Route::get('/admin', 'AdminController@getAdminDatas')->name('admin');
+Route::get('/admin/search', 'AdminController@getAdminDatas')->name('adminSearch');
+Route::get('/admin/regist', 'AdminController@registStores')->name('registStore');

@@ -236,34 +236,68 @@
     </div>
 </div>
 
+{{-- 맛집카드 wish 체크용 --}}
+<form method="POST" id="addWish" action="{{ route('addWish') }}">
+    @csrf
+    <input type="hidden" id="addWishInput" name="storeId" value="">
+</form>
+<form method="POST" id="removeWish" action="{{ route('removeWish') }}">
+    @csrf
+    <input type="hidden" id="removeWishInput" name="storeId" value="">
+</form>
+
 @section('script')
 @parent
 
 <script>
 
 
-        // 찜하트 변경
+// 찜하트변경
 
-        function heartChange(id) {
-            let heart;
-            let value;
-            heart = document.getElementById(id);
-            value = heart.getAttribute('value');
-            switch (value) {
-                case '1':
-                    heart.setAttribute('src', '/images/redheart.png');
-                    heart.setAttribute('value', '2');
-                    break;
-                case '2':
-                    heart.setAttribute('src', '/images/whiteheart.png');
-                    heart.setAttribute('value', '1');
-                    break;
+$('#heart').click(function(){
+    let value = $(this).attr("value");
+    let storeId = $(this).attr("name");
 
-            }
-            console.log(value);
-            console.log(heart.src);
-            console.log(id);
-        }
+
+    if (value == 1){
+        $('#addWishInput').val($(this).attr("name"));
+        $('#heart').attr('src', '/images/redheart.png');
+        $('#heart').attr('value', '2');        
+        $('#addWish').submit();
+    }
+
+    else{
+        $('#removeWishInput').val($(this).attr("name"));
+        $('#heart').attr('src', '/images/whiteheart.png');
+        $('#heart').attr('value', '1');        
+        $('#removeWish').submit();
+    }
+});
+
+
+
+        // // 찜하트 변경
+
+        // function heartChange(id) {
+        //     let heart;
+        //     let value;
+        //     heart = document.getElementById(id);
+        //     value = heart.getAttribute('value');
+        //     switch (value) {
+        //         case '1':
+        //             heart.setAttribute('src', '/images/redheart.png');
+        //             heart.setAttribute('value', '2');
+        //             break;
+        //         case '2':
+        //             heart.setAttribute('src', '/images/whiteheart.png');
+        //             heart.setAttribute('value', '1');
+        //             break;
+
+        //     }
+        //     console.log(value);
+        //     console.log(heart.src);
+        //     console.log(id);
+        // }
 
         // 평점 버튼 클릭시 별변경 및 값입력
 

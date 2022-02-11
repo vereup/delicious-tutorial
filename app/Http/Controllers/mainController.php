@@ -40,6 +40,9 @@ class MainController extends Controller
         $storeCounts = 0;
 
 
+
+
+
         // // 검색어입력
 
         if($request->keyword != null){
@@ -136,10 +139,8 @@ class MainController extends Controller
         }
         
         $storeCounts = $stores->count();
+        $userWishCount = $userWishes->count();
 
-
-
-        
 
     
 
@@ -150,9 +151,11 @@ class MainController extends Controller
             'categoryList' => $categoryList,
             'images' => $images,
             'wishes' => $wishes,
+            'userWishes' => $userWishes,
             'user_id' => $user_id,
             'userWishes' => $userWishes,
             'storeCounts' => $storeCounts,
+            'userWishCount' => $userWishCount,
             'rating_1' => $rating_1,
             'rating_2' => $rating_2,
             'rating_3' => $rating_3,
@@ -166,9 +169,28 @@ class MainController extends Controller
 
     }
 
+    // public function checkWish(Request $request){
+
+
+    //     $favorite = Wish::where('user_id', Auth::id())->where('store_id', $request->storeId);
+
+    //     $favorite->length();
+
+    //     dd($favorite);
+
+    //     return $favorite;
+
+
+        
+    // }
+
+
+
+
 
     public function removeWish(Request $request){
 
+        $user_id = Auth::id();
 
 
         try {
@@ -202,6 +224,9 @@ class MainController extends Controller
 
         $user_id = Auth::id();
 
+        $store_id = $request->storeId;
+        
+
 
         try {
             // $request->validate([
@@ -228,88 +253,7 @@ class MainController extends Controller
         
     }
 
-    public function category(Request $request){
 
-
-        if($request->categoryList != null){
-            $categoryList = explode(',', $request->categoryList);
-            $filtered_stores = Store::whereIn('category_id', $categoryList)->get();
-        }
-        
-        else{
-            $filtered_stores = 'false';
-        }
-
-        // foreach($filtered_stores as $aa){
-        //     dump($aa->name);
-        // }
-
-        return redirect('home')->with(['stores' => $filtered_stores]);
-
-
-
-    }
-
-
-    public function rating($stores){
-
-        dump($request->rating_1);
-
-        if($request->rating_1 != null){
-            $filtered_rating_1 = $stores->whereBetween('rating_average', [0,1]);
-            dump($filtered_rating_1);
-        }
-        if($request->rating_2 != null){
-            $filtered_rating_2 = $stores->whereBetween('rating_average', [1,2]);
-            dump($filtered_rating_2);
-
-        }
-        if($request->rating_3 != null){
-            $filtered_rating_3 = $stores->whereBetween('rating_average', [3,4]);
-            dump($filtered_rating_3);
-
-        }
-        if($request->rating_4 != null){
-            $filtered_rating_4 = $stores->whereBetween('rating_average', [4,5]);
-            dump($filtered_rating_4);
-
-        }
-        if($request->rating_5 != null){
-            $filtered_rating_5 = $stores->whereBetween('rating_average', [5,5]);
-            dump($filtered_rating_5);
-
-        }
-
-        $stores->merge([$filtered_rating_1, $filtered_rating_2, $filtered_rating_3, $filtered_rating_4, $filtered_rating_5]);
-
-
-        
-        
-        dump($request->rating_2);
-        dump($request->rating_3);
-        dump($request->rating_4);
-        dump($request->rating_5);
-        
-        // $storeCounts = $stores->count();
-        // $ratingFilteredStores = Store::whereIn('category_id', $request->categoryList)->get();
-
-
-    }
-
-    public function search(Request $request){
-
-        $stores = Store::get();
-
-
-        dump($request->keyword);
-
-        if($request->keyword != null){
-            $filtered_keyword = $stores->where('name', $request->keyword);
-            dump($filtered_keyword);
-        }
-
-
-    }
-
+    
 
 }

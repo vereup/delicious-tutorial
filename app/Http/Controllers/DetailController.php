@@ -11,6 +11,7 @@ use App\Models\Store;
 use App\Models\Image;
 use App\Models\Review;
 use App\Models\User;
+use App\Models\Wish;
 
 
 class DetailController extends Controller
@@ -18,18 +19,22 @@ class DetailController extends Controller
     public function getStoreDatas(Request $request){
 
         
+
+        
+        
         $loginUser = Auth::user();
         $user_id = Auth::id();
         $store = Store::find($request->storeId);
         $storeCategory = Category::find($store->category_id);
-        $storeImages = Image::get()->where('store_id', $request->storeId);
-        $storeReviews = Review::get()->where('store_id', $request->storeId);
+        $storeImages = Image::where('store_id', $request->storeId)->get();
+        $storeReviews = Review::where('store_id', $request->storeId)->get();
+        $userWish = Wish::where('store_id', $request->storeId)->where('user_id',Auth::id())->exists();
+        // $userReviews = Auth::user()->reviews()->get();
         $userReviews = $storeReviews->where('user_id', $user_id);
         $noUserReviews = $storeReviews->diff($userReviews);
         $reviewCount = $userReviews->count();
         $firstImagePath = ($storeImages->first())->path;
         $keyword = null;
-
 
 
         return view('detail', [
@@ -42,6 +47,7 @@ class DetailController extends Controller
             'reviewCount' => $reviewCount,
             'firstImagePath' => $firstImagePath,
             'keyword' => $keyword,
+            'userWish' => $userWish,
             'noUserReviews' => $noUserReviews
             
         ]);
@@ -60,8 +66,8 @@ class DetailController extends Controller
         try {
 
             $request->validate([
-                'title' => 'bail',
-                'contents' => 'bail',
+                'title' => 'bail|string',
+                'contents' => 'bail|required|string',
                 'reviewDate' => 'bail',
             ]);
             

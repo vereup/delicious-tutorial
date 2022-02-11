@@ -18,7 +18,11 @@
                                     class="p-2 bg-white"
                                     style="border: 1px solid #A0A0A0; border-radius: 50%;">
                                     <div>
-                                        <img src="/images/redheart.png" onclick="heartChange(this.id)" value="2" width="25" height="25" id="heart">
+                                        @if($userWish == true)
+                                        <img src="/images/redheart.png" onclick="heartChange(this.id)" name="{{ $store->id }}" value="2" width="25" height="25" id="heart">
+                                        @else
+                                        <img src="/images/whiteheart.png" onclick="heartChange(this.id)" name="{{ $store->id }}" value="1" width="25" height="25" id="heart">
+                                        @endif
                                 </div>
                             </button>
                         </div>
