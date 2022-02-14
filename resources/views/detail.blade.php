@@ -66,13 +66,12 @@
                         <button class="m-0 p-0 starbutton" type="button" style="background-color:transparent; border:transparent;" value="5"> <img src="/images/emptystar.png" id="starImg_5"
                         style="width:25px; height:25px;"></button>
                     </div>
-
                 </div>
             </div>
             <div class="row mb-3 px-2">
                 <label for="inputTitle" class="col-sm-1 ps-3 pt-0 col-form-label"><p style="font-size: 20px;">제목</p></label>
                 <div class="col-sm-11">
-                <input type="text" class="form-control" name="title" id="title">
+                <input type="text" class="form-control" name="title" id="title" value="">
                 </div>
             </div>
             <div class="row mb-3 px-2">
@@ -88,22 +87,23 @@
                 <p style="font-size: 20px;">방문 일자</p>
                 </label>
                 <div class="col-sm-11">
-                    <input type="date" class="form-control w-25" name="reviewDate" id="reviewwDate">
+                    <input type="date" class="form-control w-25" name="reviewDate" id="reviewDate">
                 </div>
             </div>
             <div class="row px-3">
-                <center>
-                    <button class="btn btn-dark rounded-pill w-50" type="submit" data-coreui-target="#WriteCheckModal"
-                    data-coreui-toggle="modal">리뷰 작성
-                </center>
+                <div class="d-flex justify-content-center">
+                    <button class="btn btn-dark rounded-pill w-50" type="button" onclick="formCheck(event);">리뷰 작성</button>
+                    {{-- 리뷰작성 전송용 --}}
+                    <button type="button" hidden data-coreui-target="#WriteCheckModal"
+                    data-coreui-toggle="modal" id="reviewWriteConfirm"></button>
+                    <button type="submit" hidden id="reviewWriteConfirmOk"></button>
+                </div>
             </div>
         </form>
 @else
 @endif
 {{-- 사용자가 작성한 리뷰출력 --}}
         @foreach ($userReviews as $userReview)
-       
-
         <div class="d-flex border-top border-bottom mx-1" style="background-color: #4f5d73">
             <div class="col-9 ps-3 py-2">
                 <p class="card-text text-white">
@@ -135,8 +135,6 @@
 
 {{-- 사용자가 작성하지 않은 리뷰출력 --}}
 @foreach ($noUserReviews as $noUserReview)
-       
-
 <div class="d-flex border-top border-bottom mx-1" >
     <div class="col-9 ps-3 py-2">
         <p class="card-text text-black">
@@ -164,8 +162,6 @@
 </div>
 
 @endforeach
-
-
 
 @endguest
 
@@ -226,11 +222,8 @@
                 <p class="fw-bold text-center">리뷰를 작성하시겠습니까?</p>
             </div>
             <div class="modal-footer" style="justify-content: center;">
-                <button type="button" class="btn btn-dark rounded-pill btn-primary px-4">확인</button>
-                <button
-                type="button"
-                class="btn btn-gray rounded-pill btn-secondary px-4"
-                data-coreui-dismiss="modal">취소</button>
+                <button type="button" class="btn btn-dark rounded-pill btn-primary px-4" onclick="document.getElementById('reviewWriteConfirmOk').click();">확인</button>
+                <button type="button" class="btn btn-gray rounded-pill btn-secondary px-4" data-coreui-dismiss="modal">취소</button>
             </div>
         </div>
     </div>
@@ -246,6 +239,8 @@
     <input type="hidden" id="removeWishInput" name="storeId" value="">
 </form>
 
+
+
 @section('script')
 @parent
 
@@ -257,7 +252,6 @@
 $('#heart').click(function(){
     let value = $(this).attr("value");
     let storeId = $(this).attr("name");
-
 
     if (value == 1){
         $('#addWishInput').val($(this).attr("name"));
@@ -273,6 +267,85 @@ $('#heart').click(function(){
         $('#removeWish').submit();
     }
 });
+
+
+// 평점 버튼 클릭시 별변경 및 값입력
+
+$(".starbutton").click(function(){
+    $("#rating").val($(this).val());
+    var count=$("#rating").val();
+    for(var i=1;i<=count;i++){
+        $('#starImg_'+i).attr('src','/images/star.png');
+    }
+    count = i;
+    for(var j=count;j<=5;j++){
+        $('#starImg_'+j).attr('src','/images/emptystar.png');
+    }
+});
+
+
+// 리뷰작성 클릭시 유효성검사
+
+function formCheck(event){
+
+event.preventDefault();
+let form = $('#reviewForm');
+let rating = $('#rating').val();
+let title = $('#title').val();
+let contents = $('#contents').val();
+let reviewDate = $('#reviewDate').val();
+
+console.log(reviewDate);
+console.log(contents.length);
+
+
+if (rating == ''){
+    alert('평점을 체크해주세요.');
+        return false;
+}
+
+else if(title == ''){
+    alert('제목을 입력해주세요.');
+        return false;
+}
+
+else if(title.length < 10){
+    alert('5자이상 30자 이하로 작성해주세요.');
+    return false;
+}
+
+else if(title.length > 60){
+    alert('5자이상 30자 이하로 작성해주세요.');
+    return false;
+}
+
+else if (contents == ''){
+    alert('내용을 입력해주세요.');
+        return false;
+} 
+
+else if(contents.length < 40){
+    alert('20자이상 300자 이하로 작성해주세요.');
+    return false;
+}
+
+else if(contents.length > 600){
+    alert('20자이상 300자 이하로 작성해주세요.');
+    return false;
+}
+
+else if(reviewDate == ''){
+    alert('방문일자를 체크해주세요');
+        return false;
+} 
+
+
+$('#reviewWriteConfirm').click();
+
+};
+
+
+
 
 
 
@@ -298,21 +371,6 @@ $('#heart').click(function(){
         //     console.log(heart.src);
         //     console.log(id);
         // }
-
-        // 평점 버튼 클릭시 별변경 및 값입력
-
-        $(".starbutton").click(function(){
-            $("#rating").val($(this).val());
-            var count=$("#rating").val();
-            for(var i=1;i<=count;i++){
-                $('#starImg_'+i).attr('src','/images/star.png');
-            }
-            count = i;
-            for(var j=count;j<=5;j++){
-                $('#starImg_'+j).attr('src','/images/emptystar.png');
-            }
-        });
-        
         
 
 // 평점 클릭시 별 변경
@@ -373,9 +431,6 @@ $('#heart').click(function(){
 // fourStar.addEventListener('click', star_listener);
 // fiveStar.addEventListener('click', star_listener);
 //
-
-// 찜하트 변경
-
 
     </script>
 @endsection

@@ -126,6 +126,7 @@
                 @if($userWish->user_id == $user->id) 
                     @php
                         $store = $stores[$userWish->store_id];
+                        foreach()
                         $image = $images[$userWish->store_id];
                     @endphp
                     
@@ -312,6 +313,8 @@ function modifyClicked(id){
     let reviewTitle = document.getElementById('reviewTitle');
     let reviewContents = document.getElementById('reviewContents');
 
+    console.log(id);
+
     reviewId.value = id;    
     reviewTitle.value = title;
     reviewContents.innerText = contents;
@@ -332,7 +335,7 @@ modifyConfirm.addEventListener('click',function (event){
 
 function selectReview(id){
 
-    event.preventDefault();일전
+    event.preventDefault();
     
     document.getElementById('deleteTargetId').value = id;
 

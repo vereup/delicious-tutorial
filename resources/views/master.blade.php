@@ -10,77 +10,50 @@
         </div>
         <div class="p-2 flex-fill docs-highlight">
             <div class="d-flex flex-column docs-highlight mb-3">
-
-                <div class="m-2 docs-highlight bg-white">
                     @if ($categoryList != 'all' || $ratingList != null || $keyword != null )
+                    <div class="m-2 mt-0 docs-highlight bg-white">
                         @include('layouts.filter')
+                    </div>
                     @endif
-                </div>
-
-                <div class="m-2 docs-highlight">
-                    <div class="d-flex flex-wrap" style="justify-content: space-between;">
-
+                <div class="m-2 mt-0 docs-highlight">
+                    <div class="d-flex flex-wrap justify-content-between">
+                        {{-- ??마지막카드 정렬?? --}}
                         @foreach ($stores as $store)
-                            
-                        
                         {{-- 맛집카드 --}}
                         <div class="card rounded my-1" style="width: 18rem;">
                             <a href="/store/{{$store->id}}">                                 
                                     @foreach ($images as $image)
                                         @if($image->store_id == $store->id)
-                                            <img
-                                            src="{{$image->path}}"
-                                            {{-- src="/images/store_thum_{{ $k+1 }}.png" --}}
-                                            class="card-img-top border-bottom w-100"
-                                            alt="store->name"
-                                            >
+                                            <img src="{{$image->path}}" class="card-img-top border-bottom w-100" alt="store->name">
                                             @break
                                         @endif
                                     @endforeach
                             </a>
-                            
                                 @guest
-
-                                
                                 <div class="p-2 bg-white" style="position: absolute; top: 10px; right: 10px; border: 1px solid #A0A0A0; border-radius: 50%;">
-                                <img type="button" src="/images/whiteheart.png" width="23" height="26" onclick="alert('로그인해주세요');" id="heart{{ $store->id }}" value="1";>
+                                <img type="button" src="/images/whiteheart.png" width="23" height="26" onclick="alert('로그인해주세요');" id="heart{{ $store->id }}" value="1">
                                 </div>
-
                                 @else
-
-
-                                
                                 @if( $userWishCount != 0)
-
                                     @foreach ($userWishes as $wish)
-
                                         @if ($wish->store_id == $store->id)
-                                       
                                         <div class="p-2 bg-white" style="position: absolute; top: 10px; right: 10px; border: 1px solid #A0A0A0; border-radius: 50%;">
-                                            <img type="button" name="{{ $store->id }}" class="wishHeart" src="/images/redheart.png" width="23" height="26" value="2";>
+                                            <img type="button" name="{{ $store->id }}" class="wishHeart" src="/images/redheart.png" width="23" height="26" value="2">
                                             </div>  
                                         @break
                                         @else
-                                        <div class="p-2 bg-white" style="position: absolute; top: 10px; right: 10px; border: 1px solid #A0A0A0; border-radius: 50%;">
-                                            <img type="button" name="{{ $store->id }}" class="wishHeart" src="/images/whiteheart.png" width="23" height="26" value="1";>
+                                            <div class="p-2 bg-white" style="position: absolute; top: 10px; right: 10px; border: 1px solid #A0A0A0; border-radius: 50%;">
+                                            <img type="button" name="{{ $store->id }}" class="wishHeart" src="/images/whiteheart.png" width="23" height="26" value="1">
                                         </div>
                                         @endif
                                     @endforeach
-
-
-
                                 @else
                                 <div class="p-2 bg-white" style="position: absolute; top: 10px; right: 10px; border: 1px solid #A0A0A0; border-radius: 50%;">
                                     <img type="button" name="{{ $store->id }}" class="wishHeart" src="/images/whiteheart.png" width="23" height="26" value="1";>
                                 </div>
         
                                 @endif
-
                                 @endguest
-
-
-                                
-
                             <div class="card-body">
                                 <a class="card-title" href="/store/{{$store->id}}" style="color :black; text-decoration : none; font-weight: bold; font-size: 18px;"
                                     ><p class="mb-0">{{ $store->name }}</p></a>

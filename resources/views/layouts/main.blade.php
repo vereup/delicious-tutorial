@@ -39,7 +39,7 @@
 
         <main>
             @yield('content')
-            <div class="position-absolute bottom-0 end-0 rounded-circle mb-1 me-4 p-0 bg-white text-center" style="width: 50px; height: 50px; border: 1px solid #A0A0A0; border-radius: 50%; cursor:pointer;" 
+            <div class="rounded-circle mb-1 me-4 p-0 bg-white text-center" style="position:fixed;bottom:10px;right:10px;z-index:99999999; width: 40px; height: 40px; border: 1px solid #A0A0A0; border-radius: 50%; cursor:pointer;" 
             onclick="window.scrollTo(0,0);"><span class="fs-2">^</span></div>
 
         </main>

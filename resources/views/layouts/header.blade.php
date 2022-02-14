@@ -35,11 +35,13 @@
         @endguest
         </ul>
         <div class="row px-3">
-            <input class="col-10" type="text" id="search" name="keyword"
-            style="border-top-right-radius: 0; border-bottom-right-radius: 0;" @if($keyword != null) value="{{ $keyword }}"@endif>
-                <button class="col-2 btn btn-outline-secondary" type="button" id="keywordButton"
-                style="border-top-left-radius: 0; border-bottom-left-radius: 0;" onclick="go()">
-                    <img src="/images/magnifying-glass.png"></button>
+            <div class="input-group">
+            <input class="form-control col-10" type="text" id="search" name="keyword"
+             @if($keyword != null) value="{{ $keyword }}"@endif>
+                <button class="btn btn-outline-secondary col-2" type="button" id="keywordButton"
+                 onclick="go()">
+                    <img src="/images/magnifying-glass.png" style="max-width: 100%; height: auto;"></button>
+            </div>
             </div>
 </div>
             {{-- 로그인모달 --}}

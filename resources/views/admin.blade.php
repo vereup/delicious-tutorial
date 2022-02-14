@@ -16,19 +16,55 @@
             <div class="p-2 docs-highlight"><h1 class="fw-bold">맛집목록</h1></div>
             
             {{-- 검색창 --}}
+            
             <form method="GET" action="{{ route('adminSearch') }}">
-            <div class="p-2 docs-highlight">
-                <div class="col-9">
+              <div class="p-2 docs-highlight">
+                <div class="d-flex">
+                  <div class="input-group">
+                  <select class="form-select" aria-label="Default select example">
+                      <option value="1">가게명</option>
+                      <option value="2">전화번호</option>
+                    </select>
                     <input>
-                    <input>
-                    <input>
-                    <input>
+                  </div>
+
+                  <div class="input-group align-items-center">
+                    <span class="me-3">카테고리</span>
+                    <select class="form-select" aria-label="Default select example">
+                        <option value="none">카테고리</option>
+                        @foreach ($categories as $cateogory)
+                        <option value="{{ $category->id }}">
+                          {{ $category->name }}</option>
+                        @endforeach
+                      </select>
+                  </div>
                 </div>
-
-                <div class="col-3"><button>돋보기</button></div>
-
+                <div class="d-flex">
+                  <div class="input-group">
+                    <span class="me-3">주소</span>
+                    <select class="form-select" aria-label="Default select example">
+                      <option value="none">광역시도</option>
+                      @foreach ($addresses as $address)
+                      <option value="{{ $address->id }}">
+                        {{ $address->city}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                  <div class="input-group">
+                    <span class="me-3"></span>
+                    <select class="form-select" aria-label="Default select example">
+                      <option value="none">시/군/구</option>
+                      @foreach ($counties as $county)
+                      <option value="{{ $county->id }}">
+                        {{ $county->county}}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                </div>                    
+                <div><button>돋보기</button></div>
+              </div>
+              </form>
             </div>
-            </form>
 
             {{-- 테이블 --}}
             <div class="p-2 docs-highlight">

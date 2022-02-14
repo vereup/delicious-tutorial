@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Auth::routes();
 
 Route::get('/','MainController@getMainDatas')->name('home');
 Route::post('/removeWish','MainController@removeWish')->name('removeWish');
@@ -33,16 +34,11 @@ Route::middleware(['auth'])->prefix('mypage')->group(function () {
     Route::post('modify','MypageController@modifyReview')->name('modifyReview');
     Route::post('deleteReview','MypageController@deleteReview')->name('deleteReview');
     Route::post('deleteWish','MypageController@deleteWish')->name('deleteWish');
-
 });
-
 
 Route::get('/store/{storeId}','DetailController@getStoreDatas');
 Route::post('/store','DetailController@writeReview')->name('writeReview');
 Route::get('/test','TestController@getTestDatas');
-
-
-Auth::routes();
 
 Route::get('/admin', 'AdminController@getAdminDatas')->name('admin');
 Route::get('/admin/search', 'AdminController@getAdminDatas')->name('adminSearch');

@@ -20,14 +20,12 @@ class SignupController extends Controller
 
     public function checkId(Request $request){
 
-        
-
             $request->validate([
                 'checkEmail' => 'bail|string',
             ]);
 
             
-            if(!DB::table('users')->where('email', '=', $request->checkEmail)->exists()) {
+            if(!User::where('email', '=', $request->checkEmail)->exists()) {
                 $checkEmail = 'ok';
                 return $checkEmail;
             }

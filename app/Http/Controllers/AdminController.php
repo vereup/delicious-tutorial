@@ -22,6 +22,8 @@ class AdminController extends Controller
 
 
         $filtered_stores = Store::where('name', $request->name)->where('category_id', $request->categoryId)->where('address', $request->address)->paginate(5);
+
+        $categories = Category::get();
         
 
         if($filtered_stores->count() > 0){
@@ -38,7 +40,9 @@ class AdminController extends Controller
         return view('admin', [
 
             'keyword' => $keyword,
-            'stores' => $stores
+            'stores' => $stores,
+            'categories' => $categories
+
             
 
         ]);

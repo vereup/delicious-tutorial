@@ -36,7 +36,6 @@ class MypageController extends Controller
                 'id' => $id,
                 'user' => $user,
                 'stores' => $stores,
-                'images' => $images,
                 'userReviews' => $userReviews,
                 'userReviewsCount' => $userReviewsCount,
                 'request' => $request,
@@ -48,6 +47,13 @@ class MypageController extends Controller
         else{
             $userWishesCount = Wish::where('user_id', $id)->count();
             $userWishes = Wish::where('user_id', $id)->paginate(2);
+
+            $userWishesStoreId = Wish::where('user_id', $id)->where('store_id', '!=', '')->get();
+            // $images->whereIn('store_id', $userWishesStoreId);
+
+            dd($userWishesStoreId);
+
+            // ?.? 쿼리빌더 쌒는법.. 1-유저가 2-찜한스토어의 3-이미지의 경로중 첫번째 것들
 
             return view('mypage', [
                 'id' => $id,

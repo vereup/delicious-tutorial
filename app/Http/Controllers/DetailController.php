@@ -31,7 +31,9 @@ class DetailController extends Controller
         $userWish = Wish::where('store_id', $request->storeId)->where('user_id',Auth::id())->exists();
         // $userReviews = Auth::user()->reviews()->get();
         $userReviews = $storeReviews->where('user_id', $user_id);
-        $noUserReviews = $storeReviews->diff($userReviews);
+        $noUserReviews = Review::where('store_id', $request->storeId)->where('user_id', '!=', $user_id)->paginate(2);
+        
+        // $noUserReviews = $storeReviews->diff($userReviews)->paginate(2);
         $reviewCount = $userReviews->count();
         $firstImagePath = ($storeImages->first())->path;
         $keyword = null;
@@ -66,9 +68,9 @@ class DetailController extends Controller
         try {
 
             $request->validate([
-                'title' => 'bail|string',
-                'contents' => 'bail|required|string',
-                'reviewDate' => 'bail',
+                'title' => 'bail|string|required|between:10,60',
+                'contents' => 'bail|required|string|between:40,600',
+                'reviewDate' => 'bail|required|date',
             ]);
             
             DB::beginTransaction();
@@ -88,19 +90,6 @@ class DetailController extends Controller
             throw $exception;
         }
 
-
-        dump($request->title);
-
-        $contents = $request->get('contents');
-
-        dump($contents);
-    
-        dump($request->reviewDate);
-    
-
-        // return back();
-            
-        
 
     }
 

@@ -86,7 +86,9 @@
 @yield('detailContent')
 
         <div class="p-2 docs-highlight">
-            
+            <div class="d-flex justify-content-center">
+                {{ $noUserReviews->links() }}
+            </div>
         </div>
     </div>
 </div>
