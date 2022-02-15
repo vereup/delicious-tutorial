@@ -23,15 +23,14 @@ class MypageController extends Controller
         $id = Auth::id();
         $user = Auth::user();
         $stores = Store::get();
-        $images = Image::get();
         $keyword = null;
-
+        
         $tabIndex = $request->tabIndex;
 
         if ($tabIndex <= 1 || $tabIndex == null){
             $userReviewsCount = Review::where('user_id', $id)->count();
             $userReviews = Review::where('user_id', $id)->paginate(2);
-
+            
             return view('mypage', [
                 'id' => $id,
                 'user' => $user,
@@ -43,17 +42,33 @@ class MypageController extends Controller
                 'keyword' => $keyword
             ]);
         }
-
+        
         else{
             $userWishesCount = Wish::where('user_id', $id)->count();
             $userWishes = Wish::where('user_id', $id)->paginate(2);
+            $images = Image::get();
+            
+            // $query = Wish::where('user_id', $id)->where('store_id','!=','')->get();
+            // $userWishStoreId = array();
+            // foreach($query as $userWish){
+            //     array_push($userWishStoreId, $userWish->store_id);
+            // }
+            // $images = Image::whereIn('store_id', $userWishStoreId)->get();
+            // foreach($userWishStoreId as $eachId){
+            // }
 
-            $userWishesStoreId = Wish::where('user_id', $id)->where('store_id', '!=', '')->get();
-            // $images->whereIn('store_id', $userWishesStoreId);
 
-            dd($userWishesStoreId);
+            // dd($images);
 
-            // ?.? 쿼리빌더 쌒는법.. 1-유저가 2-찜한스토어의 3-이미지의 경로중 첫번째 것들
+
+            // $images = Image::get();
+            // foreach($images as $image){
+            //     foreach($userWishes as $userWish){}
+            //         if($image->store_id == $userWish->store_id){
+                        
+            //         }
+            // }
+
 
             return view('mypage', [
                 'id' => $id,

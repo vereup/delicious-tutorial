@@ -125,9 +125,14 @@
             @foreach ($userWishes as $userWish)
                 @if($userWish->user_id == $user->id) 
                     @php
-                        $store = $stores[$userWish->store_id];
-                        foreach()
-                        $image = $images[$userWish->store_id];
+                        $store = $stores[$userWish->store_id-1];
+
+                        foreach ($images as $image) {
+                            if($image->store_id == $userWish->store_id){
+                                break;
+                            }
+                        }
+
                     @endphp
                     
                     <div class="d-flex border-top border-bottom align-items-center">
