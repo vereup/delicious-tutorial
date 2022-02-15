@@ -14,7 +14,7 @@
         </div>
 
 {{-- 스토어 리뷰 출력 --}}
-        @foreach ($storeReviews as $review)
+        @foreach ($store->reviews as $review)
 
         <div class="d-flex border-top border-bottom mx-1">
             <div class="col-9 ps-3 py-2">
@@ -298,6 +298,18 @@ let reviewDate = $('#reviewDate').val();
 console.log(reviewDate);
 console.log(contents.length);
 
+function getToday(){
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = ("0" + (1 + date.getMonth())).slice(-2);
+    var day = ("0" + date.getDate()).slice(-2);
+
+    return year + "-" + month + "-" + day;
+}
+
+let today = getToday();
+let todayChecker = reviewDate <= today;
+
 
 if (rating == ''){
     alert('평점을 체크해주세요.');
@@ -310,12 +322,12 @@ else if(title == ''){
 }
 
 else if(title.length < 10){
-    alert('5자이상 30자 이하로 작성해주세요.');
+    alert('제목을 5자이상 30자 이하로 작성해주세요.');
     return false;
 }
 
 else if(title.length > 60){
-    alert('5자이상 30자 이하로 작성해주세요.');
+    alert('제목을 5자이상 30자 이하로 작성해주세요.');
     return false;
 }
 
@@ -325,12 +337,12 @@ else if (contents == ''){
 } 
 
 else if(contents.length < 40){
-    alert('20자이상 300자 이하로 작성해주세요.');
+    alert('내용을 20자이상 300자 이하로 작성해주세요.');
     return false;
 }
 
 else if(contents.length > 600){
-    alert('20자이상 300자 이하로 작성해주세요.');
+    alert('내용을 20자이상 300자 이하로 작성해주세요.');
     return false;
 }
 
@@ -339,10 +351,15 @@ else if(reviewDate == ''){
         return false;
 } 
 
+else if(todayChecker != true){
+    alert('오늘 이전 날짜를 체크해주세요');
+        return false;
+} 
+
 
 $('#reviewWriteConfirm').click();
 
-};
+}
 
 
 

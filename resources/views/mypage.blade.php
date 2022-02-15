@@ -26,7 +26,7 @@
   </form>
 
   @if($tabIndex <= 1 || $tabIndex == null)
-        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        <ul class="nav nav-pills mb-3 border-bottom" id="pills-tab" role="tablist">
           <li class="nav-item" role="presentation">
             <button class="nav-link active" id="pills-home-tab" data-coreui-toggle="pill" data-coreui-target="#pills-home" type="button" role="tab" 
             aria-controls="pills-home" aria-selected="true" onclick="submit('reviewForm')" style="width:220px;height:75px;">내 리뷰</button>
@@ -103,7 +103,7 @@
 
 
   @else
-        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        <ul class="nav nav-pills mb-3 border-bottom" id="pills-tab" role="tablist">
           <li class="nav-item" role="presentation">
             <button class="nav-link" id="pills-home-tab" data-coreui-toggle="pill" data-coreui-target="#pills-home" type="button" role="tab" 
             aria-controls="pills-home" aria-selected="false" onclick="submit('reviewForm')" style="width:220px;height:75px;">내 리뷰</button>
@@ -124,40 +124,29 @@
             </div>
             @foreach ($userWishes as $userWish)
                 @if($userWish->user_id == $user->id) 
-                    @php
-                        $store = $stores[$userWish->store_id-1];
-
-                        foreach ($images as $image) {
-                            if($image->store_id == $userWish->store_id){
-                                break;
-                            }
-                        }
-
-                    @endphp
-                    
                     <div class="d-flex border-top border-bottom align-items-center">
                         <div class="col-2 ps-3 py-2">
-                            <img src="{{$image->path}}" class="img-thumbnail">
+                            <img src="{{$userWish->store->images[0]->path}}" class="img-thumbnail">
                         </div>
                         <div class="col-9 ps-3 py-2 align-middle">
-                            <h5 class="card-title">{{$store->name}}</h5>
+                            <h5 class="card-title" onclick ="location.href='/store/{{ $userWish->store->id }}';" style="cursor: pointer;">{{$userWish->store->name}}</h5>
                             <div>
                                 @php
                                     $i = 1;
-                                    while($i <= $store->rating_average){
+                                    while($i <= $userWish->store->rating_average){
                                         echo '<img src="/images/star.png">';
                                         $i = $i + 1;
                                     }
                                     $i = $i-1;
-                                    $j = -($i - $store->rating_average);
+                                    $j = -($i - $userWish->store->rating_average);
                                     if($j > 0.5){
                                         echo '<img src="/images/star_Half.png">';
                                     }
                                 @endphp
                                 
-                                &#40;{{$store->review_count}}&#41;
+                                &#40;{{$userWish->store->review_count}}&#41;
                             </div>
-                            <p class="card-text">{{$store->address}}</p>
+                            <p class="card-text">{{$userWish->store->address}}</p>
                         </div>
                         <div class="col-auto pt-4">
                             {{-- 찜버튼 --}}

@@ -10,25 +10,17 @@
         </div>
         <div class="p-2 flex-fill docs-highlight">
             <div class="d-flex flex-column docs-highlight mb-3">
-                    @if ($categoryList != 'all' || $ratingList != null || $keyword != null )
+                    @if ($categoryList != 'all' || $ratingList != 'all' || $keyword != null )
                     <div class="m-2 mt-0 docs-highlight bg-white">
                         @include('layouts.filter')
                     </div>
                     @endif
                 <div class="m-2 mt-0 docs-highlight">
-                    <div class="d-flex flex-wrap justify-content-between">
-                        {{-- ??마지막카드 정렬?? --}}
+                    <div class="d-flex flex-wrap">
                         @foreach ($stores as $store)
                         {{-- 맛집카드 --}}
-                        <div class="card rounded my-1" style="width: 18rem;">
-                            <a href="/store/{{$store->id}}">                                 
-                                    @foreach ($images as $image)
-                                        @if($image->store_id == $store->id)
-                                            <img src="{{$image->path}}" class="card-img-top border-bottom w-100" alt="store->name">
-                                            @break
-                                        @endif
-                                    @endforeach
-                            </a>
+                        <div class="card rounded m-2 w-auto">
+                            <a href="/store/{{$store->id}}"><img src="{{$store->images[0]->path}}" class="card-img-top border-bottom w-100" alt="store->name"></a>
                                 @guest
                                 <div class="p-2 bg-white" style="position: absolute; top: 10px; right: 10px; border: 1px solid #A0A0A0; border-radius: 50%;">
                                 <img type="button" src="/images/whiteheart.png" width="23" height="26" onclick="alert('로그인해주세요');" id="heart{{ $store->id }}" value="1">
@@ -51,23 +43,18 @@
                                 <div class="p-2 bg-white" style="position: absolute; top: 10px; right: 10px; border: 1px solid #A0A0A0; border-radius: 50%;">
                                     <img type="button" name="{{ $store->id }}" class="wishHeart" src="/images/whiteheart.png" width="23" height="26" value="1";>
                                 </div>
-        
                                 @endif
                                 @endguest
                             <div class="card-body">
                                 <a class="card-title" href="/store/{{$store->id}}" style="color :black; text-decoration : none; font-weight: bold; font-size: 18px;"
                                     ><p class="mb-0">{{ $store->name }}</p></a>
                                     <a class="stars" value="{{ $store->rating_average }}">{{ $store->rating_average }}<a id="starHalf"></a></a> 
-                                    {{-- <a id="star_{{ $store->id }}">{{ $store->id }}<a id="starHalf_{{ $store->id }}"></a></a>  --}}
-                                    {{--  찜 카운트에 따라 변경  --}}
                                     <span class="ms-1">	&#40;{{ $store->review_count }}&#41;</span>
                                     <br>
                                     <p class="card-text">{{ $store->address }}</p>
                             </div>
                         </div>
                         @endforeach
-
-
                     </div>
                 </div>
             </div>

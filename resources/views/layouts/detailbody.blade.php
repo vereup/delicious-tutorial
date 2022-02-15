@@ -18,11 +18,15 @@
                                     class="p-2 bg-white"
                                     style="border: 1px solid #A0A0A0; border-radius: 50%;">
                                     <div>
+                                        @guest
+                                        <img src="/images/whiteheart.png" onclick="alert('로그인해주세요');" name="{{ $store->id }}" value="1" width="25" height="25">
+                                        @else
                                         @if($userWish == true)
                                         <img src="/images/redheart.png" onclick="heartChange(this.id)" name="{{ $store->id }}" value="2" width="25" height="25" id="heart">
                                         @else
                                         <img src="/images/whiteheart.png" onclick="heartChange(this.id)" name="{{ $store->id }}" value="1" width="25" height="25" id="heart">
                                         @endif
+                                        @endguest
                                 </div>
                             </button>
                         </div>
@@ -38,12 +42,12 @@
                                     <div class="carousel-inner">
                                             <div class="carousel-item active text-center">
                                             <img
-                                                src="{{$firstImagePath}}"
+                                                src="{{$store->images[0]->path}}"
                                                 width="550"
                                                 height="350">
                                                         
                                             </div>
-                                        @foreach ($storeImages as $storeImage)
+                                        @foreach ($store->images as $storeImage)
                                             @if ($loop->first)
                                                 @continue
                                             @endif
@@ -76,7 +80,7 @@
                             </div>
 
                             <div class="p-2 pt-3 ps-4">
-                                <p class="text-start">{{$storeCategory->name}}</p>
+                                <p class="text-start">{{$store->category->name}}</p>
                                 <p class="text-start">{{$store->introduction}}</p>
                             </div>
                         </div>

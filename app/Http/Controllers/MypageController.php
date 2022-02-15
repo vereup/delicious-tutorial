@@ -22,7 +22,6 @@ class MypageController extends Controller
 
         $id = Auth::id();
         $user = Auth::user();
-        $stores = Store::get();
         $keyword = null;
         
         $tabIndex = $request->tabIndex;
@@ -34,7 +33,6 @@ class MypageController extends Controller
             return view('mypage', [
                 'id' => $id,
                 'user' => $user,
-                'stores' => $stores,
                 'userReviews' => $userReviews,
                 'userReviewsCount' => $userReviewsCount,
                 'request' => $request,
@@ -46,7 +44,9 @@ class MypageController extends Controller
         else{
             $userWishesCount = Wish::where('user_id', $id)->count();
             $userWishes = Wish::where('user_id', $id)->paginate(2);
-            $images = Image::get();
+
+            
+
             
             // $query = Wish::where('user_id', $id)->where('store_id','!=','')->get();
             // $userWishStoreId = array();
@@ -73,8 +73,6 @@ class MypageController extends Controller
             return view('mypage', [
                 'id' => $id,
                 'user' => $user,
-                'stores' => $stores,
-                'images' => $images,
                 'userWishes' => $userWishes,
                 'userWishesCount' => $userWishesCount,
                 'request' => $request,

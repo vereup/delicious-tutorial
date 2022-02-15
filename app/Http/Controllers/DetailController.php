@@ -25,33 +25,33 @@ class DetailController extends Controller
         $loginUser = Auth::user();
         $user_id = Auth::id();
         $store = Store::find($request->storeId);
-        $storeCategory = Category::find($store->category_id);
-        $storeImages = Image::where('store_id', $request->storeId)->get();
-        $storeReviews = Review::where('store_id', $request->storeId)->get();
         $userWish = Wish::where('store_id', $request->storeId)->where('user_id',Auth::id())->exists();
-        // $userReviews = Auth::user()->reviews()->get();
-        $userReviews = $storeReviews->where('user_id', $user_id);
+        $userReviews = Review::where('store_id', $request->storeId)->where('user_id', $user_id)->get();
         $noUserReviews = Review::where('store_id', $request->storeId)->where('user_id', '!=', $user_id)->paginate(2);
         
-        // $noUserReviews = $storeReviews->diff($userReviews)->paginate(2);
         $reviewCount = $userReviews->count();
-        $firstImagePath = ($storeImages->first())->path;
         $keyword = null;
-
+        
+        // $firstImagePath = ($storeImages->first())->path;
+        // $storeCategory = Category::find($store->category_id);
+        // $storeImages = Image::where('store_id', $request->storeId)->get();
+        // $userReviews = Auth::user()->reviews()->get();
+        // $storeReviews = Review::where('store_id', $request->storeId)->get();
+        // $noUserReviews = $storeReviews->diff($userReviews)->paginate(2);
 
         return view('detail', [
             'store' => $store,
-            'storeCategory' => $storeCategory, 
-            'storeImages' => $storeImages,
-            'storeReviews' => $storeReviews,
             'userReviews' => $userReviews,
             'loginUser' => $loginUser,
             'reviewCount' => $reviewCount,
-            'firstImagePath' => $firstImagePath,
             'keyword' => $keyword,
             'userWish' => $userWish,
             'noUserReviews' => $noUserReviews
             
+            // 'firstImagePath' => $firstImagePath,
+            // 'storeCategory' => $storeCategory, 
+            // 'storeImages' => $storeImages,
+            // 'storeReviews' => $storeReviews,
         ]);
 
     }

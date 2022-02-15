@@ -9,8 +9,8 @@
                         <input type="hidden" id="categoryList" name="categoryList" value="">
                     @foreach ($categories as $category)
                     <li class="list-group-item">
-                        
-                        <input class="form-check-input me-1 category" type="checkbox" name="category" value="{{ $category->id }}" id="category_{{ $category->id }}">
+                        <input class="form-check-input me-1 category" type="checkbox" name="category" 
+                        value="{{ $category->id }}" id="category_{{ $category->id }}">
                         <label class="form-check-label" style="color: black; font-size:15px;">{{ $category->name }}</label>
                     </li>
                     @endforeach
@@ -25,11 +25,10 @@
             <li class="nav-title" style="font-size: 18px;">평점</li>
             <li class="nav-item nav-group bg-white">
                 <ul class="list-group p-0">
-
                         <input type="hidden" id="ratingList" name="ratingList" value="">
                     @for($i=0;$i<5;$i++)
                     <li class="list-group-item">
-                        <input class="form-check-input me-1 rating" type="checkbox" name="rating_{{ $i+1 }}" value="{{ $i+1 }}" id="rating_{{ $i }}">
+                        <input class="form-check-input me-1 rating" type="checkbox" name="rating" value="{{ $i+1 }}" id="rating_{{ $i+1 }}">
                             @for($j=0;$j<=$i;$j++)
                                 <img src="/images/star.png">
                             @endfor
@@ -51,18 +50,25 @@
 //키워드 입력시 서버전송
 $("#keywordButton").click(function(){
 
-let search = $("#search").val();
-if (search != ''){
-$("#keyword").val(search);
-}
+    let search = $("#search").val();
+    if (search != ''){
+    $("#keyword").val(search);
+    }
 
-let list = new Array();
-$("input[name=category]:checked").each(function(index, item){
-    list.push($(item).val());
-});
-$("#categoryList").val(list);
+    let categoryList = new Array();
+    $("input[name=category]:checked").each(function(index, item){
+        categoryList.push($(item).val());
+    });
+    $("#categoryList").val(categoryList);
 
-$("#Form").submit();
+    let ratingList = new Array();
+    $("input[name=rating]:checked").each(function(index, item){
+        ratingList.push($(item).val());
+    });
+    $("#ratingList").val(ratingList);
+
+
+    $("#Form").submit();
 
 });
 
@@ -80,6 +86,15 @@ $(".category").change(function() {
         list.push($(item).val());
     });
     $("#categoryList").val(list);
+
+
+    let ratingList = new Array();
+    $("input[name=rating]:checked").each(function(index, item){
+        ratingList.push($(item).val());
+    });
+    $("#ratingList").val(ratingList);
+
+
     $("#Form").submit();
 });
 
@@ -95,7 +110,17 @@ $(".rating").change(function() {
     $("input[name=category]:checked").each(function(index, item){
         list.push($(item).val());
     });
+
     $("#categoryList").val(list);
+
+    let ratingList = new Array();
+    $("input[name=rating]:checked").each(function(index, item){
+        ratingList.push($(item).val());
+    });
+    $("#ratingList").val(ratingList);
+
+
+
     $("#Form").submit();
 });
 
@@ -109,46 +134,16 @@ categoryList.forEach(selectId => {
 });
 }
 
+let ratingList = @json($ratingList);
 
-let rating_1 = @json($rating_1);
-if(rating_1 !== null){
-    document.getElementById('rating_0').setAttribute('checked', 'checked');
-}
-else{
-    document.getElementById('rating_0').removeAttribute('checked');
-}
-
-let rating_2 = @json($rating_2);
-if(rating_2 !== null){
-    document.getElementById('rating_1').setAttribute('checked', 'checked');
-}
-else{
-    document.getElementById('rating_1').removeAttribute('checked');
+if(ratingList != 'all'){
+ratingList.forEach(selectId => {
+    console.log(selectId);
+    document.getElementById('rating_'+selectId+'').setAttribute('checked', 'checked');
+});
 }
 
-let rating_3 = @json($rating_3);
-if(rating_3 !== null){
-    document.getElementById('rating_2').setAttribute('checked', 'checked');
-}
-else{
-    document.getElementById('rating_2').removeAttribute('checked');
-}
 
-let rating_4 = @json($rating_4);
-if(rating_4 !== null){
-    document.getElementById('rating_3').setAttribute('checked', 'checked');
-}
-else{
-    document.getElementById('rating_3').removeAttribute('checked');
-}
-
-let rating_5 = @json($rating_5);
-if(rating_5 !== null){
-    document.getElementById('rating_4').setAttribute('checked', 'checked');
-}
-else{
-    document.getElementById('rating_4').removeAttribute('checked');
-}
 
 
 
