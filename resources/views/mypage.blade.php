@@ -12,7 +12,7 @@
     <div class="container p-2">
         <div class="d-flex flex-column" style="background-color: white">
             <div class="p-2 docs-highlight">
-                <p class="fs-2 fw-bold p-4">{{$user->name}} &#40;{{$user->email}}&#41;</p>
+                <p class="fs-2 fw-bold p-4">{{$user->name}} 님&#40;{{$user->email}}&#41;</p>
             </div>
             <div class="p-2 docs-highlight">
                 
@@ -29,11 +29,11 @@
         <ul class="nav nav-pills mb-3 border-bottom" id="pills-tab" role="tablist">
           <li class="nav-item" role="presentation">
             <button class="nav-link active" id="pills-home-tab" data-coreui-toggle="pill" data-coreui-target="#pills-home" type="button" role="tab" 
-            aria-controls="pills-home" aria-selected="true" onclick="submit('reviewForm')" style="width:220px;height:75px;">내 리뷰</button>
+            aria-controls="pills-home" aria-selected="true" onclick="submit('reviewForm')" style="width:220px;height:75px;border-radius: 10px 10px 0px 0px / 10px 10px 0px 0px;">내 리뷰</button>
           </li>
           <li class="nav-item" role="presentation">
             <button class="nav-link" id="pills-profile-tab" data-coreui-toggle="pill" data-coreui-target="#pills-profile" type="button" role="tab" 
-            aria-controls="pills-profile" aria-selected="false" onclick="submit('wishForm')" style="width:220px;height:75px;">찜 목록</button>
+            aria-controls="pills-profile" aria-selected="false" onclick="submit('wishForm')" style="width:220px;height:75px;border-radius: 10px 10px 0px 0px / 10px 10px 0px 0px;">찜 목록</button>
           </li>
         </ul>
         <div class="tab-content" id="pills-tabContent">
@@ -121,12 +121,14 @@
                 <h2 class="fs-5 fw-bold ps-4 pt-4 pb-2">찜 목록 &#40;
                     {{$userWishesCount}}
                     &#41;</h2>
-            </div>
+                </div>
+                <div class="d-flex border-bottom align-items-center">
+                </div>
             @foreach ($userWishes as $userWish)
                 @if($userWish->user_id == $user->id) 
-                    <div class="d-flex border-top border-bottom align-items-center">
+                    <div class="d-flex border-bottom align-items-center">
                         <div class="col-2 ps-3 py-2">
-                            <img src="{{$userWish->store->images[0]->path}}" class="img-thumbnail">
+                            <img src="{{$userWish->store->images[0]->path}}" class="img-thumbnail border-0">
                         </div>
                         <div class="col-9 ps-3 py-2 align-middle">
                             <h5 class="card-title" onclick ="location.href='/store/{{ $userWish->store->id }}';" style="cursor: pointer;">{{$userWish->store->name}}</h5>
@@ -206,11 +208,9 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title fw-bold fs-3">리뷰수정</h5>
-                                <button
-                                    type="button"
-                                    class="btn-close"
-                                    data-coreui-dismiss="modal"
-                                    aria-label="Close"></button>
+                                <div data-coreui-dismiss="modal" aria-label="Close" style="cursor: pointer">
+                                    <span class="fw-bold">X</span>
+                                </div>
                             </div>
                             <div class="modal-body">
                                 <form method="POST" id="modifyForm" action="{{ route('modifyReview') }}">
@@ -291,6 +291,7 @@
 
 function submit(id){
     document.getElementById(id).submit();
+    // documnet.getElementById('pills-home-tab').innerHTML()
 }
 
 // var myModalEl = document.getElementById('myModal')

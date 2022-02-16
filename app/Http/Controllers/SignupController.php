@@ -23,7 +23,6 @@ class SignupController extends Controller
             $request->validate([
                 'checkEmail' => 'bail|string',
             ]);
-
             
             if(!User::where('email', '=', $request->checkEmail)->exists()) {
                 $checkEmail = 'ok';

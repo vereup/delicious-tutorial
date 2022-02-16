@@ -176,7 +176,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title fw-bold fs-3">리뷰수정</h5>
-                <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
+                <div data-coreui-dismiss="modal" aria-label="Close" style="cursor: pointer">
+                    <span class="fw-bold">X</span>
+                </div>
             </div>
             <div class="modal-body">
                 <div class="mb-3">
@@ -222,7 +224,7 @@
                 <p class="fw-bold text-center">리뷰를 작성하시겠습니까?</p>
             </div>
             <div class="modal-footer" style="justify-content: center;">
-                <button type="button" class="btn btn-dark rounded-pill btn-primary px-4" onclick="document.getElementById('reviewWriteConfirmOk').click();">확인</button>
+                <button type="button" class="btn btn-dark rounded-pill btn-primary px-4" onclick="reviewWrite()" data-coreui-dismiss="modal">확인</button>
                 <button type="button" class="btn btn-gray rounded-pill btn-secondary px-4" data-coreui-dismiss="modal">취소</button>
             </div>
         </div>
@@ -321,12 +323,12 @@ else if(title == ''){
         return false;
 }
 
-else if(title.length < 10){
+else if(title.length < 5){
     alert('제목을 5자이상 30자 이하로 작성해주세요.');
     return false;
 }
 
-else if(title.length > 60){
+else if(title.length > 30){
     alert('제목을 5자이상 30자 이하로 작성해주세요.');
     return false;
 }
@@ -336,12 +338,12 @@ else if (contents == ''){
         return false;
 } 
 
-else if(contents.length < 40){
+else if(contents.length < 20){
     alert('내용을 20자이상 300자 이하로 작성해주세요.');
     return false;
 }
 
-else if(contents.length > 600){
+else if(contents.length > 300){
     alert('내용을 20자이상 300자 이하로 작성해주세요.');
     return false;
 }
@@ -362,10 +364,35 @@ $('#reviewWriteConfirm').click();
 }
 
 
+// 스토어카드 별찍기
 
+$('.stars').each(function(){
+    let star = parseInt($(this).text());
+    let halfStar = ($(this).text() - star) * 10;
+    $(this).text('');
+    for(i=0;i<star;i++){
+        $(this).append('<img src="/images/star.png">');
+    }
+    if(halfStar >=5){
+        $(this).append('<img src="/images/star_half.png">');
+    }
+    console.log(star);
+    console.log(halfStar);
+});
 
+// // 전화번호 형식변경 
 
+var number = $('#telephone').text(); 
+$('#telephone').text(number.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`));
 
+// 리뷰 평점 전달
+
+function reviewWrite(){
+
+    var test = $('#reviewWriteConfirmOk').click();
+    console.log(test);
+
+}
         // // 찜하트 변경
 
         // function heartChange(id) {

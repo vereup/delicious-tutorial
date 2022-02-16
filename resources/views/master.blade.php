@@ -3,7 +3,7 @@
 @section('content')
 
 
-<div class="container-fluid">
+<div class="container-fluid position-relative" style="background-color: #E5E5E5">
     <div class="d-flex flex-row docs-highlight mx-0 mb-0" style="background-color: #E5E5E5">
         <div class="p-2 docs-highlight">
             @include('layouts.sidebar') 
@@ -52,7 +52,7 @@
                                     <span class="ms-1">	&#40;{{ $store->review_count }}&#41;</span>
                                     <br>
                                     <p class="card-text">{{ $store->address }}</p>
-                            </div>
+                        </div>
                         </div>
                         @endforeach
                     </div>
@@ -60,6 +60,8 @@
             </div>
         </div>
     </div>  
+    <div class="rounded-circle mb-3 me-3 p-0 bg-white text-center position-absolute bottom-0 end-0" style="z-index:99999999; width: 40px; height: 40px; border: 1px solid #A0A0A0; border-radius: 50%; cursor:pointer;" 
+            onclick="window.scrollTo(0,0);"><span class="fs-2">^</span></div>
 </div>
 
 

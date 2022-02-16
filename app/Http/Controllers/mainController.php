@@ -32,7 +32,7 @@ class MainController extends Controller
         // // 검색어입력
 
         if($request->keyword != null){
-            $stores = Store::where('name', $request->keyword)->get();
+            $stores = Store::where('name', 'like', "%{$request->keyword}%")->get();
             $keyword = $request->keyword;
         }
 
@@ -60,7 +60,7 @@ class MainController extends Controller
             foreach($ratingList as $rating){
 
                 $number = $rating - 0;
-                $filtered_rating = $stores->whereBetween('rating_average', [($number-1),$number]);
+                $filtered_rating = $stores->whereBetween('rating_average', [$number,($number+0.999)]);
                 if($filtered_stores != null){
                     $filtered_stores = $filtered_stores->merge($filtered_rating);
                 }
@@ -77,7 +77,6 @@ class MainController extends Controller
         if($filtered_stores != null){
             $stores = $filtered_stores;
         }
-        
         $storeCounts = $stores->count();
         $userWishCount = $userWishes->count();
 

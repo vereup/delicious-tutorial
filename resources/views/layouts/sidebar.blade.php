@@ -1,14 +1,14 @@
 <div class="m-2">
-    <div class="sidebar sidebar-show">
+    <div class="sidebar sidebar-show rounded-3 shadow">
         <ul class="sidebar-nav" data-coreui="navigation">
-            <li class="nav-title" style="font-size: 18px;">카테고리</li>
-            <li class="nav-item nav-group bg-white">
+            <li class="nav-title my-2 text-white" style="font-size: 18px;">카테고리</li>
+            <li class="nav-item nav-group bg-white rounded-bottom">
                 <ul class="list-group p-0">
                     <form method="GET" id="Form" action={{ route('home') }}>
                         @csrf
                         <input type="hidden" id="categoryList" name="categoryList" value="">
                     @foreach ($categories as $category)
-                    <li class="list-group-item">
+                    <li class="list-group-item py-3 border-0 rounded-bottom">
                         <input class="form-check-input me-1 category" type="checkbox" name="category" 
                         value="{{ $category->id }}" id="category_{{ $category->id }}">
                         <label class="form-check-label" style="color: black; font-size:15px;">{{ $category->name }}</label>
@@ -20,14 +20,14 @@
     </div>
     <div class="my-2"></div>
 
-    <div class="sidebar sidebar-show">
+    <div class="sidebar sidebar-show rounded-3 shadow">
         <ul class="sidebar-nav" data-coreui="navigation">
-            <li class="nav-title" style="font-size: 18px;">평점</li>
-            <li class="nav-item nav-group bg-white">
+            <li class="nav-title my-2 text-white" style="font-size: 18px;">평점</li>
+            <li class="nav-item nav-group bg-white rounded-bottom">
                 <ul class="list-group p-0">
                         <input type="hidden" id="ratingList" name="ratingList" value="">
                     @for($i=0;$i<5;$i++)
-                    <li class="list-group-item">
+                    <li class="list-group-item py-3 border-0 rounded-bottom">
                         <input class="form-check-input me-1 rating" type="checkbox" name="rating" value="{{ $i+1 }}" id="rating_{{ $i+1 }}">
                             @for($j=0;$j<=$i;$j++)
                                 <img src="/images/star.png">

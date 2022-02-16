@@ -27,7 +27,7 @@
                     --cui-pagination-active-bg: #455A64;
                     --cui-pagination-active-border-color:#455A64;
                 }
-    
+
             </style>
         <title>Delicious</title>
     </head>
@@ -39,9 +39,6 @@
 
         <main>
             @yield('content')
-            <div class="rounded-circle mb-1 me-4 p-0 bg-white text-center" style="position:fixed;bottom:10px;right:10px;z-index:99999999; width: 40px; height: 40px; border: 1px solid #A0A0A0; border-radius: 50%; cursor:pointer;" 
-            onclick="window.scrollTo(0,0);"><span class="fs-2">^</span></div>
-
         </main>
 
         <footer>

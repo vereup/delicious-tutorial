@@ -10,6 +10,8 @@ use App\Models\Category;
 use App\Models\Store;
 use App\Models\Image;
 use App\Models\Wish;
+use App\Models\Address;
+use App\Models\County;
 
 
 class AdminController extends Controller
@@ -20,10 +22,13 @@ class AdminController extends Controller
 
         $keyword = null;
 
-
         $filtered_stores = Store::where('name', $request->name)->where('category_id', $request->categoryId)->where('address', $request->address)->paginate(5);
 
         $categories = Category::get();
+
+        $addresses = Address::get();
+
+        $counties = County::get();
         
 
         if($filtered_stores->count() > 0){
@@ -41,7 +46,9 @@ class AdminController extends Controller
 
             'keyword' => $keyword,
             'stores' => $stores,
-            'categories' => $categories
+            'categories' => $categories,
+            'addresses' => $addresses,
+            'counties' => $counties
 
             
 
@@ -51,8 +58,6 @@ class AdminController extends Controller
 
     public function registStores(Request $request){
 
-        
-        
         $keyword = null;
         
         $categories = DB::table('catogories')->select('name')->get();

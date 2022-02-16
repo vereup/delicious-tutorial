@@ -1,23 +1,21 @@
 @extends('layouts.main')
 
 @section('content')
-{{-- <div class="c-header">{{ __('Register') }}</div> --}}
-<div class="c-body" style="background-color: #E5E5E5">
+
+<div class="py-1" style="background-color: #E5E5E5">
     <form method="POST" id="signupForm" action="{{ route('register') }}">
         @csrf
         <div class="container-fluid">
-            <div class="d-flex justify-content-center"
-                <div class="p-2 docs-highlight">
-                    <div class="d-flex flex-column docs-highlight p-3 my-3 w-50" style="background:white;">
+            <div class="d-flex justify-content-center">
+                    <div class="d-flex flex-column docs-highlight p-3 mt-3 mb-1 w-50" style="background:white;">
                         <div class="p-2 docs-highlight border-bottom">
                             <h5 class="fw-bold fs-3">회원가입</h5>
                         </div>
-                     
                         <div class="p-2 docs-highlight mt-4">
                             <label for="email" class="form-label">이메일</label>
                             <div class="input-group">
                                 <input id="emailSignup" type="email" class="form-control @error('email') is-invalid @enderror" 
-                                name="email" value="{{ old('email') }}" required autocomplete="email">
+                                name="email" value="{{ old('email') }}" autofocus placeholder="이메일" required autocomplete="email">
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -44,7 +42,7 @@
                         </div>
                         <div class="p-2 docs-highlight">
                             <label for="name" class="form-label">이름</label>
-                            <input type="text" class="form-control" id="name"  @error('name') is-invalid @enderror name="name" value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="이름">
+                            <input type="text" class="form-control" id="name"  @error('name') is-invalid @enderror name="name" value="{{ old('name') }}" required autocomplete="name" placeholder="이름">
                             @error('name')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -63,7 +61,6 @@
                             data-coreui-target="#signCheckModal">My Button</button>
                         </div>
                     </div>
-                </div>
             </div>  
         {{-- 회원가입확인모달 --}}
         <div class="modal" tabindex="-1" id="signCheckModal">
@@ -73,8 +70,7 @@
                         <p class="fw-bold text-center">입력하신 정보로 회원가입하시겠습니까?</p>
                     </div>
                     <div class="modal-footer" style="justify-content: center;">
-                        
-                        <button type="submit" class="btn btn-dark rounded-pill btn-primary">{{ __('Register') }}</button>
+                        <button type="submit" class="btn btn-dark rounded-pill btn-primary">{{ __('회원가입') }}</button>
                         <button type="button" class="btn btn-gray rounded-pill btn-secondary px-4"
                         data-coreui-dismiss="modal">취소</button>
                     </div>
@@ -82,17 +78,10 @@
             </div>
         </div>
         {{-- 회원가입확인모달 끝 --}}
-        </div>
     </form>
-
-    {{-- <form method="POST" id="checkEmail" action="{{ route('signup') }}">
-        @csrf
-        <input type="hidden" id="emailPost" name="emailPost" value=""> 
-    </form> --}}
-
 </div>
-
 @endsection
+
 <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 
 <script>
@@ -150,8 +139,11 @@ function formCheck(event){
     let passwordConfirm = $('#passwordCheck').val();
     let name = $('#name').val();
 
-    var regPassword = /[a-zA-Z0-9]/;
-// p암호 정규식 확인
+    console.log(password);
+
+    var regPassword = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,12}$/;
+
+
     
     if (email = null){
         alert('이메일을 입력해주세요.');
@@ -163,12 +155,12 @@ function formCheck(event){
             return false;
     }
 
-    else if (password = null){
+    else if (password == ''){
         alert('비밀번호를 입력해주세요.');
             return false;
     } 
     
-    else if(regPassword.test(password)!=true){
+    else if(regPassword.test($('#passwordSignup').val())!=true){
         alert('비밀번호를 6자리 이상, 12자리 이하, 숫자와 영문을 포함해 설정해주세요.');
             return false;
     } 

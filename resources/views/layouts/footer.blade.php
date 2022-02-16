@@ -1,4 +1,4 @@
-<div class="footer bg-white py-4 justify-content-center">
+<div class="footer bg-white border-0 pt-3 justify-content-center">
     <div>
         <span>Hug management &copy; 2021</span>
     </div>
