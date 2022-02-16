@@ -389,8 +389,8 @@ $('#telephone').text(number.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\
 
 function reviewWrite(){
 
-    var test = $('#reviewWriteConfirmOk').click();
-    console.log(test);
+    event.preventDefault();
+    $('#reviewWriteConfirmOk').click();
 
 }
         // // 찜하트 변경

@@ -18,10 +18,6 @@ class DetailController extends Controller
 {
     public function getStoreDatas(Request $request){
 
-        
-
-        
-        
         $loginUser = Auth::user();
         $user_id = Auth::id();
         $store = Store::find($request->storeId);
@@ -68,8 +64,8 @@ class DetailController extends Controller
         try {
 
             $request->validate([
-                'title' => 'bail|string|required|between:10,60',
-                'contents' => 'bail|required|string|between:40,600',
+                'title' => 'bail|required|between:5,30',
+                'contents' => 'bail|required|between:20,300',
                 'reviewDate' => 'bail|required|date',
             ]);
             

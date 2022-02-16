@@ -106,11 +106,11 @@
         <ul class="nav nav-pills mb-3 border-bottom" id="pills-tab" role="tablist">
           <li class="nav-item" role="presentation">
             <button class="nav-link" id="pills-home-tab" data-coreui-toggle="pill" data-coreui-target="#pills-home" type="button" role="tab" 
-            aria-controls="pills-home" aria-selected="false" onclick="submit('reviewForm')" style="width:220px;height:75px;">내 리뷰</button>
+            aria-controls="pills-home" aria-selected="false" onclick="submit('reviewForm')" style="width:220px;height:75px;border-radius: 10px 10px 0px 0px / 10px 10px 0px 0px;">내 리뷰</button>
           </li>
           <li class="nav-item" role="presentation">
             <button class="nav-link active" id="pills-profile-tab" data-coreui-toggle="pill" data-coreui-target="#pills-profile" type="button" role="tab" 
-            aria-controls="pills-profile" aria-selected="true" onclick="submit('wishForm')" style="width:220px;height:75px;">찜 목록</button>
+            aria-controls="pills-profile" aria-selected="true" onclick="submit('wishForm')" style="width:220px;height:75px;border-radius: 10px 10px 0px 0px / 10px 10px 0px 0px;">찜 목록</button>
           </li>
         </ul>
         
