@@ -19,8 +19,8 @@ class StoreSeeder extends Seeder
                 'name' => '수박화채 1호점',
                 'introduction' => '맛잇어요',
                 'telephone_number' => '021231234',
-                'rating_average' => 4.7,
-                'review_count' => 30,
+                'rating_average' => 4.0,
+                'review_count' => 1,
                 'address' => '서울시 영등포구'
             ],
             [
@@ -30,8 +30,8 @@ class StoreSeeder extends Seeder
                 'name' => '라멘집',
                 'introduction' => '맛잇어요 굿',
                 'telephone_number' => '025119129',
-                'rating_average' => 3.7,
-                'review_count' => 1242,
+                'rating_average' => 5.0,
+                'review_count' => 2,
                 'address' => '서울시 종로구'
             ],
             [
@@ -41,8 +41,8 @@ class StoreSeeder extends Seeder
                 'name' => '베이커리&샌드위치',
                 'introduction' => '샌드위치 맛잇어요',
                 'telephone_number' => '021239229',
-                'rating_average' => 4.1,
-                'review_count' => 128,
+                'rating_average' => 4.0,
+                'review_count' => 1,
                 'address' => '서울시 강동구'
             ],
             [
@@ -52,8 +52,8 @@ class StoreSeeder extends Seeder
                 'name' => '샤브샤브&훠궈',
                 'introduction' => '샤브샤브 맛잇어요',
                 'telephone_number' => '024454559',
-                'rating_average' => 4.8,
-                'review_count' => 76,
+                'rating_average' => 4.0,
+                'review_count' => 1,
                 'address' => '서울시 금천구'
             ],
             [
@@ -63,8 +63,8 @@ class StoreSeeder extends Seeder
                 'name' => '도너츠',
                 'introduction' => '도너츠 맛잇어요',
                 'telephone_number' => '021139753',
-                'rating_average' => 4.2,
-                'review_count' => 321,
+                'rating_average' => 4.0,
+                'review_count' => 1,
                 'address' => '서울시 강남구'
             ],
             [
@@ -74,8 +74,8 @@ class StoreSeeder extends Seeder
                 'name' => '스테이크',
                 'introduction' => '스테이크 맛잇어요',
                 'telephone_number' => '023232312',
-                'rating_average' => 4.9,
-                'review_count' => 29,
+                'rating_average' => 4.0,
+                'review_count' => 2,
                 'address' => '서울시 서초구'
             ]
         ];

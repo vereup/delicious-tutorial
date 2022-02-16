@@ -69,12 +69,42 @@ class DetailController extends Controller
                 'reviewDate' => 'bail|required|date',
             ]);
             
+            
             DB::beginTransaction();
             
-            $review = Review::insert(['user_id' =>$user_id, 'store_id' => $request->storeId, 'title' => $request->title, 
+            $store = Store::find($request->storeId);
+            
+            
+            if ($store->id !== intval($request->storeId)) {
+                Session::flash('error', '올바르지않은 접근방법입니다.');
+                return redirect()->back();
+            }
+            
+            Review::insert(['user_id' =>$user_id, 'store_id' => $request->storeId, 'title' => $request->title, 
             'contents' => $request->contents, 'been_date' => $request->reviewDate, 'rating' => $request->rating]);
+            
+            $store->increment('review_count');
+            
+            if($store->rating_average == 0.0){
+                $store->rating_average = $request->rating;
+            }
 
-                        
+            else {
+
+                $reviews = Review::where('store_id', $request->storeId)->get();
+
+                $sum = 0;
+                foreach($reviews as $review){
+                    $sum = $sum + $review->rating;
+                }
+                $avarage = 0;
+                $average = $sum / $reviews->count();
+                $store->rating_average = $average;
+                
+            }
+
+            $store->save();
+            
             DB::commit();
 
             return redirect()->back()->with('success','리뷰가 추가되었습니다.');;

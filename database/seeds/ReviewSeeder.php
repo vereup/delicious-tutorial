@@ -45,7 +45,7 @@ class ReviewSeeder extends Seeder
                 'been_date' => 20220120
             ],
             [
-                'store_id' => 6,
+                'store_id' => 5,
                 'user_id' => 1,
                 'title' => '굿굿굿1',
                 'contents' => '너무 맛있더라구요1',
@@ -73,7 +73,7 @@ class ReviewSeeder extends Seeder
                 'user_id' => 3,
                 'title' => '우왕 굿굿굿3',
                 'contents' => '너무 왕맛있더라구요3',
-                'rating' => 3,
+                'rating' => 5,
                 'been_date' => 20220120
             ],
 

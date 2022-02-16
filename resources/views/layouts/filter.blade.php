@@ -13,6 +13,7 @@
           @endif
           @endforeach
         @endforeach
+            <span class="fs-6 text-black-50 align-self-left" style="cursor: pointer">X</span>
         </button>
         @endif
         @if ($ratingList != 'all' )
