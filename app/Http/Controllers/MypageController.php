@@ -138,11 +138,52 @@ class MypageController extends Controller
             
             $review = Review::find($request->deleteReviewId);
             
-            if ($review->id != $request->deleteReviewId) {
-                return redirect()->back()->with('error','리뷰 아이디 확인필요');;
+            // if ($review->id != $request->deleteReviewId) {
+                //     return redirect()->back()->with('error','리뷰 아이디 확인필요');;
+                // }
+                
+                $review->store->decrement('review_count');
+                
+                $store = $review->store;
+                
+                $review->delete();
+            // dd($review->store->id);
+            
+            $reviews = Review::where('store_id', $store->id)->get();
+
+
+            if($store->review_count == 0){
+                // $review->store->update(['rating_average' => 0.0]);
+                dd($store->rating_average);
+                $store->rating_average = 0.0;
             }
             
-            $review->delete();
+            else {
+                // $storeId = $review->store->id;
+                $sum = 0;
+                foreach($reviews as $eachReview){
+                    $sum = $sum + $eachReview->rating;
+                }
+                
+                $average = 0;
+                $average = $sum / $reviews->count();
+                $store->rating_average = $average;
+                // dd($review->store->rating_average);
+                // $review->store->update(['rating_average' => $average]);
+
+                // Store::find(5)->update(['rating_avarage' => $average]);
+                // dd($sum);
+                // dd($reviews->count());
+                // dump($review->store->rating_average);
+                // dump($average);
+
+            }
+
+
+
+            $store->save();
+
+
             
             DB::commit();
 

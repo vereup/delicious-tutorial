@@ -97,7 +97,7 @@ class DetailController extends Controller
                 foreach($reviews as $review){
                     $sum = $sum + $review->rating;
                 }
-                $avarage = 0;
+                $average = 0;
                 $average = $sum / $reviews->count();
                 $store->rating_average = $average;
                 

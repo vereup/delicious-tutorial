@@ -15,7 +15,7 @@
                             <label for="email" class="form-label">이메일</label>
                             <div class="input-group">
                                 <input id="emailSignup" type="email" class="form-control @error('email') is-invalid @enderror" 
-                                name="email" value="{{ old('email') }}" autofocus placeholder="이메일" required autocomplete="email">
+                                name="email" value="{{ old('email') }}" autofocus placeholder="test@gmail.com" required autocomplete="email">
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -29,7 +29,7 @@
                         </div>
                         <div class="p-2 docs-highlight">
                             <label for="password" class="form-label">비밀번호</label>
-                            <input id="passwordSignup" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" placeholder="비밀번호">
+                            <input id="passwordSignup" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" placeholder="6~12자리 숫자, 영문">
                             @error('password')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -38,7 +38,7 @@
                         </div>
                         <div class="p-2 docs-highlight">
                             <label for="password-confirm" class="form-label">비밀번호확인</label>
-                            <input id="passwordCheck" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder="비밀번호확인">
+                            <input id="passwordCheck" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder="6~12자리 숫자, 영문">
                         </div>
                         <div class="p-2 docs-highlight">
                             <label for="name" class="form-label">이름</label>

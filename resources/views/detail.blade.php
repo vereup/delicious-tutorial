@@ -107,6 +107,7 @@
         <div class="d-flex border-top border-bottom mx-1" style="background-color: #4f5d73">
             <div class="col-9 ps-3 py-2">
                 <p class="card-text text-white">
+                    작성자 : 내 리뷰 |
                     @php
                         $now = (strtotime(date('Ymd H:i:s')))/86400;
                         $updated_at = (strtotime($userReview->updated_at))/86400;
@@ -138,6 +139,7 @@
 <div class="d-flex border-top border-bottom mx-1" >
     <div class="col-9 ps-3 py-2">
         <p class="card-text text-black">
+            작성자 : {{ $noUserReview->user->email }} |
             @php
                 $now = (strtotime(date('Ymd H:i:s')))/86400;
                 $updated_at = (strtotime($noUserReview->updated_at))/86400;

@@ -23,7 +23,7 @@ class CreateStoresTable extends Migration
             $table->string('telephone_number');
             $table->float('rating_average', 3, 2)->default(5.0);
             $table->unsignedInteger('review_count')->default(0);
-            $table->string('address');
+            $table->string('address_detail');
 
             $table->foreign('category_id')->references('id')->on('categories');
             $table->foreign('address_id')->references('id')->on('addresses');

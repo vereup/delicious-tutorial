@@ -21,7 +21,7 @@ class StoreSeeder extends Seeder
                 'telephone_number' => '021231234',
                 'rating_average' => 4.0,
                 'review_count' => 1,
-                'address' => '서울시 영등포구'
+                'address_detail' => '여의도동 11'
             ],
             [
                 'category_id' => 3,
@@ -32,7 +32,7 @@ class StoreSeeder extends Seeder
                 'telephone_number' => '025119129',
                 'rating_average' => 5.0,
                 'review_count' => 2,
-                'address' => '서울시 종로구'
+                'address_detail' => '평창동 11'
             ],
             [
                 'category_id' => 6,
@@ -43,7 +43,7 @@ class StoreSeeder extends Seeder
                 'telephone_number' => '021239229',
                 'rating_average' => 4.0,
                 'review_count' => 1,
-                'address' => '서울시 강동구'
+                'address_detail' => '천호동 11'
             ],
             [
                 'category_id' => 4,
@@ -54,7 +54,7 @@ class StoreSeeder extends Seeder
                 'telephone_number' => '024454559',
                 'rating_average' => 4.0,
                 'review_count' => 1,
-                'address' => '서울시 금천구'
+                'address_detail' => '가산동 11'
             ],
             [
                 'category_id' => 6,
@@ -65,7 +65,7 @@ class StoreSeeder extends Seeder
                 'telephone_number' => '021139753',
                 'rating_average' => 4.0,
                 'review_count' => 1,
-                'address' => '서울시 강남구'
+                'address_detail' => '서초동 11'
             ],
             [
                 'category_id' => 2,
@@ -76,7 +76,7 @@ class StoreSeeder extends Seeder
                 'telephone_number' => '023232312',
                 'rating_average' => 4.0,
                 'review_count' => 2,
-                'address' => '서울시 서초구'
+                'address_detail' => '방배동 11'
             ]
         ];
 

@@ -8,7 +8,7 @@
                                     {{-- <img src="/images/star.png"> --}}
                                     <span class="text" style="font-size: 10pt;">&#40;{{$store->review_count}}&#41;</span>
                                 </p>
-                                <p class="card-text pb-2"><img src="/images/location.png">&nbsp;{{$store->address}}
+                                <p class="card-text pb-2"><img src="/images/location.png">&nbsp;{{ $store->address->city }} {{ $store->county }} {{$store->address_detail}}
                                     <span class="fw-bold" style="color: #a0a0a0;">&nbsp;|</span>
                                     <img src="/images/telephone.png">&nbsp;&nbsp;<span id="telephone">{{$store->telephone_number}}</span>
                                 </p>

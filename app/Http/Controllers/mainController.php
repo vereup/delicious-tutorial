@@ -24,21 +24,20 @@ class MainController extends Controller
         $wishes = Wish::get();
         $userWishes = Wish::where('user_id', $user_id)->get();
         $ratingList = $request->ratingList;
-        $filtered_stores = null;
-        
         $storeCounts = 0;
+
+        $query = Store::select();
 
 
         // // 검색어입력
 
         if($request->keyword != null){
-            $stores = Store::where('name', 'like', "%{$request->keyword}%")->get();
+            $query = Store::where('name', 'like', "%{$request->keyword}%");
             $keyword = $request->keyword;
         }
 
         else{
             $keyword = null;
-            $stores = Store::get();
         }
 
 
@@ -46,7 +45,7 @@ class MainController extends Controller
         
         if($request->categoryList != null ){
             $categoryList = explode(',', $request->categoryList);
-            $stores = $stores->whereIn('category_id', $categoryList);
+            $query->whereIn('category_id', $categoryList);
         }
 
         else{
@@ -57,26 +56,25 @@ class MainController extends Controller
         if($request->ratingList != null ){
             $ratingList = explode(',', $request->ratingList);
 
-            foreach($ratingList as $rating){
-
-                $number = $rating - 0;
-                $filtered_rating = $stores->whereBetween('rating_average', [$number,($number+0.999)]);
-                if($filtered_stores != null){
-                    $filtered_stores = $filtered_stores->merge($filtered_rating);
-                }
-                else{
-                    $filtered_stores = $filtered_rating;
-                }
+            if(count($ratingList) > 1){
+                $min = min($ratingList);
+                $max = max($ratingList);
             }
+
+            else{
+                $min = $ratingList[0];
+                $max = $min+0.999;
+            }
+            
+            $query->whereBetween('rating_average', [$min,$max]);
+
+        
         }
         else{
             $ratingList = 'all';
         }
 
-        
-        if($filtered_stores != null){
-            $stores = $filtered_stores;
-        }
+        $stores = $query->get();
         $storeCounts = $stores->count();
         $userWishCount = $userWishes->count();
 
@@ -94,7 +92,6 @@ class MainController extends Controller
             'userWishCount' => $userWishCount,
             'keyword' => $keyword
             
-
         ]);
 
     }    

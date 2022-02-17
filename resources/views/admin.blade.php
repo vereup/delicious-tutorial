@@ -105,7 +105,7 @@
                   <th scope="row">{{ $store->id }}</th>
                   <td>{{ $store->name }}</td>
                   <td>{{ $store->category_id }}</td>
-                  <td>{{ $store->address }}</td>
+                  <td>{{ $store->address_detail }}</td>
                   <td>{{ $store->telephone_number }}</td>
                   <td>{{ $store->rating_average }}</td>
                   <td>{{ $store->rating_count }}</td>
