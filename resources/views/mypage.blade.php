@@ -208,7 +208,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title fw-bold fs-3">리뷰수정</h5>
-                                <div data-coreui-dismiss="modal" aria-label="Close" style="cursor: pointer">
+                                <div data-coreui-dismiss="modal" data-coreui-whatever="@mdo" aria-label="Close" style="cursor: pointer">
                                     <span class="fw-bold">X</span>
                                 </div>
                             </div>
@@ -229,13 +229,14 @@
                             <div class="modal-footer" style="justify-content: center;">
                                 <button
                                     type="button"
-                                    class="btn btn-dark rounded-pill btn-primary px-4"
-                                    data-coreui-target="#modifyCheckModal"
-                                    data-coreui-toggle="modal" >확인</button>
+                                    class="btn btn-dark rounded-pill btn-primary px-4" id="emptyCheck">확인</button>
                                 <button
                                     type="button"
                                     class="btn btn-gray rounded-pill btn-secondary px-4"
                                     data-coreui-dismiss="modal">취소</button>
+
+                                <button type="button" style="display: none" data-coreui-target="#modifyCheckModal" data-coreui-toggle="modal" id="emptyCheckConfirm"></button>
+
                             </div>
                         </div>
                     </div>
@@ -299,6 +300,30 @@ function submit(id){
 //   // do something...
 // })
 
+
+
+
+// var modifyForm = document.getElementById('modifyModal')
+// modifyForm.addEventListener('show.coreui.modal', function (event) {
+//   // Button that triggered the modal
+//   var button = event.relatedTarget
+//   // Extract info from data-coreui-* attributes
+//   var recipient = button.getAttribute('data-coreui-whatever')
+//   // If necessary, you could initiate an AJAX request here
+//   // and then do the updating in a callback.
+//   //
+//   // Update the modal's content.
+//   var modalTitle = exampleModal.querySelector('#reviewTitle')
+//   var modalBodyInput = exampleModal.querySelector('#reviewContents')
+
+//   console.log(modalTitle);
+
+//   modalTitle.textContent = 'New message to ' + recipient
+//   modalBodyInput.value = recipient
+// })
+
+
+
 function modifyClicked(id){
     
     event.preventDefault();
@@ -318,11 +343,28 @@ function modifyClicked(id){
 }
 
 
+$('#emptyCheck').click(function(){
+
+    console.log($('#reviewTitle').val());
+
+    if($('#reviewTitle').val() == ''){
+        alert('제목을 입력해주세요.');
+        return false;
+    }
+    else if($('#reviewContents').val() == ''){
+        alert('내용을 입력해주세요.');
+        return false;
+    }
+    else{
+        $('#emptyCheckConfirm').click();
+    }
+});
+
+
 let modifyConfirm = document.getElementById('modifyConfirmOk');
 modifyConfirm.addEventListener('click',function (event){
 
         let modifyForm = document.getElementById('modifyForm');
-
         return modifyForm.submit();
         
 });

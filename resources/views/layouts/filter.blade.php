@@ -5,23 +5,37 @@
     <p class="fs-6">현재 적용된 검색필터</p>
     <div>
         @if ($categoryList != 'all')
-        <button type="button" class="btn bg-white btn-light rounded-pill px-4 w-auto" id="filterCategory" >카테고리 : @foreach ($categoryList as $id)
-        @foreach ($categories as $category)
-         @if($category->id == $id)
-          {{ $category->name }}
-          @endif
-          @endforeach
-        @endforeach
-            <span class="fs-6 text-black-50 align-self-left" style="cursor: pointer">X</span>
-        </button>
+            <button type="button" class="btn bg-white btn-light rounded-pill px-4 w-auto" id="filterCategory" >카테고리 : @foreach ($categoryList as $id)
+            @foreach ($categories as $category)
+            @if($category->id == $id)
+                @if($loop->parent->remaining == 0)
+                    {{ $category->name }}
+                @else
+                    {{ $category->name }} |
+                @endif
+            @endif
+            @endforeach
+            @endforeach
+                <span class="fs-6 text-black-50 align-self-left" style="cursor: pointer">X</span>
+            </button>
         @endif
+
         @if ($ratingList != 'all' )
-        <button type="button" class="btn bg-white btn-light rounded-pill px-4 w-25" id="filterRating">평점 : @foreach ($ratingList as $rating)
-        {{ $rating }}
-    @endforeach 
+        <button type="button" class="btn bg-white btn-light rounded-pill px-4 w-25" id="filterRating">평점 : 
+            @if($max == 5)
+                {{ $min }}이상 ~ {{ $max }}
+            @elseif($max == $min + 0.999 && $min != 5)
+                {{ $min }}이상 ~ {{ $min+1 }}미만
+                @elseif($max == $min + 0.999 && $min == 5)
+                5 이상
+            @else
+            {{ $min }}이상 ~ {{ $max+1 }}미만
+            @endif
+            
     <span class="fs-6 text-black-50 align-self-left" style="cursor: pointer">X</span>
 </button>
         @endif
+        
         @if ($keyword != null)
         <button type="button" class="btn bg-white btn-light rounded-pill px-4 w-25" id="filterkeyword">검색어 : {{ $keyword }}
             <span class="fs-6 text-black-50 align-self-left" style="cursor: pointer">X</span>
@@ -81,6 +95,7 @@ $("#Form").submit();
 
 // 평점변경시 서버전송
 $("#filterRating").click(function() {
+
 
 let search = $("#search").val();
 if (search != ''){

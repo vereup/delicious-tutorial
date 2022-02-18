@@ -51,6 +51,9 @@ class MainController extends Controller
         else{
             $categoryList = 'all';
         }
+        
+        $min = null;
+        $max = null;
 
         // 평점선택
         if($request->ratingList != null ){
@@ -90,7 +93,9 @@ class MainController extends Controller
             'userWishes' => $userWishes,
             'storeCounts' => $storeCounts,
             'userWishCount' => $userWishCount,
-            'keyword' => $keyword
+            'keyword' => $keyword,
+            'max' => $max,
+            'min' => $min
             
         ]);
 
