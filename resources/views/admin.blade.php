@@ -52,9 +52,9 @@
                     <span class="input-group-text bg-white border-0">주소</span>
                     <select class="form-select" aria-label="Default select example">
                       <option value="none">광역시도</option>
-                      @foreach ($addresses as $address)
-                      <option value="{{ $address->id }}">
-                        {{ $address->city}}</option>
+                      @foreach ($cities as $city)
+                      <option value="{{ $city->id }}">
+                        {{ $city->city}}</option>
                       @endforeach
                     </select>
                     <select class="form-select" aria-label="Default select example">

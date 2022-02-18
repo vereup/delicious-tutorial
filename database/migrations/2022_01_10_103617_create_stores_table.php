@@ -16,7 +16,7 @@ class CreateStoresTable extends Migration
         Schema::create('stores', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedbigInteger('category_id');
-            $table->unsignedbigInteger('address_id');
+            $table->unsignedbigInteger('county_id');
             $table->unsignedbigInteger('local_code_id');
             $table->string('name');
             $table->text('introduction');
@@ -26,7 +26,7 @@ class CreateStoresTable extends Migration
             $table->string('address_detail');
 
             $table->foreign('category_id')->references('id')->on('categories');
-            $table->foreign('address_id')->references('id')->on('addresses');
+            $table->foreign('county_id')->references('id')->on('counties');
             $table->foreign('local_code_id')->references('id')->on('local_codes');
 
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));

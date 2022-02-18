@@ -51,7 +51,7 @@
                                     <a class="stars" value="{{ $store->rating_average }}">{{ $store->rating_average }}<a id="starHalf"></a></a> 
                                     <span class="ms-1">	&#40;{{ $store->review_count }}&#41;</span>
                                     <br>
-                                    <p class="card-text">{{ $store->address->city }} {{ $store->county }} {{ $store->address_detail }}</p>
+                                    <p class="card-text">{{ $store->county->city->city }} {{ $store->county->county }} {{ $store->address_detail }}</p>
                         </div>
                         </div>
                         @endforeach

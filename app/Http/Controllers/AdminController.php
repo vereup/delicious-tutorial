@@ -10,7 +10,7 @@ use App\Models\Category;
 use App\Models\Store;
 use App\Models\Image;
 use App\Models\Wish;
-use App\Models\Address;
+use App\Models\City;
 use App\Models\County;
 
 
@@ -22,11 +22,12 @@ class AdminController extends Controller
 
         $keyword = null;
 
-        $filtered_stores = Store::where('name', $request->name)->where('category_id', $request->categoryId)->where('address', $request->address)->paginate(5);
+        $filtered_stores = Store::where('name', $request->name)->where('category_id', $request->categoryId)->paginate(5);
+        // $filtered_stores = Store::where('name', $request->name)->where('category_id', $request->categoryId)->where('address', $request->address)->paginate(5);
 
         $categories = Category::get();
 
-        $addresses = Address::get();
+        $cities = City::get();
 
         $counties = County::get();
         
@@ -47,7 +48,7 @@ class AdminController extends Controller
             'keyword' => $keyword,
             'stores' => $stores,
             'categories' => $categories,
-            'addresses' => $addresses,
+            'cities' => $cities,
             'counties' => $counties
 
             

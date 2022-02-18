@@ -5,9 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class County extends Model
-{
 
+class City extends Model
+{
+    
     use SoftDeletes;
 
     /**
@@ -15,7 +16,7 @@ class County extends Model
      *
      * @var string
      */
-    protected $table = 'counties';
+    protected $table = 'cities';
 
 
     /**
@@ -32,7 +33,7 @@ class County extends Model
      * @var array
      */
     protected $fillable = [
-        'city_id', 'county'
+        'city'
     ];
 
     /**
@@ -41,30 +42,36 @@ class County extends Model
      * @var array
      */
     protected $hidden = [
-        'id', 'city_id', 'created_at', 'updated_at'
+        'id', 'created_at', 'updated_at'
     ];
 
     /**
-     * Get the city that owns the counties.
+     * Get the stores for city.
      */
-    public function city()
+    public function stores()
     {
-        return $this->belongsTo(City::class);
+        return $this->hasMany(Store::class);
+    }
+
+    /**
+     * Get the counties for city.
+     */
+    public function counties()
+    {
+        return $this->hasMany(County::class);
     }
 
     /**
      * Create the model.
      *
      * @param  array
-     * @return \App\Models\County
+     * @return \App\Models\City
      */
     public static function create($attributes)
     {
         $model = new static;
 
-        $model->city_id =  $attributes['city_id'];
-
-        $model->county =  $attributes['county']; 
+        $model->city =  $attributes['city'];
 
         $model->save();
 

@@ -2,7 +2,8 @@
 
 use Illuminate\Database\Seeder;
 
-class AddressSeeder extends Seeder
+class CitySeeder extends Seeder
+
 {
     /**
      * Run the database seeds.
@@ -31,7 +32,7 @@ class AddressSeeder extends Seeder
             '제주도'
         ];
         foreach($cites as $city)
-        DB::table('addresses')->insert([
+        DB::table('cities')->insert([
             'city' => $city
         ]);
     }

@@ -32,9 +32,9 @@ class Store extends Model
      * @var array
      */
     protected $fillable = [
-        'category_id', 'address_id', 'local_code_id',
+        'category_id', 'county_id', 'local_code_id',
         'name', 'introduction', 'telephone_number', 
-        'rating_average', 'review_count', 'address'
+        'rating_average', 'review_count', 'address_detail'
     ];
 
     /**
@@ -43,7 +43,7 @@ class Store extends Model
      * @var array
      */
     protected $hidden = [
-        'id', 'category_id', 'address_id', 'local_code_id', 
+        'id', 'category_id', 'county_id', 'local_code_id', 
         'created_at', 'updated_at'
     ];
 
@@ -80,11 +80,11 @@ class Store extends Model
     }
 
     /**
-     * Get the address that owns the stores.
+     * Get the city that owns the stores.
      */
-    public function address()
+    public function county()
     {
-        return $this->belongsTo(Address::class);
+        return $this->belongsTo(County::class);
     }
 
     /**
@@ -106,7 +106,7 @@ class Store extends Model
         $model = new static;
 
         $model->category_id =  $attributes['category_id'];
-        $model->address_id =  $attributes['address_id'];
+        $model->county_id =  $attributes['county_id'];
         $model->local_code_id =  $attributes['local_code_id'];
         
         $model->name =  $attributes['name'];
@@ -114,7 +114,7 @@ class Store extends Model
         $model->telephone_number =  $attributes['telephone_number'];
         $model->rating_average =  $attributes['rating_average'];
         $model->review_count =  $attributes['review_count'];
-        $model->address =  $attributes['address'];
+        $model->address_detail =  $attributes['address_detail'];
 
         $model->save();
 

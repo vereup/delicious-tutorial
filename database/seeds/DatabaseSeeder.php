@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         $this -> call([
             UserSeeder::class,
-            AddressSeeder::class,
+            CitySeeder::class,
             CountySeeder::class,
             CategorySeeder::class,
             LocalCodeSeeder::class,

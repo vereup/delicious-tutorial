@@ -15,9 +15,9 @@ class CreateCountiesTable extends Migration
     {
         Schema::create('counties', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedbigInteger('address_id');
+            $table->unsignedbigInteger('city_id');
             $table->string('county');
-            $table->foreign('address_id')->references('id')->on('addresses');
+            $table->foreign('city_id')->references('id')->on('cities');
 
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));

@@ -148,7 +148,7 @@
                                 
                                 &#40;{{$userWish->store->review_count}}&#41;
                             </div>
-                            <p class="card-text">{{$userWish->store->address_detail}}</p>
+                            <p class="card-text">{{$userWish->store->county->city->city}} {{$userWish->store->county->county}} {{$userWish->store->address_detail}}</p>
                         </div>
                         <div class="col-auto pt-4">
                             {{-- 찜버튼 --}}
