@@ -66,8 +66,8 @@
         <div class="modal" tabindex="-1" id="signCheckModal">
             <div class="modal-dialog modal-dialog-centered modalSize350">
                 <div class="modal-content">
-                    <div class="modal-body">
-                        <p class="fw-bold text-center">입력하신 정보로 회원가입하시겠습니까?</p>
+                    <div class="modal-body text-center">
+                        <span class="fw-bold" style="vertical-align: middle;text-align:center;">입력하신 정보로 회원가입하시겠습니까?</span>
                     </div>
                     <div class="modal-footer" style="justify-content: center;">
                         <button type="submit" class="btn btn-dark rounded-pill btn-primary">{{ __('회원가입') }}</button>
@@ -119,6 +119,7 @@ function checkDuplicate(event) {
                         console.log(data);
                         alert('사용중인 이메일주소가 있습니다.');
                         $('#emailSignup').attr('style', 'border: solid red;');
+                        $('#emailCheck').val('duplicate');
     
                     }
                 }
@@ -150,8 +151,13 @@ function formCheck(event){
             return false;
     }
 
-    else if($('#emailCheck').val() != 'check'){
+    else if($('#emailCheck').val() != 'check' && $('#emailCheck').val() != 'duplicate'){
         alert('이메일을 중복체크를 해주세요.');
+            return false;
+    }
+
+    else if($('#emailCheck').val() == 'duplicate'){
+        alert('이미 가입되어있는 이메일입니다. 다시 중복체크를 해주세요.');
             return false;
     }
 
