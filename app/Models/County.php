@@ -41,7 +41,7 @@ class County extends Model
      * @var array
      */
     protected $hidden = [
-        'id', 'city_id', 'created_at', 'updated_at'
+        'created_at', 'updated_at'
     ];
 
     /**

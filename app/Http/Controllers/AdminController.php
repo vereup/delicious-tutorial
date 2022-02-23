@@ -12,6 +12,7 @@ use App\Models\Image;
 use App\Models\Wish;
 use App\Models\City;
 use App\Models\County;
+use App\Models\LocalCode;
 
 
 class AdminController extends Controller
@@ -22,28 +23,100 @@ class AdminController extends Controller
 
         $keyword = null;
 
-        $filtered_stores = Store::where('name', $request->name)->where('category_id', $request->categoryId)->paginate(5);
-        // $filtered_stores = Store::where('name', $request->name)->where('category_id', $request->categoryId)->where('address', $request->address)->paginate(5);
+        $storeNameKeyword = $request->storeName;
+        $storeTelephoneNumber = $request->storeTelephoneNumber;
+        $categoryId = $request->adminCategory;
+        $cityId = $request->adminCity;
+        $countyId = $request->adminCounty;
+
+        $filtered_stores = Store::select();
+
+        if($storeNameKeyword != null){
+            $filtered_stores = Store::where('name', 'like', "%{$storeNameKeyword}%");
+        }
+        elseif($storeTelephoneNumber != null){
+            $filtered_stores = Store::where('telephone_number', 'like', "%{$storeTelephoneNumber}%");
+        }
+        // else{
+        //     $filtered_stores = Store::select();
+        // }
+
+        // dump($storeNameKeyword);
+        // dump($storeTelephoneNumber);
+        // dump($categoryId);
+        // dump($cityId);
+        // dump($countyId);
+        // dump($filtered_stores->count());
+
+        if($categoryId != null){
+            $filtered_stores->where('category_id', $categoryId);
+        }
+        if($countyId != null && $countyId != 'none'){
+            $filtered_stores->where('county_id', $countyId);
+        }
+
+
+        // check!!!!!!!!!!!!!!!!!!
+        else{
+            if($cityId != null){
+                $filteredCounties = City::find($cityId)->counties()->get();
+                // dump($filtered_stores);
+                foreach($filteredCounties as $filteredCounty){
+                    // dump($filteredCounty->id);
+                    $filtered_stores->where('county_id', $filteredCounty->id);
+                }
+            }
+        }
+
+
+
+
+        // elseif($countyId == null && $cityId != null){
+            
+        //     $filteredCounties = City::find($cityId)->counties()->get();
+        //     $countiesIdList = $filteredCounties->pluck('county_id');
+        //     dump($filteredCounties->count());
+        //     dump($countiesIdList);
+            
+        //     if($countiesIdList->count() == 0){
+        //         $filtered_stores->where('county_id', 999999);
+        //     }
+
+        //     elseif($countiesIdList->count() ==1){
+        //         $filtered_stores->where('county_id', $countiesIdList->first());
+        //     }
+            
+        // }
+
+        // elseif($countyId == 'none' && $cityId != null){
+
+        //         $filteredCounties = City::find($cityId)->counties()->get();
+        //         $countiesIdList = $filteredCounties->pluck('county_id');
+        //         dump($countiesIdList);
+        //         $filtered_stores->whereIn('county_id', $countiesIdList);
+        //         dump($filtered_stores->count());
+        //     }
+
+
+            // if($filteredCounties->count() == 0){
+            //     $filtered_stores->where('county_id', 999999);
+            // }
+            // elseif($filteredCounties->count() == 1){
+            //     $filtered_stores->where('county_id', $filteredCounties->first()->id);
+            // }
+            // else{
+            //     $filtered_stores->whereIn('county_id', $filteredCounties);
+            // }
+
+        $filtered_stores = $filtered_stores->paginate(5);
+        $stores = $filtered_stores;
 
         $categories = Category::get();
-
-        $cities = City::get();
-
+        $cities = City::with(['counties'])->get();
         $counties = County::get();
         
 
-        if($filtered_stores->count() > 0){
-            
-            $stores = $filtered_stores;
-        }
-
-        else{
-            $stores = Store::paginate(5);
-
-        }
-                
-
-        return view('admin', [
+        return view('admin/admin', [
 
             'keyword' => $keyword,
             'stores' => $stores,
@@ -61,17 +134,56 @@ class AdminController extends Controller
 
         $keyword = null;
         
-        $categories = DB::table('catogories')->select('name')->get();
+        $categories = Category::get();
+        $cities = City::with(['counties'])->get();
+        $counties = County::get();
+        $localCodes = LocalCode::get();
 
-
-        return view('registStore', [
+        return view('admin/registStore', [
 
             'keyword' => $keyword,
-            'stores' => $categories
+            'categories' => $categories,
+            'cities' => $cities,
+            'counties' => $counties,
+            'localCodes' => $localCodes
             
 
         ]);
 
     }
+
+
+
+    public function deleteStore(Request $request){
+
+        $keyword = null;
+
+
+        try {
+            // $request->validate([
+            //     'reviewId' => 'bail',
+            //     'reviewTitle' => 'bali',
+            //     'reviewContents' => 'bali',
+            // ]);
+            
+            DB::beginTransaction();
+            
+            $store = Store::find($request->id);
+            
+            $store->delete();
+            
+            DB::commit();
+
+            return redirect()->back()->with('success','스토어가 삭제되었습니다.');;
+            
+        } 
+        catch (\Exception $exception) {
+            DB::rollback();
+            Session::flash('error', $exception->getMessage());
+            throw $exception;
+        }
+        
+    }
+
 
 }
