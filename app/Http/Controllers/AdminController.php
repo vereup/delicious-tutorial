@@ -130,7 +130,10 @@ class AdminController extends Controller
 
     }
 
-    public function registStores(Request $request){
+
+
+
+    public function getRegistDatas(Request $request){
 
         $keyword = null;
         
@@ -138,6 +141,9 @@ class AdminController extends Controller
         $cities = City::with(['counties'])->get();
         $counties = County::get();
         $localCodes = LocalCode::get();
+        $file = $request->file('inputFile1');
+        $test = $request->all();
+        dump($file);
 
         return view('admin/registStore', [
 
@@ -149,6 +155,84 @@ class AdminController extends Controller
             
 
         ]);
+
+    }
+
+
+    public function registStores(Request $request){
+
+        $file = $request->file('inputFile1');
+        $test = $request->all();
+        dump($test);
+        // dd($test);
+        ///
+        try {
+
+            $request->validate([
+                'storeName' => 'bail|required|between:1,30',
+                'storeIntro' => 'bail|required|between:10,300',
+                'category_id' => 'bail|required|',
+                'adminCity' => 'bail|required|',
+                'adminCounty' => 'bail|required|',
+                'addressDetail' => 'bail|required|',
+                'localCode' => 'bail|required|',
+                'middleNumber' => 'bail|required|',
+                'lastNumber' => 'bail|required|',
+                'category_id' => 'bail|required|',
+            ]);
+            
+
+//test
+
+// $list = $request -> all();
+// $i = 0;
+// $flag = 0;
+// foreach ($list as $key => $value) {
+//     if(strpos($key,'recordStoreImage') !== false && $value !== null ) {
+//         $flag=1;
+//         break;
+//     }
+
+    //
+
+            
+            DB::beginTransaction();
+                        
+            
+            // if ($store->id !== intval($request->storeId)) {
+            //     Session::flash('error', '올바르지않은 접근방법입니다.');
+            //     return redirect()->back();
+            // }
+
+            $telephoneNumber = $request->middleNumber.$request->lastNumber;
+            
+            Store::insert(['name' =>$request->storeName, 'introduction' => $request->storeIntro, 'category_id' => $request->category_id, 'address_detail' => $request->addressDetail,
+            'county_id' => $request->adminCounty, 'local_code_id' => $request->localCode, 'telephone_number' => $telephoneNumber, 'rating_average' => 0.0, 'review_count' => 0]);
+                        
+            
+            DB::commit();
+
+            return redirect()->back()->with('success','맛집이 추가되었습니다.');;
+            
+        } 
+        catch (\Exception $exception) {
+            DB::rollback();
+            Session::flash('error', $exception->getMessage());
+            throw $exception;
+        }
+
+///
+
+        // return view('admin/registStore', [
+
+        //     'keyword' => $keyword,
+        //     'categories' => $categories,
+        //     'cities' => $cities,
+        //     'counties' => $counties,
+        //     'localCodes' => $localCodes
+            
+
+        // ]);
 
     }
 

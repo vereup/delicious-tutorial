@@ -14,7 +14,7 @@ class StoreSeeder extends Seeder
         $stores = [
             [
                 'category_id' => 6,
-                'county_id' => 5,
+                'county_id' => 20,
                 'local_code_id' => 1,
                 'name' => '수박화채 1호점',
                 'introduction' => '맛잇어요',
@@ -25,7 +25,7 @@ class StoreSeeder extends Seeder
             ],
             [
                 'category_id' => 3,
-                'county_id' => 6,
+                'county_id' => 23,
                 'local_code_id' => 1,
                 'name' => '라멘집',
                 'introduction' => '맛잇어요 굿',
@@ -47,7 +47,7 @@ class StoreSeeder extends Seeder
             ],
             [
                 'category_id' => 4,
-                'county_id' => 7,
+                'county_id' => 8,
                 'local_code_id' => 1,
                 'name' => '샤브샤브&훠궈',
                 'introduction' => '샤브샤브 맛잇어요',
@@ -58,7 +58,7 @@ class StoreSeeder extends Seeder
             ],
             [
                 'category_id' => 6,
-                'county_id' => 8,
+                'county_id' => 15,
                 'local_code_id' => 1,
                 'name' => '도너츠',
                 'introduction' => '도너츠 맛잇어요',
@@ -69,7 +69,7 @@ class StoreSeeder extends Seeder
             ],
             [
                 'category_id' => 2,
-                'county_id' => 8,
+                'county_id' => 15,
                 'local_code_id' => 1,
                 'name' => '스테이크',
                 'introduction' => '스테이크 맛잇어요',
