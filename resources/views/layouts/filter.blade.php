@@ -16,11 +16,30 @@
             @endif
             @endforeach
             @endforeach
-                <span class="fs-6 text-black-50 align-self-left" style="cursor: pointer">X</span>
-            </button>
+            <span class="fs-6 text-black-50" style="cursor: pointer;">&nbsp; &nbsp; X</span>
+        </button>
         @endif
 
         @if ($ratingList != 'all' )
+        <button type="button" class="btn bg-white btn-light rounded-pill px-4 w-25" id="filterRating">평점 : 
+            @if($min != 5 && $max == 5.1)
+                {{ $min }}점 ~
+            @elseif($min == 5 && $max == 5)
+                {{ $min }}점
+
+            {{-- @elseif($max == $min + 0.999 && $min != 5)
+                {{ $min }}이상 ~ {{ $min+1 }}미만
+                @elseif($max == $min + 0.999 && $min == 5)
+                5 이상 --}}
+            @else
+            {{ $min }}점 ~ {{ $max }}점
+            @endif
+            
+    <span class="fs-6 text-black-50" style="cursor: pointer">&nbsp; &nbsp; X</span>
+</button>
+        @endif
+
+        {{-- @if ($ratingList != 'all' )
         <button type="button" class="btn bg-white btn-light rounded-pill px-4 w-25" id="filterRating">평점 : 
             @if($max == 5)
                 {{ $min }}이상 ~ {{ $max }}
@@ -32,13 +51,13 @@
             {{ $min }}이상 ~ {{ $max+1 }}미만
             @endif
             
-    <span class="fs-6 text-black-50 align-self-left" style="cursor: pointer">X</span>
+    <span class="fs-6 text-black-50" style="cursor: pointer">&nbsp; &nbsp; X</span>
 </button>
-        @endif
-        
+        @endif --}}
+
         @if ($keyword != null)
         <button type="button" class="btn bg-white btn-light rounded-pill px-4 w-25" id="filterkeyword">검색어 : {{ $keyword }}
-            <span class="fs-6 text-black-50 align-self-left" style="cursor: pointer">X</span>
+            <span class="fs-6 text-black-50" style="cursor: pointer">&nbsp; &nbsp; X</span>
         </button>
         @endif
     </div>

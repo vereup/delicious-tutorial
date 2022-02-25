@@ -55,18 +55,19 @@ class MainController extends Controller
         $min = null;
         $max = null;
 
-        // 평점선택
+        // 평점선택 min 이상
         if($request->ratingList != null ){
             $ratingList = explode(',', $request->ratingList);
 
             if(count($ratingList) > 1){
                 $min = min($ratingList);
                 $max = max($ratingList);
+
             }
 
             else{
                 $min = $ratingList[0];
-                $max = $min+0.999;
+                $max = 5.1;
             }
             
             $query->whereBetween('rating_average', [$min,$max]);
@@ -76,6 +77,28 @@ class MainController extends Controller
         else{
             $ratingList = 'all';
         }
+
+        // // 평점선택 min~ max
+        // if($request->ratingList != null ){
+        //     $ratingList = explode(',', $request->ratingList);
+
+        //     if(count($ratingList) > 1){
+        //         $min = min($ratingList);
+        //         $max = max($ratingList);
+        //     }
+
+        //     else{
+        //         $min = $ratingList[0];
+        //         $max = $min+0.999;
+        //     }
+            
+        //     $query->whereBetween('rating_average', [$min,$max]);
+
+        
+        // }
+        // else{
+        //     $ratingList = 'all';
+        // }
 
         $stores = $query->get();
         $storeCounts = $stores->count();

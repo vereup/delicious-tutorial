@@ -45,9 +45,11 @@
                     </span>&#41;
                 </h2>
             </div>
+            <div class="border-bottom">
+            </div>
             @foreach ($userReviews as $userReview)
                 @if($userReview->user_id == $user->id)      
-                    <div class="d-flex border-top border-bottom">
+                    <div class="d-flex border-bottom">
                         <div class="col-9 ps-3 py-2">
                             <p class="card-text">
                                 @php

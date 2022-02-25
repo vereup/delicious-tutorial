@@ -154,7 +154,6 @@ class MypageController extends Controller
 
             if($store->review_count == 0){
                 // $review->store->update(['rating_average' => 0.0]);
-                dd($store->rating_average);
                 $store->rating_average = 0.0;
             }
             
