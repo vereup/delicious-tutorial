@@ -145,16 +145,16 @@ class AdminController extends Controller
         $test = $request->all();
         dump($file);
 
-        return view('admin/registStore', [
+        // return view('admin/registStore', [
 
-            'keyword' => $keyword,
-            'categories' => $categories,
-            'cities' => $cities,
-            'counties' => $counties,
-            'localCodes' => $localCodes
+        //     'keyword' => $keyword,
+        //     'categories' => $categories,
+        //     'cities' => $cities,
+        //     'counties' => $counties,
+        //     'localCodes' => $localCodes
             
 
-        ]);
+        // ]);
 
     }
 
