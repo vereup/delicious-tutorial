@@ -11,7 +11,7 @@
         <div class="p-2 flex-fill docs-highlight">
             <div class="d-flex flex-column docs-highlight mb-3">
                     @if ($categoryList != 'all' || $ratingList != 'all' || $keyword != null )
-                    <div class="m-2 mt-0 docs-highlight bg-white">
+                    <div class="m-2 ms-3 docs-highlight bg-white">
                         @include('layouts.filter')
                     </div>
                     @endif

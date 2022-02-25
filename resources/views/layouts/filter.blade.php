@@ -24,8 +24,8 @@
         <button type="button" class="btn bg-white btn-light rounded-pill px-4 w-25" id="filterRating">평점 : 
             @if($min != 5 && $max == 5.1)
                 {{ $min }}점 ~
-            @elseif($min == 5 && $max == 5)
-                {{ $min }}점
+            @elseif($min == 5 && $max == 5.1)
+                ~ {{ $min }}점
 
             {{-- @elseif($max == $min + 0.999 && $min != 5)
                 {{ $min }}이상 ~ {{ $min+1 }}미만

@@ -162,7 +162,8 @@ class AdminController extends Controller
     public function registStores(Request $request){
 
         $file = $request->file('inputFile1');
-        $test = $request->all();
+        $input = $request->all();
+        if($r)
         dump($test);
         // dd($test);
         ///

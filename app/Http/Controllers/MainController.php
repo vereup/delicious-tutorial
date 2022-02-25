@@ -40,7 +40,6 @@ class MainController extends Controller
             $keyword = null;
         }
 
-
         // 카테고리선택
         
         if($request->categoryList != null ){
@@ -72,7 +71,6 @@ class MainController extends Controller
             
             $query->whereBetween('rating_average', [$min,$max]);
 
-        
         }
         else{
             $ratingList = 'all';
