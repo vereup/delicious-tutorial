@@ -46,4 +46,5 @@ Route::post('/admin/deleteStore', 'AdminController@deleteStore')->name('deleteSt
 Route::get('/admin/search', 'AdminController@getAdminDatas')->name('adminSearch');
 Route::get('/admin/regist', 'AdminController@getRegistDatas')->name('regist');
 Route::post('/admin/registStore', 'AdminController@registStores')->name('registStore');
-Route::get('/admin/modify', 'AdminController@registStores')->name('modify');
+Route::get('/admin/modify/{storeId}', 'AdminController@getModifyStoresDatas')->name('modify');
+Route::post('/admin/modifyStore/', 'AdminController@modifyStores')->name('modifyStore');

@@ -137,7 +137,7 @@
                     data-storeReviewCount="{{ $store->review_count }}"
                     data-storeWishCount="{{ $store->wishes->count() }}"
                     >보기</a></td>
-                  <td class="text-center border-end border-light" style="vertical-align: middle"><a class="text-blue" href="{{ route('regist') }}" style="cursor: pointer">수정</a></td>
+                  <td class="text-center border-end border-light" style="vertical-align: middle"><a class="text-blue" href="{{ route('modify') }}/{{ $store->id }}" style="cursor: pointer">수정</a></td>
                   <td class="text-center border-end border-light" style="vertical-align: middle"><a class="text-blue" style="cursor: pointer" onclick="deleteStore({{ $store->id }})">삭제</a></td>
                 </tr>
                   @endforeach

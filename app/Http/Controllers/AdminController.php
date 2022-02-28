@@ -13,6 +13,7 @@ use App\Models\Wish;
 use App\Models\City;
 use App\Models\County;
 use App\Models\LocalCode;
+use Illuminate\Support\Facades\Storage;
 
 
 class AdminController extends Controller
@@ -142,33 +143,27 @@ class AdminController extends Controller
         $counties = County::get();
         $localCodes = LocalCode::get();
         $file = $request->file('inputFile1');
-        $test = $request->all();
         dump($file);
 
-        // return view('admin/registStore', [
+        return view('admin/registStore', [
 
-        //     'keyword' => $keyword,
-        //     'categories' => $categories,
-        //     'cities' => $cities,
-        //     'counties' => $counties,
-        //     'localCodes' => $localCodes
+            'keyword' => $keyword,
+            'categories' => $categories,
+            'cities' => $cities,
+            'counties' => $counties,
+            'localCodes' => $localCodes
             
 
-        // ]);
+        ]);
 
     }
 
 
     public function registStores(Request $request){
 
-        $file = $request->file('inputFile1');
-        $input = $request->all();
-        if($r)
-        dump($test);
-        // dd($test);
-        ///
-        try {
 
+        try {
+        
             $request->validate([
                 'storeName' => 'bail|required|between:1,30',
                 'storeIntro' => 'bail|required|between:10,300',
@@ -180,39 +175,39 @@ class AdminController extends Controller
                 'middleNumber' => 'bail|required|',
                 'lastNumber' => 'bail|required|',
                 'category_id' => 'bail|required|',
+                // 'image' => 'file|mimes:jpeg, jpg, bmp, png',
             ]);
             
-
-//test
-
-// $list = $request -> all();
-// $i = 0;
-// $flag = 0;
-// foreach ($list as $key => $value) {
-//     if(strpos($key,'recordStoreImage') !== false && $value !== null ) {
-//         $flag=1;
-//         break;
-//     }
-
-    //
-
-            
+                    
             DB::beginTransaction();
-                        
             
             // if ($store->id !== intval($request->storeId)) {
-            //     Session::flash('error', '올바르지않은 접근방법입니다.');
-            //     return redirect()->back();
-            // }
-
+                //     Session::flash('error', '올바르지않은 접근방법입니다.');
+                //     return redirect()->back();
+                // }
+            
             $telephoneNumber = $request->middleNumber.$request->lastNumber;
             
-            Store::insert(['name' =>$request->storeName, 'introduction' => $request->storeIntro, 'category_id' => $request->category_id, 'address_detail' => $request->addressDetail,
+            $storeId = Store::insertGetId(['name' => $request->storeName, 'introduction' => $request->storeIntro, 'category_id' => $request->category_id, 'address_detail' => $request->addressDetail,
             'county_id' => $request->adminCounty, 'local_code_id' => $request->localCode, 'telephone_number' => $telephoneNumber, 'rating_average' => 0.0, 'review_count' => 0]);
-                        
-            
-            DB::commit();
 
+            // 이미지등록
+            $input = $request->all();
+            for($i=1;$i<=5;$i++){
+                if($request->hasFile('inputFile'.$i)){
+                    $destination_path = 'public/images';
+                    $image = $request->file('inputFile'.$i);
+                    // $image_name = $image->getClientOriginalName();
+                    $image_name = 'store_Img_'.$storeId.'-'.$i.'.'.$image->extension();
+                    $request->file('inputFile'.$i)->storeAs($destination_path, $image_name);
+                    $path = '/storage/images/'.$image_name;
+                    Image::insert(['path' => $path, 'store_id' => $storeId]);
+                    $input['inputFile'.$i] = $image_name;
+                }
+            }
+    
+            DB::commit();
+            
             return redirect()->back()->with('success','맛집이 추가되었습니다.');;
             
         } 
@@ -221,20 +216,133 @@ class AdminController extends Controller
             Session::flash('error', $exception->getMessage());
             throw $exception;
         }
+    }
 
-///
 
-        // return view('admin/registStore', [
+    
+    public function getModifyStoresDatas(Request $request){
 
-        //     'keyword' => $keyword,
-        //     'categories' => $categories,
-        //     'cities' => $cities,
-        //     'counties' => $counties,
-        //     'localCodes' => $localCodes
+
+        $keyword = null;
+        $store = Store::with(['images','category','county','localCode'])->find($request->storeId);
+        $middleNumber = substr($store->telephone_number,0,-4);
+        $lastNumber = substr($store->telephone_number, -4);
+        $categories = Category::get();
+        $cities = City::get();
+        $city = $store->county->city->id;
+        $counties = County::get();
+        $localCodes = LocalCode::get();
+        $store->get();
+
+        $imageNames = array();
+        foreach($store->images as $image){
+            $name = str_replace('/storage/images/','',$image->path);
+            array_push($imageNames, $name);
+        }
+
+        return view('admin/modifyStore', [
+
+            'keyword' => $keyword,
+            'store' => $store,
+            'categories' => $categories,
+            'cities' => $cities,
+            'city' => $city,
+            'counties' => $counties,
+            'localCodes' => $localCodes,
+            'middleNumber' => $middleNumber,
+            'lastNumber' => $lastNumber,
+            'images' => $store->images,
+            'imageNames' => $imageNames
+    ]);
+    }
+
+    public function modifyStores(Request $request){
+
+        
+        
+        try {
             
-
-        // ]);
-
+                        // $request->validate([
+                        //     'storeName' => 'bail|required|between:1,30',
+                        //     'storeIntro' => 'bail|required|between:10,300',
+                        //     'category_id' => 'bail|required|',
+                        //     'adminCity' => 'bail|required|',
+                        //     'adminCounty' => 'bail|required|',
+                        //     'addressDetail' => 'bail|required|',
+                        //     'localCode' => 'bail|required|',
+                        //     'middleNumber' => 'bail|required|',
+                        //     'lastNumber' => 'bail|required|',
+                        //     'category_id' => 'bail|required|',
+                        //     // 'image' => 'file|mimes:jpeg, jpg, bmp, png',
+                        // ]);
+                        
+                        
+                        DB::beginTransaction();
+                        
+                        // if ($store->id !== intval($request->storeId)) {
+                            //     Session::flash('error', '올바르지않은 접근방법입니다.');
+                            //     return redirect()->back();
+                            // }
+                            
+                            
+                            $storeId = $request->storeId;
+                            $telephoneNumber = $request->middleNumber.$request->lastNumber;
+                            
+                        Store::find($storeId)->update(['name' => $request->storeName, 'introduction' => $request->storeIntro, 'category_id' => $request->category_id, 'address_detail' => $request->addressDetail,
+                        'county_id' => $request->adminCounty, 'local_code_id' => $request->localCode, 'telephone_number' => $telephoneNumber]);
+            
+            
+                        // $imageNames = array();
+                        // foreach($store->images as $image){
+                        //     $name = str_replace('/storage/images/','',$image->path);
+                        //     array_push($imageNames, $name);
+                        // }
+                        
+                        // 이미지등록
+                        $input = $request->all();
+                        for($i=1;$i<=5;$i++){
+                            if($request->hasFile('inputFile'.$i)){
+                                $destination_path = 'public/images';
+                                $image = $request->file('inputFile'.$i);
+                                // $image_name = $image->getClientOriginalName();
+                                $image_name = 'store_Img_'.$storeId.'-'.$i.'.'.$image->extension();
+                                Storage::delete($image_name);
+                                $request->file('inputFile'.$i)->storeAs($destination_path, $image_name);
+                                $path = '/storage/images/'.$image_name;
+                                Image::insert(['path' => $path, 'store_id' => $storeId]);
+                                $input['inputFile'.$i] = $image_name;
+                            }
+                        }
+                        $imageCount = Store::find($request->storeId)->images()->count();
+                        
+                        for($i=10;$i<=15;$i++){
+                            for($j=$imageCount;$j<=5;$j++){
+                                if($request->hasFile('inputFile'.$i)){
+                                    $destination_path = 'public/images';
+                                    $image = $request->file('inputFile'.$i);
+                                    // $image_name = $image->getClientOriginalName();
+                                    $image_name = 'store_Img_'.$storeId.'-'.$j.'.'.$image->extension();
+                                    $request->file('inputFile'.$i)->storeAs($destination_path, $image_name);
+                                    $path = '/storage/images/'.$image_name;
+                                    Image::insert(['path' => $path, 'store_id' => $storeId]);
+                                    $input['inputFile'.$i] = $image_name;
+                                }
+                            }
+                        }
+            
+                        
+            
+                
+                        DB::commit();
+                        
+                        return redirect()->back()->with('success','맛집이 수정되었습니다.');;
+                        
+                    } 
+                    catch (\Exception $exception) {
+                        DB::rollback();
+                        Session::flash('error', $exception->getMessage());
+                        throw $exception;
+                    }
     }
 
 
@@ -256,6 +364,10 @@ class AdminController extends Controller
             $store = Store::find($request->id);
             
             $store->delete();
+
+            $image = Image::where('store_id', $request->id);
+
+            $image->delete();
             
             DB::commit();
 

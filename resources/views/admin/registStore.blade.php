@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="py-1" style="background-color: #E5E5E5">
-    <form method="POST" id="registForm" action="{{ route('registStore') }}">
+    <form method="POST" id="registForm" action="{{ route('registStore') }}" enctype="multipart/form-data">
         @csrf
         <div class="container-fluid">
             <div class="d-flex justify-content-center">
@@ -384,7 +384,7 @@ function addFileList(){
         var fileElementFirst = document.createElement('div');
         fileElementFirst.className = "input-group mb-3 fileSelect";
         fileElementFirst.setAttribute('id', 'fileSelect'+newValue);
-        fileElementFirst.innerHTML = "<input type='text' class='form-control bg-white' name='filename"+newValue+"' disabled='disabled' placeholder='파일선택' value='' id='fileName"+newValue+"'><button class='btn btn-outline-secondary btn-dark' type='button' id='fileSelect"+newValue+"' value='"+newValue+"' onclick='chooseFile(this.value);'><span style='color: white;'>파일선택</span></button><button class='btn btn-outline-secondary btn-white rounded-end' style='width: 40px;' type='button' id='addFileSelect"+newValue+"' value='"+newValue+"' onclick = 'deleteFileList("+newValue+")'><span style='color: black;'>-</span></button><input type='file' class='form-control' hidden id='inputFile"+newValue+"' name='inputFile"+newValue+"'onchange='sendFile(this)'>";
+        fileElementFirst.innerHTML = "<input type='text' class='form-control bg-white' name='filename"+newValue+"' disabled='disabled' placeholder='파일선택' value='' id='fileName"+newValue+"'><button class='btn btn-outline-secondary btn-dark' type='button' id='fileSelect"+newValue+"' value='"+newValue+"' onclick='chooseFile(this.value);'><span style='color: white;'>파일선택</span></button><button class='btn btn-outline-secondary btn-white rounded-end' style='width: 40px;' type='button' id='addFileSelect"+newValue+"' value='"+newValue+"' onclick = 'deleteFileList("+newValue+")'><span style='color: black;'>-</span></button><input type='file' class='form-control' hidden id='inputFile"+newValue+"' data-id="+newValue+" name='inputFile"+newValue+"'onchange='sendFile(this)'>";
         fileForm.appendChild(fileElementFirst);
 
         if(fileCount >= 4){

@@ -64,7 +64,7 @@ class Store extends Model
     }
 
     /**
-     * Get the images for store.
+ * Get the images for store.
      */
     public function images()
     {
