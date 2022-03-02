@@ -42,7 +42,6 @@ Route::get('/test','TestController@getTestDatas');
 
 Route::get('/admin', 'AdminController@getAdminDatas')->name('admin');
 Route::post('/admin/deleteStore', 'AdminController@deleteStore')->name('deleteStore');
-
 Route::get('/admin/search', 'AdminController@getAdminDatas')->name('adminSearch');
 Route::get('/admin/regist', 'AdminController@getRegistDatas')->name('regist');
 Route::post('/admin/registStore', 'AdminController@registStores')->name('registStore');

@@ -3,24 +3,24 @@
 @section('content')
 
 <div class="py-1" style="background-color: #E5E5E5">
-    <form method="POST" id="registForm" action="{{ route('registStore') }}" enctype="multipart/form-data">
+    <form method="POST" id="registForm" action="{{ route('modifyStore') }}" enctype="multipart/form-data">
         @csrf
         <div class="container-fluid">
             <div class="d-flex justify-content-center">
                     <div class="d-flex flex-column docs-highlight p-3 mt-3 mb-1 w-50" style="background:white;">
                         <div class="p-2 docs-highlight border-bottom">
-                            <h5 class="fw-bold fs-3">맛집등록</h5>
+                            <h5 class="fw-bold fs-3">맛집수정</h5>
                         </div>
-
 
                         <div class="p-2 docs-highlight">
                             <label for="name" class="form-label">가게 이름</label>
-                            <input type="text" class="form-control" id="storeName" name="storeName" placeholder="맛집 레스토랑">
+                            <input type="text" class="form-control" id="storeName" name="storeName" value="{{ $store->name }}"placeholder="맛집 레스토랑">
                         </div>
 
                         <div class="p-2 docs-highlight">
                             <label for="storeIntro" class="form-label">가게 소개</label>
-                            <textarea type="text" class="form-control" id="storeIntro" name="storeIntro" placeholder="가게 소개"></textarea>
+                            <textarea type="text" class="form-control" id="storeIntro" name="storeIntro" placeholder="가게 소개">{{ $store->introduction }}
+                            </textarea>
                         </div>
 
                         <div class="p-2 docs-highlight">
@@ -28,7 +28,7 @@
                             <select name="category_id" class="form-select" id="category_id">
                             <option selected>카테고리</option>
                             @foreach ($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                <option value="{{ $category->id }}" @if($category->id == $store->category_id) selected @else @endif>{{ $category->name }}</option>
                             @endforeach
                         </select>
                         </div>
@@ -39,7 +39,7 @@
                                 <select class="form-select" aria-label="Default select example" onchange="selectCity(event)" name="adminCity" id="cityList">
                                   <option value="">광역시도</option>
                                   @foreach ($cities as $city)
-                                  <option value="{{ $city->id }}">
+                                  <option value="{{ $city->id }}" @if($city->id == $store->county->city->id) selected @else @endif>
                                     {{ $city->city}}</option>
                                   @endforeach
                                 </select>
@@ -49,19 +49,19 @@
                                   @if (isset($_REQUEST['adminCity']) && ($_REQUEST['adminCity']) != null)
                                   @foreach ($counties as $county)
                                     @if ($county->city_id == ($_REQUEST['adminCity']))
-                                    <option value="{{ $county->id }}">
+                                    <option value="{{ $county->id }}" @if($county->id == $store->county_id) selected @else @endif>
                                     {{ $county->county }}</option>
                                     @endif
                                     @endforeach
                                   @else
                                   @foreach ($counties as $county)
-                                  <option value="{{ $county->id }}">
+                                  <option value="{{ $county->id }}" @if($county->id == $store->county_id) selected @else @endif>
                                     {{ $county->county }}</option>
                                     @endforeach
                                   @endif
                                 </select>
                             </div>
-                            <input type="text" class="form-control mt-3" id="addressDetail" name="addressDetail" placeholder="상세주소">
+                            <input type="text" class="form-control mt-3" id="addressDetail" name="addressDetail" placeholder="상세주소" value="{{ $store->address_detail }}">
                         </div>
 
 
@@ -71,35 +71,43 @@
                                 <select class="form-select" aria-label="Default select example" name="localCode" id="localCode">
                                   <option value="">지역번호</option>
                                   @foreach ($localCodes as $localCode)
-                                  <option value="{{ $localCode->id }}">
+                                  <option value="{{ $localCode->id }}" @if($localCode->id == $store->local_code_id) selected @else @endif>
                                     {{ $localCode->number }}</option>
                                   @endforeach
                                 </select>
                                 <span class="px-2"></span>
-                                <input type="text" class="form-control" id="middleNumber" name="middleNumber">
+                                <input type="text" class="form-control" id="middleNumber" name="middleNumber" value="{{ $middleNumber }}">
                                 <span class="px-3 align-self-center">-</span>
-                                <input type="text" class="form-control" id="lastNumber" name="lastNumber">
+                                <input type="text" class="form-control" id="lastNumber" name="lastNumber" value="{{ $lastNumber }}">
                             </div>
                         </div>
 
 
                         <div class="p-2 docs-highlight file-select">
-                            <label for="address" class="form-label" id="fileSelectForm" value="1">사진</label>
-                            <div class="input-group mb-3 fileSelect" id="fileSelect1">
-                                <input type="text" class="form-control bg-white" name="filename1" disabled="disabled" placeholder="파일선택" value="" id="fileName1">
-                                <button class="btn btn-outline-secondary btn-dark" type="button" id="fileSelect1" value="1" onclick="chooseFile(this.value);">
+                            <label for="address" class="form-label" id="fileSelectForm" value="10">사진</label>
+                            @foreach($imageNames as $imageName)
+                            <div class="input-group mb-3 fileSelect" id="fileSelect{{ $loop->index+1 }}">
+                                <input type="text" class="form-control bg-white" name="filename{{ $loop->index+1 }}" disabled="disabled" placeholder="{{ $imageName }}" value="{{ $imageName }}" id="fileName{{ $loop->index+1 }}">
+                                <button class="btn btn-outline-secondary btn-dark" type="button" id="fileSelect{{ $loop->index+1 }}" value="{{ $loop->index+1 }}" onclick="changeFile({{ $loop->index+1 }});">
                                     <span style="color: white;">파일선택</span>
                                 </button>                                
-                                <button class="btn btn-outline-secondary btn-white rounded-end" style="width: 40px;" type="button" id="addFileSelect1" value="1" onclick= "addFileList()">
-                                    <span style="color: black;" id="icon1">+</span>
+                                <button class="btn btn-outline-secondary btn-white rounded-end" style="width: 40px;" type="button" id="addFileSelect{{ $loop->index+1 }}" value="{{ $loop->index+1 }}" @if($loop->index == 0) onclick="addFileList()"@else onclick="deleteFileList({{ $loop->index+1 }}) @endif">
+                                    <span style="color: black;" id="icon1">@if($loop->index == 0)+@else-@endif</span>
                                 </button>                                
-                                <input type="file" class="form-control" hidden id="inputFile1" data-id="1" name="inputFile1" onchange="sendFile(this)">
+                                <input type="file" class="form-control" hidden id="inputFile{{ $loop->index+1 }}" data-id="{{ $loop->index+1 }}" name="inputFile{{ $loop->index+1 }}" onchange="sendFile(this)">
                             </div>
+                            @endforeach
                         </div>
                         <p class="ps-3" style="color:#BDBDBD">* 사진은 최대 5장 까지 등록 가능합니다. (jpg, jpeg, png)</p>
 
-                        <div class="d-flex flex-wrap gap-3" id="imageThumnail">
+                        
 
+                        <div class="d-flex flex-wrap gap-3" id="imageThumnail">
+                            @foreach($imageNames as $imageName)
+                            <div class="img-thumbnail" id="thumbnail{{ $loop->index+1 }}" style="width: 30%;">
+                                <img style="width: 100%;" src="{{ $store->images[$loop->index]->path }}">
+                            </div>
+                            @endforeach
                         </div>
                         <div class="d-grid gap-2 py-3 px-2">
                             <button type="button" class="btn btn-primary btn-dark rounded-pill"  id="signupButton" onclick="formCheck(event);">맛집 등록</button>
@@ -128,6 +136,7 @@
             </div>
         </div>
         {{-- 회원가입확인모달 끝 --}}
+        <input hidden name="storeId" value="{{ $store->id }}">
     </form>
 </div>
 @endsection
@@ -163,14 +172,12 @@ function checkDuplicate(event) {
                         alert('가입 가능한 이메일입니다.');
                         $('#emailSignup').attr('style', 'border: solid green;');
                         $('#emailCheck').val('check');
-                        
                     }
                     else if(data == 'duplicate') {
                         console.log(data);
                         alert('사용중인 이메일주소가 있습니다.');
                         $('#emailSignup').attr('style', 'border: solid red;');
                         $('#emailCheck').val('duplicate');
-    
                     }
                 }
             },
@@ -320,10 +327,20 @@ for(i=0;i<counties.length;i++){
 }
 }
 
+//파일선택클릭
 function chooseFile(num){
     console.log(num);
     $('#inputFile'+num).click();
 }
+
+//파일변경선택클릭
+function changeFile(num){
+    console.log(num);
+    
+    $('#inputFile'+num).click();
+}
+
+
 
 // 퍼온코드응용 check 파일이름 얻기
 function sendFileFunction(obj) {

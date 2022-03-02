@@ -262,87 +262,104 @@ class AdminController extends Controller
         
         try {
             
-                        // $request->validate([
-                        //     'storeName' => 'bail|required|between:1,30',
-                        //     'storeIntro' => 'bail|required|between:10,300',
-                        //     'category_id' => 'bail|required|',
-                        //     'adminCity' => 'bail|required|',
-                        //     'adminCounty' => 'bail|required|',
-                        //     'addressDetail' => 'bail|required|',
-                        //     'localCode' => 'bail|required|',
-                        //     'middleNumber' => 'bail|required|',
-                        //     'lastNumber' => 'bail|required|',
-                        //     'category_id' => 'bail|required|',
-                        //     // 'image' => 'file|mimes:jpeg, jpg, bmp, png',
-                        // ]);
-                        
-                        
-                        DB::beginTransaction();
-                        
-                        // if ($store->id !== intval($request->storeId)) {
-                            //     Session::flash('error', '올바르지않은 접근방법입니다.');
-                            //     return redirect()->back();
-                            // }
-                            
-                            
-                            $storeId = $request->storeId;
-                            $telephoneNumber = $request->middleNumber.$request->lastNumber;
-                            
-                        Store::find($storeId)->update(['name' => $request->storeName, 'introduction' => $request->storeIntro, 'category_id' => $request->category_id, 'address_detail' => $request->addressDetail,
-                        'county_id' => $request->adminCounty, 'local_code_id' => $request->localCode, 'telephone_number' => $telephoneNumber]);
+            // $request->validate([
+            //     'storeName' => 'bail|required|between:1,30',
+            //     'storeIntro' => 'bail|required|between:10,300',
+            //     'category_id' => 'bail|required|',
+            //     'adminCity' => 'bail|required|',
+            //     'adminCounty' => 'bail|required|',
+            //     'addressDetail' => 'bail|required|',
+            //     'localCode' => 'bail|required|',
+            //     'middleNumber' => 'bail|required|',
+            //     'lastNumber' => 'bail|required|',
+            //     'category_id' => 'bail|required|',
+            //     // 'image' => 'file|mimes:jpeg, jpg, bmp, png',
+            // ]);
             
             
-                        // $imageNames = array();
-                        // foreach($store->images as $image){
-                        //     $name = str_replace('/storage/images/','',$image->path);
-                        //     array_push($imageNames, $name);
-                        // }
-                        
-                        // 이미지등록
-                        $input = $request->all();
-                        for($i=1;$i<=5;$i++){
-                            if($request->hasFile('inputFile'.$i)){
-                                $destination_path = 'public/images';
-                                $image = $request->file('inputFile'.$i);
-                                // $image_name = $image->getClientOriginalName();
-                                $image_name = 'store_Img_'.$storeId.'-'.$i.'.'.$image->extension();
-                                Storage::delete($image_name);
-                                $request->file('inputFile'.$i)->storeAs($destination_path, $image_name);
-                                $path = '/storage/images/'.$image_name;
-                                Image::insert(['path' => $path, 'store_id' => $storeId]);
-                                $input['inputFile'.$i] = $image_name;
-                            }
-                        }
-                        $imageCount = Store::find($request->storeId)->images()->count();
-                        
-                        for($i=10;$i<=15;$i++){
-                            for($j=$imageCount;$j<=5;$j++){
-                                if($request->hasFile('inputFile'.$i)){
-                                    $destination_path = 'public/images';
-                                    $image = $request->file('inputFile'.$i);
-                                    // $image_name = $image->getClientOriginalName();
-                                    $image_name = 'store_Img_'.$storeId.'-'.$j.'.'.$image->extension();
-                                    $request->file('inputFile'.$i)->storeAs($destination_path, $image_name);
-                                    $path = '/storage/images/'.$image_name;
-                                    Image::insert(['path' => $path, 'store_id' => $storeId]);
-                                    $input['inputFile'.$i] = $image_name;
-                                }
-                            }
-                        }
+            DB::beginTransaction();
             
-                        
-            
+            // if ($store->id !== intval($request->storeId)) {
+                //     Session::flash('error', '올바르지않은 접근방법입니다.');
+                //     return redirect()->back();
+                // }
                 
-                        DB::commit();
-                        
-                        return redirect()->back()->with('success','맛집이 수정되었습니다.');;
-                        
-                    } 
-                    catch (\Exception $exception) {
-                        DB::rollback();
-                        Session::flash('error', $exception->getMessage());
-                        throw $exception;
+                $store = Store::with(['images','category','county','localCode'])->find($request->storeId);
+                $storeId = $request->storeId;
+                $telephoneNumber = $request->middleNumber.$request->lastNumber;
+                    
+                Store::find($storeId)->update(['name' => $request->storeName, 'introduction' => $request->storeIntro, 'category_id' => $request->category_id, 'address_detail' => $request->addressDetail,
+                'county_id' => $request->adminCounty, 'local_code_id' => $request->localCode, 'telephone_number' => $telephoneNumber]);
+
+
+            // $imageNames = array();
+            // foreach($store->images as $image){
+            //     $name = str_replace('/storage/images/','',$image->path);
+            //     array_push($imageNames, $name);
+            // }
+            
+            $imageNames = array();
+            foreach($store->images as $image){
+                $name = str_replace('/storage/images/','',$image->path);
+                array_push($imageNames, $name);
+            }    
+
+            // 이미지등록
+            $input = $request->all();
+            for($i=1;$i<=5;$i++){
+                if($request->hasFile('inputFile'.$i)){
+                    $destination_path = 'public/images';
+                    $image = $request->file('inputFile'.$i);
+                    $previous_image_name = $imageNames[$i-1];
+                    $image_name = 'store_Img_'.$storeId.'-'.$i.'.'.$image->extension();
+                    // 이전 이미지 삭제
+                    // $deleted=Storage::disk('public')->delete('store_Img_1-1.png');
+                    // Storage::delete('store_Img_1-1.png');
+                    // dd(''.$previous_image_name.'');
+
+                    
+                    $request->file('inputFile'.$i)->storeAs($destination_path, $image_name);
+                    $path = '/storage/images/'.$image_name;
+                    $previous_path = '/storage/images/'.$previous_image_name;
+                    // 이전 이미지DB 삭제
+                    $previousImage = Image::where('path', $previous_path)->first();
+                    $previousImage->delete();
+                    
+                    Image::insert(['path' => $path, 'store_id' => $storeId]);
+                    $input['inputFile'.$i] = $image_name;
+                }
+            }
+
+            $imageCount = Store::find($request->storeId)->images()->count();
+            
+            for($i=10;$i<=15;$i++){
+                for($j=$imageCount;$j<=5;$j++){
+                    if($request->hasFile('inputFile'.$i)){
+                        $destination_path = 'public/images';
+                        $image = $request->file('inputFile'.$i);
+                        // $image_name = $image->getClientOriginalName();
+                        $image_name = 'store_Img_'.$storeId.'-'.$j.'.'.$image->extension();
+                        $request->file('inputFile'.$i)->storeAs($destination_path, $image_name);
+                        $path = '/storage/images/'.$image_name;
+                        Image::insert(['path' => $path, 'store_id' => $storeId]);
+                        $input['inputFile'.$i] = $image_name;
                     }
+                }
+            }
+
+            
+
+    
+            DB::commit();
+            
+            return redirect()->back()->with('success','맛집이 수정되었습니다.');;
+            
+        } 
+        catch (\Exception $exception) {
+            DB::rollback();
+            Session::flash('error', $exception->getMessage());
+            throw $exception;
+        }
     }
 
 

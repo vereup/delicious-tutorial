@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.adminMain')
 
 @section('content')
 
@@ -130,14 +130,14 @@
                     data-storeName="{{ $store->name }}"
                     data-storeCategory="{{ $store->category->name }}"
                     data-storeAddress="{{ $store->county->city->city }} {{ $store->county->county }} {{$store->address_detail}}"
-                    data-storeTelephoneNumber="{{ $store->localCode->number }}{{$store->telephone_number}}"
+                  data-storeTelephoneNumber="{{ $store->localCode->number }}{{$store->telephone_number}}"
                     data-storeContents="{{ $store->introduction }}"
                     data-storeImage="{{ $store->images }}"
                     data-storeRating="{{ $store->rating_average }}"
                     data-storeReviewCount="{{ $store->review_count }}"
                     data-storeWishCount="{{ $store->wishes->count() }}"
                     >보기</a></td>
-                  <td class="text-center border-end border-light" style="vertical-align: middle"><a class="text-blue" href="{{ route('modify') }}/{{ $store->id }}" style="cursor: pointer">수정</a></td>
+                  <td class="text-center border-end border-light" style="vertical-align: middle"><a class="text-blue" href="/admin/modify/{{ $store->id }}" style="cursor: pointer">수정</a></td>
                   <td class="text-center border-end border-light" style="vertical-align: middle"><a class="text-blue" style="cursor: pointer" onclick="deleteStore({{ $store->id }})">삭제</a></td>
                 </tr>
                   @endforeach
