@@ -235,12 +235,35 @@ class AdminController extends Controller
         $localCodes = LocalCode::get();
         $store->get();
 
-        $imageNames = array();
+        // $imageNames = array();
+        // foreach($store->images as $image){
+        //     $name = str_replace('/storage/images/','',$image->path);
+        //     array_push($imageNames, $name);
+        // }
+        // sort($imageNames);
+
+        $imageNames = array(0 => "", 1 => "", 2 => "", 3 => "", 4 => "");
         foreach($store->images as $image){
             $name = str_replace('/storage/images/','',$image->path);
-            array_push($imageNames, $name);
+
+            switch(true){
+                case (strpos($name, '-1')):
+                    $imageNames[0] = $name;
+                    break;
+                case (strpos($name, '-2')):
+                    $imageNames[1] = $name;
+                    break;
+                case (strpos($name, '-3')):
+                    $imageNames[2] = $name;
+                    break;
+                case (strpos($name, '-4')):
+                    $imageNames[3] = $name;
+                    break;
+                case (strpos($name, '-5')):
+                    $imageNames[4] = $name;
+                    break;
+            }
         }
-        sort($imageNames);
 
         return view('admin/modifyStore', [
 
@@ -289,6 +312,8 @@ class AdminController extends Controller
                 $store = Store::with(['images','category','county','localCode'])->find($request->storeId);
                 $storeId = $request->storeId;
                 $telephoneNumber = $request->middleNumber.$request->lastNumber;
+
+                $test = $request->fileList;
                     
                 Store::find($storeId)->update(['name' => $request->storeName, 'introduction' => $request->storeIntro, 'category_id' => $request->category_id, 'address_detail' => $request->addressDetail,
                 'county_id' => $request->adminCounty, 'local_code_id' => $request->localCode, 'telephone_number' => $telephoneNumber]);
@@ -300,24 +325,54 @@ class AdminController extends Controller
             //     array_push($imageNames, $name);
             // }
             
-            $imageNames = array();
+            $imageNames = array(0 => "", 1 => "", 2 => "", 3 => "", 4 => "");
             foreach($store->images as $image){
                 $name = str_replace('/storage/images/','',$image->path);
-                array_push($imageNames, $name);
+
+                switch(true){
+                    case (strpos($name, '-1')):
+                        $imageNames[0] = $name;
+                        break;
+                    case (strpos($name, '-2')):
+                        $imageNames[1] = $name;
+                        break;
+                    case (strpos($name, '-3')):
+                        $imageNames[2] = $name;
+                        break;
+                    case (strpos($name, '-4')):
+                        $imageNames[3] = $name;
+                        break;
+                    case (strpos($name, '-5')):
+                        $imageNames[4] = $name;
+                        break;
+                }
             }
-            sort($imageNames);
+            // sort($imageNames);
+            // dd($imageNames);
+
             $imageCount = count($imageNames);
 
-            // dd($imageCount);
 
+            // $imageNames = array();
+            // foreach($store->images as $image){
+            //     $name = str_replace('/storage/images/','',$image->path);
+            //     array_push($imageNames, $name);
+            // }
+            // sort($imageNames);
+            // $imageCount = count($imageNames);
+            
             $input = $request->all();
-
-
+            
+            
             // 수정할 이미지 삭제
-            for($i=1;$i<=$imageCount;$i++){
-                if($request->hasFile('inputFile'.$i)){
-                    Storage::disk('images')->delete(basename($imageNames[$i-1]));
-                    $previous_path = '/storage/images/'.$imageNames[$i-1];
+
+            for($i=0;$i<5;$i++){
+                $index = 'fileListCheck'.($i+1);
+                $fileListCheck = $request->$index;
+                if($request->hasFile('inputFile'.($i+1)) && $imageNames[$i] != '' || $fileListCheck == 'off' && $imageNames[$i] != ''){
+                    // dd($imageNames[$i]);
+                    Storage::disk('images')->delete(basename($imageNames[$i]));
+                    $previous_path = '/storage/images/'.$imageNames[$i];
                     $previousImage = Image::where('path', $previous_path)->first();
                     $previousImage->delete();
                     // dd($previousImage);
@@ -325,17 +380,51 @@ class AdminController extends Controller
             }
             
             // 이미지등록
-            for($i=1;$i<=5;$i++){
-                if($request->hasFile('inputFile'.$i)){
+            for($i=0;$i<5;$i++){
+                if($request->hasFile('inputFile'.($i+1))){
                     $destination_path = 'public/images';
-                    $image = $request->file('inputFile'.$i);
-                    $image_name = 'store_Img_'.$storeId.'-'.$i.'.'.$image->extension();
-                    $request->file('inputFile'.$i)->storeAs($destination_path, $image_name);
+                    $image = $request->file('inputFile'.($i+1));
+                    $image_name = 'store_Img_'.$storeId.'-'.($i+1).'.'.$image->extension();
+                    $request->file('inputFile'.($i+1))->storeAs($destination_path, $image_name);
                     $path = '/storage/images/'.$image_name;
                     Image::insert(['path' => $path, 'store_id' => $storeId]);
-                    $input['inputFile'.$i] = $image_name;
+                    $input['inputFile'.($i+1)] = $image_name;
                 }
             }
+
+
+            // image Count 세서 하기
+            // $input = $request->all();
+            
+            
+            // // 수정할 이미지 삭제
+
+            
+            // for($i=1;$i<=$imageCount;$i++){
+            //     $index = 'fileListCheck'.$i;
+            //     $fileListCheck = $request->$index;
+            //     if($request->hasFile('inputFile'.$i) || $fileListCheck == 'off'){
+            //     Storage::disk('images')->delete(basename($imageNames[$i-1]));
+            //     $previous_path = '/storage/images/'.$imageNames[$i-1];
+            //     $previousImage = Image::where('path', $previous_path)->first();
+            //     $previousImage->delete();
+            //     // dd($previousImage);
+            //     }
+
+            // }
+            
+            // // 이미지등록
+            // for($i=1;$i<=5;$i++){
+            //     if($request->hasFile('inputFile'.$i)){
+            //         $destination_path = 'public/images';
+            //         $image = $request->file('inputFile'.$i);
+            //         $image_name = 'store_Img_'.$storeId.'-'.$i.'.'.$image->extension();
+            //         $request->file('inputFile'.$i)->storeAs($destination_path, $image_name);
+            //         $path = '/storage/images/'.$image_name;
+            //         Image::insert(['path' => $path, 'store_id' => $storeId]);
+            //         $input['inputFile'.$i] = $image_name;
+            //     }
+            // }
 
             // $imageCount = Store::find($request->storeId)->images()->count();
             

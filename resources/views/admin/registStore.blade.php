@@ -87,7 +87,7 @@
                             @for($i=1;$i<=5;$i++)
                             <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i }}" @if($i != 1) hidden @endif>
                                 <input type="text" class="form-control bg-white" name="filename{{ $i }}" disabled="disabled" placeholder="파일선택" value="" id="fileName{{ $i }}">
-                                <button class="btn btn-outline-secondary btn-dark" type="button" id="fileSelect{{ $i }}" value="{{ $i }}" onclick="chooseFile({{ $i }});">
+                                <button class="btn btn-outline-secondary btn-dark" type="button" onclick="chooseFile({{ $i }});">
                                     <span style="color: white;">파일선택</span>
                                 </button>                                
                                 <button class="btn btn-outline-secondary btn-white rounded-end" style="width: 40px;" type="button" id="addFileSelect{{ $i }}" value="{{ $i }}" @if($i == 1) onclick="addFileList()"@else onclick="deleteFileList({{ $i }}) @endif">

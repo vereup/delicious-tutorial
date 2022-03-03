@@ -1,6 +1,7 @@
 @extends('layouts.adminMain')
 
 @section('content')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 
 <div class="py-1" style="background-color: #E5E5E5">
     <form method="POST" id="registForm" action="{{ route('modifyStore') }}" enctype="multipart/form-data">
@@ -85,13 +86,45 @@
 
                         <div class="p-2 docs-highlight file-select">
                             <label for="address" class="form-label" id="fileSelectForm" value="10">사진</label>
+
+                            @for($i=0;$i<5;$i++)
+                            @if($imageNames[$i] != "")
+                            <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i+1 }}" data-value="on">
+                                <input type="hidden" id="fileListCheck{{ $i+1 }}" name="fileListCheck{{ $i+1 }}" value="on">
+                                <input type="text" class="form-control bg-white" name="filename{{ $i+1 }}" disabled="disabled" placeholder="{{ $imageNames[$i] }}" value="{{ $imageNames[$i] }}" id="fileName{{ $i+1 }}">
+                                <button class="btn btn-outline-secondary btn-dark" type="button" onclick="chooseFile({{ $i+1 }});">
+                                    <span style="color: white;">파일선택</span>
+                                </button>                                
+                                <button class="btn btn-outline-secondary btn-white rounded-end" style="width: 40px;" type="button" id="addFileSelect{{ $i+1 }}" value="{{ $i+1 }}" @if($i == 0) onclick="addFileList()"@else onclick="deleteFileList({{ $i+1 }}) @endif">
+                                    <span style="color: black;" id="icon1">@if($i== 0)+@else-@endif</span>
+                                </button>                                
+                                <input type="file" class="form-control" hidden id="inputFile{{ $i+1 }}" data-id="{{ $i+1 }}" name="inputFile{{ $i+1 }}" onchange="sendFile(this)">
+                            </div>
+                            @else
+                            <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i+1 }}" hidden data-value="off">
+                                <input type="hidden" id="fileListCheck{{ $i+1 }}" name="fileListCheck{{ $i+1 }}" value="off">
+                                <input type="text" class="form-control bg-white" name="filename{{ $i+1 }}" disabled="disabled" placeholder="파일선택" value="" id="fileName{{ $i+1 }}">
+                                <button class="btn btn-outline-secondary btn-dark" type="button" onclick="chooseFile({{ $i+1 }});">
+                                    <span style="color: white;">파일선택</span>
+                                </button>                                
+                                <button class="btn btn-outline-secondary btn-white rounded-end" style="width: 40px;" type="button" id="addFileSelect{{ $i+1 }}" value="{{ $i+1 }}" @if($i == 0) onclick="addFileList()"@else onclick="deleteFileList({{ $i+1 }}) @endif">
+                                    <span style="color: black;" id="icon1">@if($i== 0)+@else-@endif</span>
+                                </button>                                
+                                <input type="file" class="form-control" hidden id="inputFile{{ $i+1 }}" data-id="{{ $i+1 }}" name="inputFile{{ $i+1 }}" onchange="sendFile(this)">
+                            </div>
+                            @endif
+                            @endfor
+
+
+                            {{-- 카운트형
                             @php
                             $imageCount = count($imageNames);
                             @endphp
                             @for($i=0;$i<$imageCount;$i++)
-                            <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i+1 }}">
+                            <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i+1 }}" data-value="on">
+                                <input type="hidden" id="fileListCheck{{ $i+1 }}" name="fileListCheck{{ $i+1 }}" value="on">
                                 <input type="text" class="form-control bg-white" name="filename{{ $i+1 }}" disabled="disabled" placeholder="{{ $imageNames[$i] }}" value="{{ $imageNames[$i] }}" id="fileName{{ $i+1 }}">
-                                <button class="btn btn-outline-secondary btn-dark" type="button" id="fileSelect{{ $i+1 }}" value="{{ $i+1 }}" onclick="chooseFile({{ $i+1 }});">
+                                <button class="btn btn-outline-secondary btn-dark" type="button" onclick="chooseFile({{ $i+1 }});">
                                     <span style="color: white;">파일선택</span>
                                 </button>                                
                                 <button class="btn btn-outline-secondary btn-white rounded-end" style="width: 40px;" type="button" id="addFileSelect{{ $i+1 }}" value="{{ $i+1 }}" @if($i == 0) onclick="addFileList()"@else onclick="deleteFileList({{ $i+1 }}) @endif">
@@ -101,9 +134,10 @@
                             </div>
                             @endfor
                             @for($i=$imageCount;$i<5;$i++)
-                            <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i+1 }}" hidden>
+                            <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i+1 }}" hidden data-value="off">
+                                <input type="hidden" id="fileListCheck{{ $i+1 }}" name="fileListCheck{{ $i+1 }}" value="off">
                                 <input type="text" class="form-control bg-white" name="filename{{ $i+1 }}" disabled="disabled" placeholder="파일선택" value="" id="fileName{{ $i+1 }}">
-                                <button class="btn btn-outline-secondary btn-dark" type="button" id="fileSelect{{ $i+1 }}" value="{{ $i+1 }}" onclick="chooseFile({{ $i+1 }});">
+                                <button class="btn btn-outline-secondary btn-dark" type="button" onclick="chooseFile({{ $i+1 }});">
                                     <span style="color: white;">파일선택</span>
                                 </button>                                
                                 <button class="btn btn-outline-secondary btn-white rounded-end" style="width: 40px;" type="button" id="addFileSelect{{ $i+1 }}" value="{{ $i+1 }}" @if($i == 0) onclick="addFileList()"@else onclick="deleteFileList({{ $i+1 }}) @endif">
@@ -111,7 +145,7 @@
                                 </button>                                
                                 <input type="file" class="form-control" hidden id="inputFile{{ $i+1 }}" data-id="{{ $i+1 }}" name="inputFile{{ $i+1 }}" onchange="sendFile(this)">
                             </div>
-                            @endfor
+                            @endfor --}}
 
 
 
@@ -134,19 +168,22 @@
                         
 
                         <div class="d-flex flex-wrap gap-3" id="imageThumnail">
-                            @for($i=0;$i<$imageCount;$i++)
+
+                            @for($i=0;$i<5;$i++)
+                            @if($imageNames[$i] != "")
                             <div class="img-thumbnail" id="thumbnail{{ $i+1 }}" style="width: 30%;" >
                                 <img style="width: 100%;" src="/storage/images/{{ $imageNames[$i] }}">
                             </div>
-                            @endfor
-                            @for($i=$imageCount;$i<5;$i++)
+                            @else
                             <div class="img-thumbnail" id="thumbnail{{ $i+1 }}" style="width: 30%;" hidden>
                                 <img style="width: 100%;" src="">
                             </div>
+                            @endif
                             @endfor
                         </div>
                         <div class="d-grid gap-2 py-3 px-2">
-                            <button type="button" class="btn btn-primary btn-dark rounded-pill"  id="signupButton" onclick="formCheck(event);">맛집 등록</button>
+                            <button type="button" class="btn btn-primary btn-dark rounded-pill"  id="signupButton" onclick="formCheck(event);">맛집 수정</button>
+                            
                             <button type="button" hidden id="modalOpen" data-coreui-toggle="modal" 
                             data-coreui-target="#registCheckModal"></button>
                         </div>
@@ -329,7 +366,7 @@ function formCheck(event){
     }
 
     $('#modalOpen').click();
-
+    // readFileList();
 };
 
 
@@ -426,6 +463,38 @@ function sendFile(obj) {
     addThumnail(obj, num);
 }
 
+// // 선택한 파일리스트 읽기
+
+// function readFileList(){
+//     var fileList = [];
+//     for(i=1;i<=5;i++){
+//         if($('#fileSelect'+i).attr('data-value') == 'off'){
+//             fileList.push(i);
+//         } 
+//     }  
+//     console.log(fileList);
+
+
+// // ajax 실패 check
+//     // $.ajax({
+//     //         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+//     //         type : 'post',
+//     //         url : "{{ route('modifyStore') }}",
+//     //         data : {
+//     //             'fileList' : fileList,
+//     //         },
+//     //         success : function(data) {
+//     //                     console.log(data);
+//     //                     console.log('ajax성공');
+//     //         },
+            
+//     //         error : function(error) {
+//     //             console.log(error);
+//     //         }
+//     // });
+// }
+
+
 // 파일선택시 추가
 function addFileList(){
 
@@ -434,7 +503,17 @@ console.log(fileCount);
 
 if(fileCount <= 5){
 
-    $('#fileSelect'+fileCount).removeAttr('hidden');
+    for(i=1;i<=5;i++){
+        console.log('i'+i);
+        console.log($('#fileSelect'+i).data('value'));
+        if($('#fileSelect'+i).attr('data-value') == 'off'){
+            $('#fileSelect'+i).removeAttr('hidden');
+            $('#fileSelect'+i).attr('data-value','on');
+            $('#fileListCheck'+i).attr('value','on');
+            
+            break;
+        } 
+    }  
 
     if(fileCount >= 5){
         $('#icon1').text('');
@@ -478,13 +557,22 @@ function deleteFileList(value){
 var fileCount = $('.fileSelect:visible').length;
 console.log(fileCount);
 
-$('#fileSelect'+fileCount).attr('hidden','');
-$('#thumbnail'+fileCount).attr('hidden','');
+$('#fileSelect'+value).attr('hidden','');
+$('#fileSelect'+value).attr('data-value','off');
+
+$('#fileListCheck'+value).attr('value','off');
+
+$('#fileName'+value).attr('value','');
+$('#fileName'+value).attr('placeholder','');
+
+$('#thumbnail'+value).attr('hidden','');
 
 
 if(fileCount <= 5){
         $('#icon1').text('+');
 }
+
+// readFileList();
 
 }
 
