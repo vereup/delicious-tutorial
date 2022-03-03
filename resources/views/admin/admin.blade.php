@@ -324,7 +324,7 @@ detailModal.addEventListener('show.coreui.modal', function (event) {
   // 첫번째 이미지  
   var firstImageElement = document.createElement('div');
   firstImageElement.className = 'carousel-item active px-5';
-  firstImageElement.innerHTML = "<img class='d-block w-100' src="+images[0].path+">";
+  firstImageElement.innerHTML = "<img class='d-block w-100' style='max-height:300px;' src="+images[0].path+">";
   firstImageElement.width = "250";
 
   imageForm.appendChild(firstImageElement);
@@ -333,7 +333,7 @@ detailModal.addEventListener('show.coreui.modal', function (event) {
   for(i=1;i<images.length;i++){
     var imagesElement = document.createElement('div');
     imagesElement.className = 'carousel-item px-5';
-    imagesElement.innerHTML = "<img class='d-block w-100' src="+images[i].path+">";
+    imagesElement.innerHTML = "<img class='d-block w-100' style='max-height:300px;' src="+images[i].path+">";
     imagesElement.width = "250";
 
     imageForm.appendChild(imagesElement);

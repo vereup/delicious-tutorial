@@ -178,6 +178,7 @@ class AdminController extends Controller
                 // 'image' => 'file|mimes:jpeg, jpg, bmp, png',
             ]);
             
+            // dd($request->storeIntro);
                     
             DB::beginTransaction();
             
@@ -239,6 +240,7 @@ class AdminController extends Controller
             $name = str_replace('/storage/images/','',$image->path);
             array_push($imageNames, $name);
         }
+        sort($imageNames);
 
         return view('admin/modifyStore', [
 
@@ -302,50 +304,55 @@ class AdminController extends Controller
             foreach($store->images as $image){
                 $name = str_replace('/storage/images/','',$image->path);
                 array_push($imageNames, $name);
-            }    
+            }
+            sort($imageNames);
+            $imageCount = count($imageNames);
 
-            // 이미지등록
+            // dd($imageCount);
+
             $input = $request->all();
+
+
+            // 수정할 이미지 삭제
+            for($i=1;$i<=$imageCount;$i++){
+                if($request->hasFile('inputFile'.$i)){
+                    Storage::disk('images')->delete(basename($imageNames[$i-1]));
+                    $previous_path = '/storage/images/'.$imageNames[$i-1];
+                    $previousImage = Image::where('path', $previous_path)->first();
+                    $previousImage->delete();
+                    // dd($previousImage);
+                }
+            }
+            
+            // 이미지등록
             for($i=1;$i<=5;$i++){
                 if($request->hasFile('inputFile'.$i)){
                     $destination_path = 'public/images';
                     $image = $request->file('inputFile'.$i);
-                    $previous_image_name = $imageNames[$i-1];
                     $image_name = 'store_Img_'.$storeId.'-'.$i.'.'.$image->extension();
-                    // 이전 이미지 삭제
-                    // $deleted=Storage::disk('public')->delete('store_Img_1-1.png');
-                    // Storage::delete('store_Img_1-1.png');
-                    // dd(''.$previous_image_name.'');
-
-                    
                     $request->file('inputFile'.$i)->storeAs($destination_path, $image_name);
                     $path = '/storage/images/'.$image_name;
-                    $previous_path = '/storage/images/'.$previous_image_name;
-                    // 이전 이미지DB 삭제
-                    $previousImage = Image::where('path', $previous_path)->first();
-                    $previousImage->delete();
-                    
                     Image::insert(['path' => $path, 'store_id' => $storeId]);
                     $input['inputFile'.$i] = $image_name;
                 }
             }
 
-            $imageCount = Store::find($request->storeId)->images()->count();
+            // $imageCount = Store::find($request->storeId)->images()->count();
             
-            for($i=10;$i<=15;$i++){
-                for($j=$imageCount;$j<=5;$j++){
-                    if($request->hasFile('inputFile'.$i)){
-                        $destination_path = 'public/images';
-                        $image = $request->file('inputFile'.$i);
-                        // $image_name = $image->getClientOriginalName();
-                        $image_name = 'store_Img_'.$storeId.'-'.$j.'.'.$image->extension();
-                        $request->file('inputFile'.$i)->storeAs($destination_path, $image_name);
-                        $path = '/storage/images/'.$image_name;
-                        Image::insert(['path' => $path, 'store_id' => $storeId]);
-                        $input['inputFile'.$i] = $image_name;
-                    }
-                }
-            }
+            // for($i=10;$i<=15;$i++){
+            //     for($j=$imageCount;$j<=5;$j++){
+            //         if($request->hasFile('inputFile'.$i)){
+            //             $destination_path = 'public/images';
+            //             $image = $request->file('inputFile'.$i);
+            //             // $image_name = $image->getClientOriginalName();
+            //             $image_name = 'store_Img_'.$storeId.'-'.$j.'.'.$image->extension();
+            //             $request->file('inputFile'.$i)->storeAs($destination_path, $image_name);
+            //             $path = '/storage/images/'.$image_name;
+            //             Image::insert(['path' => $path, 'store_id' => $storeId]);
+            //             $input['inputFile'.$i] = $image_name;
+            //         }
+            //     }
+            // }
 
             
 
