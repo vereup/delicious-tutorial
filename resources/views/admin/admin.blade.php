@@ -138,7 +138,7 @@
                     data-storeWishCount="{{ $store->wishes->count() }}"
                     >보기</a></td>
                   <td class="text-center border-end border-light" style="vertical-align: middle"><a class="text-blue" href="/admin/modify/{{ $store->id }}" style="cursor: pointer">수정</a></td>
-                  <td class="text-center border-end border-light" style="vertical-align: middle"><a class="text-blue" style="cursor: pointer" onclick="deleteStore({{ $store->id }})">삭제</a></td>
+                  <td class="text-center border-end border-light" style="vertical-align: middle"><a class="text-blue" style="cursor: pointer" id="deleteButton" data-coreui-toggle="modal" data-coreui-target="#deleteCheckModal" data-storeId="{{ $store->id }}">삭제</a></td>
                 </tr>
                   @endforeach
                 </tbody>
@@ -254,15 +254,15 @@
                   </div>
               </div>
 
-              {{-- 수정 확인 모달 --}}
-              <div class="modal" tabindex="-1" id="modifyCheckModal">
+              {{-- 스토어 삭제 확인 모달 --}}
+              <div class="modal" tabindex="-1" id="deleteCheckModal">
                   <div class="modal-dialog modal-dialog-centered modalSize350">
                       <div class="modal-content">
                           <div class="modal-body">
-                              <p class="fw-bold text-center">리뷰를 수정하시겠습니까?</p>
+                              <p class="fw-bold text-center">맛집을 삭제하시겠습니까?</p>
                           </div>
                           <div class="modal-footer" style="justify-content: center;">
-                              <button type="button" class="btn btn-dark rounded-pill btn-primary px-4" id="modifyConfirmOk">확인</button>
+                              <button type="button" class="btn btn-dark rounded-pill btn-primary px-4" onclick="deleteStore()">확인</button>
                               <button
                                   type="button"
                                   class="btn btn-gray rounded-pill btn-secondary px-4"
@@ -271,10 +271,11 @@
                       </div>
                   </div>
               </div>
+              
+
 <script>
 
-// // 전화번호 형식변경 
-
+// 전화번호 형식변경 
 $('.telephone').each(function(){
   var number = $(this).text(); 
 $(this).text(number.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`));
@@ -394,9 +395,12 @@ function selectCity(event){
 }
 
 
-// 스토어 삭제
+// 스토어 삭제 **check 삭제 성공시 메세지 변경 session??
 
-function deleteStore(id){
+function deleteStore(){
+  var deleteButton = document.getElementById('deleteButton')
+  var id = deleteButton.getAttribute('data-storeId');
+  
   console.log(id);
 
   $.ajax({
@@ -408,7 +412,6 @@ function deleteStore(id){
             },
             success : function(data) {
                         console.log(data);
-                        alert('스토어가 삭제되었습니다.');
                         $('#searchSubmit').click();
             },
             error : function(error) {
@@ -417,5 +420,6 @@ function deleteStore(id){
         });
   
 }
+
 </script>
 @endsection

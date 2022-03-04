@@ -85,7 +85,7 @@
 
 
                         <div class="p-2 docs-highlight file-select">
-                            <label for="address" class="form-label" id="fileSelectForm" value="10">사진</label>
+                            <label for="address" class="form-label" id="fileSelectForm">사진</label>
 
                             @for($i=0;$i<5;$i++)
                             @if($imageNames[$i] != "")
@@ -168,7 +168,6 @@
                         
 
                         <div class="d-flex flex-wrap gap-3" id="imageThumnail">
-
                             @for($i=0;$i<5;$i++)
                             @if($imageNames[$i] != "")
                             <div class="img-thumbnail" id="thumbnail{{ $i+1 }}" style="width: 30%;" >
@@ -193,12 +192,12 @@
             </div>  
 
 
-        {{-- 맛집등록 확인 모달 --}}
+        {{-- 맛집수정 확인 모달 --}}
         <div class="modal" tabindex="-1" id="registCheckModal">
             <div class="modal-dialog modal-dialog-centered modalSize350">
                 <div class="modal-content">
                     <div class="modal-body text-center">
-                        <span class="fw-bold" style="vertical-align: middle;text-align:center;">맛집을 등록하시겠습니까?</span>
+                        <span class="fw-bold" style="vertical-align: middle;text-align:center;">맛집을 수정하시겠습니까?</span>
                     </div>
                     <div class="modal-footer" style="justify-content: center;">
                         <button type="submit" class="btn btn-dark rounded-pill btn-primary px-4">확인</button>

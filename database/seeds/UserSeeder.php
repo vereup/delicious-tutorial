@@ -13,6 +13,11 @@ class UserSeeder extends Seeder
     {
         $datas = [
             [
+                'name' => '관리자',
+                'email' => 'admin@laravel.com',
+                'password' => bcrypt('laravel1^^')
+            ],
+            [
                 'name' => '고의영',
                 'email' => 'ko@gmail.com',
                 'password' => bcrypt('laravel1^^')
