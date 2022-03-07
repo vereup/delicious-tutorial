@@ -20,3 +20,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('/checkId', 'CheckIdController@checkId')->name('checkId');
 
 Route::get('/checkWish', 'MainController@checkWish')->name('checkWish');
+
+Route::get('/address', 'AddressController@selectCity')->name('selectCity');

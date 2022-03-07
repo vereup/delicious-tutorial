@@ -14,15 +14,13 @@
         </div>
 
 {{-- 스토어 리뷰 출력 --}}
-        @foreach ($store->reviews as $review)
+        @foreach ($reviews as $review)
 
         <div class="d-flex border-top border-bottom mx-1">
             <div class="col-9 ps-3 py-2">
                 <p class="card-text">
                     @php
-                        $now = (strtotime(date('Ymd H:i:s')))/86400;
-                        $updated_at = (strtotime($review->updated_at))/86400;
-                        $interval = floor($now - $updated_at);
+                        $interval = $review->updated_at->diffInDays(now());
                     @endphp
                     @if ($interval < 1)
                         오늘
@@ -46,7 +44,10 @@
 @else
 {{-- 로그인됨 --}}
 {{-- 사용자가 작성한 리뷰가 없을시 리뷰작성창 --}}
-@if($reviewCount < 1)
+
+@if($store->reviews->pluck('user_id')->contains(Auth::id()) != true)
+{{-- @if($reviews->pluck('user_id')->contains(Auth::id()) != true) --}}
+{{-- @if($reviewCount < 1) --}}
         <form class="pb-4" method="POST" id="reviewForm" action="{{ route('writeReview') }}">
             @csrf
             <input type="hidden" name="storeId" value="{{ $store->id }}">
@@ -103,15 +104,14 @@
 @else
 @endif
 {{-- 사용자가 작성한 리뷰출력 --}}
-        @foreach ($userReviews as $userReview)
-        <div class="d-flex border-top border-bottom mx-1" style="background-color: #4f5d73">
+@foreach ($store->reviews->where('user_id', Auth::id()) as $userReview)
+{{-- @foreach ($userReviews as $userReview) --}}
+<div class="d-flex border-top border-bottom mx-1" style="background-color: #4f5d73">
             <div class="col-9 ps-3 py-2">
                 <p class="card-text text-white">
                     작성자 : 내 리뷰 |
                     @php
-                        $now = (strtotime(date('Ymd H:i:s')))/86400;
-                        $updated_at = (strtotime($userReview->updated_at))/86400;
-                        $interval = floor($now - $updated_at);
+                        $interval = $userReview->updated_at->diffInDays(now());
                     @endphp
                     @if ($interval < 1)
                         오늘
@@ -135,15 +135,14 @@
 
 
 {{-- 사용자가 작성하지 않은 리뷰출력 --}}
-@foreach ($noUserReviews as $noUserReview)
+@foreach ($reviews->where('user_id', '!=', Auth::id()) as $noUserReview)
+{{-- @foreach ($noUserReviews as $noUserReview) --}}
 <div class="d-flex border-top border-bottom mx-1" >
     <div class="col-9 ps-3 py-2">
         <p class="card-text text-black">
             작성자 : {{ $noUserReview->user->email }} |
             @php
-                $now = (strtotime(date('Ymd H:i:s')))/86400;
-                $updated_at = (strtotime($noUserReview->updated_at))/86400;
-                $interval = floor($now - $updated_at);
+                $interval = $noUserReview->updated_at->diffInDays(now());
             @endphp
             @if ($interval < 1)
                 오늘
@@ -395,88 +394,6 @@ function reviewWrite(){
     $('#reviewWriteConfirmOk').click();
 
 }
-        // // 찜하트 변경
-
-        // function heartChange(id) {
-        //     let heart;
-        //     let value;
-        //     heart = document.getElementById(id);
-        //     value = heart.getAttribute('value');
-        //     switch (value) {
-        //         case '1':
-        //             heart.setAttribute('src', '/images/redheart.png');
-        //             heart.setAttribute('value', '2');
-        //             break;
-        //         case '2':
-        //             heart.setAttribute('src', '/images/whiteheart.png');
-        //             heart.setAttribute('value', '1');
-        //             break;
-
-        //     }
-        //     console.log(value);
-        //     console.log(heart.src);
-        //     console.log(id);
-        // }
-        
-
-// 평점 클릭시 별 변경
-// let oneStar = document.getElementById('oneStar');
-// let twoStar = document.getElementById('twoStar');
-// let threeStar = document.getElementById('threeStar');
-// let fourStar = document.getElementById('fourStar');
-// let fiveStar = document.getElementById('fiveStar');
-
-// function star_listener(event){
-//     switch(event.target.id){
-//         case 'oneStar':
-//             oneStar.setAttribute('src','/images/star.png');
-//             twoStar.setAttribute('src','/images/emptystar.png');
-//             threeStar.setAttribute('src','/images/emptystar.png');
-//             fourStar.setAttribute('src','/images/emptystar.png');
-//             fiveStar.setAttribute('src','/images/emptystar.png');
-//         break;
-
-//         case 'twoStar':
-//             oneStar.setAttribute('src','/images/star.png');
-//             twoStar.setAttribute('src','/images/star.png');
-//             threeStar.setAttribute('src','/images/emptystar.png');
-//             fourStar.setAttribute('src','/images/emptystar.png');
-//             fiveStar.setAttribute('src','/images/emptystar.png');
-//         break;
-
-//         case 'threeStar':
-//             oneStar.setAttribute('src','/images/star.png');
-//             twoStar.setAttribute('src','/images/star.png');
-//             threeStar.setAttribute('src','/images/star.png');
-//             fourStar.setAttribute('src','/images/emptystar.png');
-//             fiveStar.setAttribute('src','/images/emptystar.png');
-//         break;
-
-//         case 'fourStar':
-//             oneStar.setAttribute('src','/images/star.png');
-//             twoStar.setAttribute('src','/images/star.png');
-//             threeStar.setAttribute('src','/images/star.png');
-//             fourStar.setAttribute('src','/images/star.png');
-//             fiveStar.setAttribute('src','/images/emptystar.png');
-//         break;
-
-//         case 'fiveStar':
-//             oneStar.setAttribute('src','/images/star.png');
-//             twoStar.setAttribute('src','/images/star.png');
-//             threeStar.setAttribute('src','/images/star.png');
-//             fourStar.setAttribute('src','/images/star.png');
-//             fiveStar.setAttribute('src','/images/star.png');
-//         break;
-
-//     }
-// }
-//
-// oneStar.addEventListener('click', star_listener);
-// twoStar.addEventListener('click', star_listener);
-// threeStar.addEventListener('click', star_listener);
-// fourStar.addEventListener('click', star_listener);
-// fiveStar.addEventListener('click', star_listener);
-//
 
     </script>
 @endsection

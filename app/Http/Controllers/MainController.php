@@ -19,80 +19,37 @@ class MainController extends Controller
 
         $user_id = Auth::id();
         $categories = Category::get();
-        $images = Image::get();
-        $wishes = Wish::get();
-        $userWishes = Wish::where('user_id', $user_id)->get();
         $ratingList = $request->ratingList;
-        $storeCounts = 0;
 
         $query = Store::select();
 
         // // 검색어입력
-        if($request->keyword != null){
+        if(isset($request->keyword)){
             $query = Store::where('name', 'like', "%{$request->keyword}%");
             $keyword = $request->keyword;
         }
 
-        else{
-            $keyword = null;
-        }
-
         // 카테고리선택
         
-        if($request->categoryList != null ){
+        if(isset($request->categoryList)){
             $categoryList = explode(',', $request->categoryList);
             $query->whereIn('category_id', $categoryList);
         }
 
-        else{
-            $categoryList = 'all';
-        }
-        
-        $min = null;
-        $max = null;
-
         // 평점선택 min 이상
-        if($request->ratingList != null ){
+        if(isset($request->ratingList)){
             $ratingList = explode(',', $request->ratingList);
-
-            if(count($ratingList) > 1){
-                $min = min($ratingList);
-                $max = max($ratingList);
-
-            }
-
-            else{
-                $min = $ratingList[0];
-                $max = 5.1;
-            }
-            
+            $min = min($ratingList);
+            $max = max($ratingList);
             $query->whereBetween('rating_average', [$min,$max]);
-
-        }
-        else{
-            $ratingList = 'all';
         }
 
         $stores = $query->get();
-        $storeCounts = $stores->count();
-        $userWishCount = $userWishes->count();
-
 
         return view('master', [
             'user_id' => $user_id,
             'categories' => $categories,
-            'stores' => $stores,
-            'categoryList' => $categoryList,
-            'ratingList' => $ratingList,
-            'images' => $images,
-            'wishes' => $wishes,
-            'userWishes' => $userWishes,
-            'storeCounts' => $storeCounts,
-            'userWishCount' => $userWishCount,
-            'keyword' => $keyword,
-            'max' => $max,
-            'min' => $min
-            
+            'stores' => $stores
         ]);
     }    
     
@@ -101,16 +58,20 @@ class MainController extends Controller
 
         $user_id = Auth::id();
 
+
+        /// ??? 질문 ????
+        // $request->merge([ 'storeId' => $request->route('id') ]);
+        // $store_id = $request->storeId;
+
+
         try {
-            // $request->validate([
-            //     'reviewId' => 'bail',
-            //     'reviewTitle' => 'bali',
-            //     'reviewContents' => 'bali',
-            // ]);
+            $request->validate([
+                'storeId' => 'bail|required|numeric|exists:stores,id',
+            ]);
             
             DB::beginTransaction();
             
-            $wish = Wish::where('store_id', $request->storeId);
+            $wish = Wish::where('store_id', $request->storeId)->where('user_id', $user_id)->first();
             
             $wish->delete();
             
@@ -137,11 +98,9 @@ class MainController extends Controller
 
 
         try {
-            // $request->validate([
-            //     'reviewId' => 'bail',
-            //     'reviewTitle' => 'bali',
-            //     'reviewContents' => 'bali',
-            // ]);
+            $request->validate([
+                'storeId' => 'bail|required|numeric|exists:stores,id',
+            ]);
             
             DB::beginTransaction();
             

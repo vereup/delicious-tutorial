@@ -21,12 +21,20 @@ class DetailController extends Controller
         $loginUser = Auth::user();
         $user_id = Auth::id();
         $store = Store::find($request->storeId);
-        $userWish = Wish::where('store_id', $request->storeId)->where('user_id',Auth::id())->exists();
-        $userReviews = Review::where('store_id', $request->storeId)->where('user_id', $user_id)->get();
-        $noUserReviews = Review::where('store_id', $request->storeId)->where('user_id', '!=', $user_id)->paginate(2);
+
+
+        // ???? 질문 ????????
+        // $userWish = Wish::where('store_id', $request->storeId)->where('user_id',Auth::id())->exists();
+        // $userReviews = Review::where('store_id', $request->storeId)->where('user_id', $user_id)->get();
+        // $noUserReviews = Review::where('store_id', $request->storeId)->where('user_id', '!=', $user_id)->paginate(2);
+        $query = Review::where('store_id', $request->storeId);
         
-        $reviewCount = $userReviews->count();
-        $keyword = null;
+        if(Auth::user()) {
+            $query->where('user_id', '!=', $user_id);
+        }
+        $reviews = $query->paginate(2);
+
+        // $reviewCount = $userReviews->count();
         
         // $firstImagePath = ($storeImages->first())->path;
         // $storeCategory = Category::find($store->category_id);
@@ -37,12 +45,12 @@ class DetailController extends Controller
 
         return view('detail', [
             'store' => $store,
-            'userReviews' => $userReviews,
-            'loginUser' => $loginUser,
-            'reviewCount' => $reviewCount,
-            'keyword' => $keyword,
-            'userWish' => $userWish,
-            'noUserReviews' => $noUserReviews
+            'reviews' => $reviews,
+            // 'userReviews' => $userReviews,
+            'loginUser' => $loginUser
+            // 'reviewCount' => $reviewCount,
+            // 'userWish' => $userWish
+            // 'noUserReviews' => $noUserReviews
             
             // 'firstImagePath' => $firstImagePath,
             // 'storeCategory' => $storeCategory, 

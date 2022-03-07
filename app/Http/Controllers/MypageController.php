@@ -22,62 +22,35 @@ class MypageController extends Controller
 
         $id = Auth::id();
         $user = Auth::user();
-        $keyword = null;
         
         $tabIndex = $request->tabIndex;
 
         if ($tabIndex <= 1 || $tabIndex == null){
-            $userReviewsCount = Review::where('user_id', $id)->count();
+            // $userReviewsCount = Review::where('user_id', $id)->count();
             $userReviews = Review::where('user_id', $id)->paginate(2);
             
             return view('mypage', [
                 'id' => $id,
                 'user' => $user,
                 'userReviews' => $userReviews,
-                'userReviewsCount' => $userReviewsCount,
+                // 'userReviewsCount' => $userReviewsCount,
                 'request' => $request,
-                'tabIndex' => $tabIndex,
-                'keyword' => $keyword
+                'tabIndex' => $tabIndex
             ]);
         }
         
         else{
-            $userWishesCount = Wish::where('user_id', $id)->count();
+            // $userWishesCount = Wish::where('user_id', $id)->count();
             $userWishes = Wish::where('user_id', $id)->paginate(2);
-
-            
-
-            
-            // $query = Wish::where('user_id', $id)->where('store_id','!=','')->get();
-            // $userWishStoreId = array();
-            // foreach($query as $userWish){
-            //     array_push($userWishStoreId, $userWish->store_id);
-            // }
-            // $images = Image::whereIn('store_id', $userWishStoreId)->get();
-            // foreach($userWishStoreId as $eachId){
-            // }
-
-
-            // dd($images);
-
-
-            // $images = Image::get();
-            // foreach($images as $image){
-            //     foreach($userWishes as $userWish){}
-            //         if($image->store_id == $userWish->store_id){
-                        
-            //         }
-            // }
 
 
             return view('mypage', [
                 'id' => $id,
                 'user' => $user,
                 'userWishes' => $userWishes,
-                'userWishesCount' => $userWishesCount,
+                // 'userWishesCount' => $userWishesCount,
                 'request' => $request,
-                'tabIndex' => $tabIndex,
-                'keyword' => $keyword
+                'tabIndex' => $tabIndex
 
             ]);
         }
@@ -87,20 +60,21 @@ class MypageController extends Controller
 
     public function modifyReview(Request $request){
 
+        $id = Auth::id();
         
         try {
 
             $request->validate([
-                'reviewId' => 'bail',
-                'reviewTitle' => 'bail',
-                'reviewContents' => 'bail',
+                'reviewId' => 'bail|required|numeric|exists:reviews,id',
+                'reviewTitle' => 'bail|required|between:5,30',
+                'reviewContents' => 'bail|required|between:20,300',
             ]);
             
             DB::beginTransaction();
             
             $review = Review::find($request->reviewId);
             
-            if ($review->id != $request->reviewId) {
+            if ($review->user_id != $id) {
                 return redirect()->back()->with('error','리뷰 아이디 확인필요');;
             }
             
@@ -131,16 +105,16 @@ class MypageController extends Controller
         try {
 
             $request->validate([
-                'deleteReviewId' => 'bail',
+                'deleteReviewId' => 'bail|required|numeric|exists:reviews,id',
             ]);
             
             DB::beginTransaction();
             
             $review = Review::find($request->deleteReviewId);
             
-            // if ($review->id != $request->deleteReviewId) {
-                //     return redirect()->back()->with('error','리뷰 아이디 확인필요');;
-                // }
+            if ($review->user_id != Auth::id()) {
+                return redirect()->back()->with('error','리뷰 아이디 확인필요');;
+            }
                 
                 $review->store->decrement('review_count');
                 
@@ -159,14 +133,17 @@ class MypageController extends Controller
             
             else {
                 // $storeId = $review->store->id;
-                $sum = 0;
-                foreach($reviews as $eachReview){
-                    $sum = $sum + $eachReview->rating;
-                }
+                // $sum = 0;
+                // foreach($reviews as $eachReview){
+                //     $sum = $sum + $eachReview->rating;
+                // }
                 
-                $average = 0;
-                $average = $sum / $reviews->count();
-                $store->rating_average = $average;
+                // $average = 0;
+                // $average = $sum / $reviews->count();
+                // $store->rating_average = $average;
+
+                $store->rating_average = $reviews->avg('rating');
+
                 // dd($review->store->rating_average);
                 // $review->store->update(['rating_average' => $average]);
 
@@ -206,7 +183,7 @@ class MypageController extends Controller
         try {
 
             $request->validate([
-                'deleteWishId' => 'bail',
+                'deleteWishId' => 'bail|required|numeric|exists:wishes,id',
             ]);
             
             DB::beginTransaction();

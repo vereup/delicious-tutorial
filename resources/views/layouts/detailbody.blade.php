@@ -5,7 +5,6 @@
                             <div class="col-11 ps-3 py-4">
                                 <p class="card-title fs-3 fw-bold">{{$store->name}}
                                     <a class="stars" value="{{ $store->rating_average }}">{{ $store->rating_average }}<a id="starHalf"></a></a> 
-                                    {{-- <img src="/images/star.png"> --}}
                                     <span class="text" style="font-size: 10pt;">&#40;{{$store->review_count}}&#41;</span>
                                 </p>
                                 <p class="card-text pb-2"><img src="/images/location.png">&nbsp;{{ $store->county->city->city }} {{ $store->county->county }} {{$store->address_detail}}
@@ -15,21 +14,26 @@
                             </div>
                             <div class="col-1 pt-5">
                                 {{-- 찜버튼 --}}
-                                <button
-                                    class="p-2 bg-white"
-                                    style="border: 1px solid #A0A0A0; border-radius: 50%;">
                                     <div>
                                         @guest
+                                        <button type="submit" class="p-2 bg-white" style="border: 1px solid #A0A0A0; border-radius: 50%;">
                                         <img src="/images/whiteheart.png" onclick="alert('로그인해주세요');" name="{{ $store->id }}" value="1" width="25" height="25">
+                                        </button>
                                         @else
-                                        @if($userWish == true)
-                                        <img src="/images/redheart.png" onclick="heartChange(this.id)" name="{{ $store->id }}" value="2" width="25" height="25" id="heart">
-                                        @else
-                                        <img src="/images/whiteheart.png" onclick="heartChange(this.id)" name="{{ $store->id }}" value="1" width="25" height="25" id="heart">
-                                        @endif
+
+                                        @php
+                                            $wish = $store->wishes()->where('user_id', request()->user()->id)->first();
+                                        @endphp
+
+                                        <form method="POST" action="{{ $wish ? route('removeWish', ['storeId' => $store->id]) : route('addWish', ['storeId' => $store->id]) }}">
+                                            @csrf
+                                                <button type="submit" class="p-2 bg-white" style="border: 1px solid #A0A0A0; border-radius: 50%;">
+                                                    <img name="{{ $store->id }}" src="/images/{{ $wish ? 'redheart' : 'whiteHeart' }}.png" width="23" height="26">
+                                                </button>
+                                        </form>
+
                                         @endguest
                                 </div>
-                            </button>
                         </div>
                     </div>
                     <div class="p-2 docs-highlight">
@@ -78,7 +82,7 @@
 
         <div class="p-2 docs-highlight">
             <div class="d-flex justify-content-center">
-                {{ $noUserReviews->links() }}
+                {{ $reviews->links() }}
             </div>
         </div>
     </div>

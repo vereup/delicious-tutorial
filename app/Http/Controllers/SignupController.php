@@ -11,10 +11,7 @@ class SignupController extends Controller
 
     public function getSignupDatas(Request $request){
 
-        $keyword = null;
-        return view('signup', [
-            'keyword' => $keyword
-        ]);
+        return view('signup');
     }
 
 

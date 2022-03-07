@@ -1,8 +1,3 @@
-@php
-    use Carbon\Carbon;
-
-@endphp
-
 @extends('layouts.main')
 
 @section('content')
@@ -41,32 +36,24 @@
             <div class="row">
                 <h2 class="fs-5 fw-bold ps-4 pt-4 pb-2">내 리뷰 &#40;
                     <span>
-                       {{$userReviewsCount}}
+                       {{$userReviews->count()}}
                     </span>&#41;
                 </h2>
             </div>
             <div class="border-bottom">
             </div>
             @foreach ($userReviews as $userReview)
-                @if($userReview->user_id == $user->id)      
+                {{-- @if($userReview->user_id == $user->id)       --}}
                     <div class="d-flex border-bottom">
                         <div class="col-9 ps-3 py-2">
                             <p class="card-text">
                                 @php
-                                    // $now = (strtotime(date('Ymd H:i:s')))/86400;
-                                    // $updated_at = (strtotime($userReview->updated_at))/86400;
-                                    // carbon
-                                    $now = Carbon::now();
-                                    $past = $userReview->updated_at;
-                                    $interval = $now->diffInDays($past);
-                                    
-                                    
+                                    $interval = $userReview->updated_at->diffInDays(now());
                                 @endphp
                                 @if ($interval < 1)
                                     오늘
                                 @else
                                     {{$interval}} 일전
-                                    
                                 @endif
                             </p>
                             <h5 class="card-title" id="reviewTitleId_{{ $userReview->id }}">{{$userReview->title}}</h5>
@@ -78,10 +65,6 @@
                                 @endphp</p>
                         </div>
                         <div class="col-auto pt-5">
-                            {{-- <button type="submit" class="btn btn-primary fs-4 btn-dark rounded-pill" 
-                            style="width: 100px; height:50px;" data-coreui-target="#modifyModal" data-coreui-toggle="modal"  id="{{ $userReview->id }}" 
-                            onclick="modifyClicked(this.id);">수정</button> --}}
-
                             <button type="submit" class="btn btn-primary fs-4 btn-dark rounded-pill" 
                                 style="width: 100px; height:50px;" data-coreui-target="#modifyModal" data-coreui-toggle="modal"  id="{{ $userReview->id }}" 
                                 onclick="modifyClicked({{ $userReview->id }});">수정</button>
@@ -91,7 +74,7 @@
                         
                         </div>
                     </div>
-                @endif
+                {{-- @endif --}}
             @endforeach
             <div class="p-2 docs-highlight">
             <div class="d-flex justify-content-center">
@@ -99,7 +82,6 @@
             </div>
             </div>
           </div>
-          {{-- <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"><h1>test profile</h1></div> --}}
         </div>
 
 
@@ -117,17 +99,16 @@
         </ul>
         
         <div class="tab-content" id="pills-tabContent">
-          {{-- <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"></div> --}}
           <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
             <div class="row">
                 <h2 class="fs-5 fw-bold ps-4 pt-4 pb-2">찜 목록 &#40;
-                    {{$userWishesCount}}
+                    {{$userWishes->count()}}
                     &#41;</h2>
                 </div>
                 <div class="d-flex border-bottom align-items-center">
                 </div>
             @foreach ($userWishes as $userWish)
-                @if($userWish->user_id == $user->id) 
+                {{-- @if($userWish->user_id == $user->id)  --}}
                     <div class="d-flex border-bottom align-items-center">
                         <div class="col-2 ps-3 py-2">
                             <img src="{{$userWish->store->images[0]->path}}" class="img-thumbnail border-0">
@@ -162,7 +143,7 @@
                             </button>
                         </div>
                     </div>
-                @endif
+                {{-- @endif --}}
             @endforeach
             <div class="p-2 docs-highlight">
             <div class="d-flex justify-content-center">
@@ -294,37 +275,7 @@
 
 function submit(id){
     document.getElementById(id).submit();
-    // documnet.getElementById('pills-home-tab').innerHTML()
 }
-
-// var myModalEl = document.getElementById('myModal')
-// myModalEl.addEventListener('hidden.coreui.modal', function (event) {
-//   // do something...
-// })
-
-
-
-
-// var modifyForm = document.getElementById('modifyModal')
-// modifyForm.addEventListener('show.coreui.modal', function (event) {
-//   // Button that triggered the modal
-//   var button = event.relatedTarget
-//   // Extract info from data-coreui-* attributes
-//   var recipient = button.getAttribute('data-coreui-whatever')
-//   // If necessary, you could initiate an AJAX request here
-//   // and then do the updating in a callback.
-//   //
-//   // Update the modal's content.
-//   var modalTitle = exampleModal.querySelector('#reviewTitle')
-//   var modalBodyInput = exampleModal.querySelector('#reviewContents')
-
-//   console.log(modalTitle);
-
-//   modalTitle.textContent = 'New message to ' + recipient
-//   modalBodyInput.value = recipient
-// })
-
-
 
 function modifyClicked(id){
     
@@ -335,13 +286,10 @@ function modifyClicked(id){
     let reviewTitle = document.getElementById('reviewTitle');
     let reviewContents = document.getElementById('reviewContents');
 
-    console.log(id);
-
     reviewId.value = id;    
     reviewTitle.value = title;
     reviewContents.innerText = contents;
 
-    console.log(id);
 }
 
 

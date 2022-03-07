@@ -36,10 +36,10 @@
         </ul>
         <div class="row col-3 px-3">
             <div class="input-group">
-            <input class="form-control col-9" type="text" id="search" name="keyword"
-             @if($keyword != null) value="{{ $keyword }}"@endif>
+            <input class="form-control col-9" type="text" id="keyword" name="keyword" data-type="keyword"
+             @if(request()->keyword) value="{{ request()->keyword }}"@endif>
                 <button class="btn btn-outline-secondary border-start-0 col-3 p-0 m-0" type="button" id="keywordButton"
-                 onclick="go()">
+                 >
                     <img src="/images/magnifying_glass.png" style="width: 20px; height: auto;"></button>
             </div>
             </div>
@@ -105,8 +105,45 @@
 
 // console.log($(location).attr('pathname'));
 
-function go(){
-    location.href = "/?keyword=" + $("#search").val();
-}
+$("#keywordButton").click(function(){
+    changeCondition();
+});
+
+
+function changeCondition(event) {
+    
+    let queryString = new Array();
+    let host = `${window.location.protocol}//${window.location.host}`;
+
+    let keyword = $("#keyword").val();
+    
+    let categoryList = new Array();
+    $("input[data-type=category]:checked").each(function(index, item){
+        categoryList.push($(item).val());
+    });
+    
+    let ratingList = new Array();
+    $("input[data-type=rating]:checked").each(function(index, item){
+        ratingList.push($(item).val());
+    });
+
+    if(keyword.length > 0){
+        queryString.push(`keyword=${keyword}`);
+        console.log(queryString);
+    }
+
+    if(categoryList.length > 0){
+        queryString.push(`categoryList=${categoryList.join(',')}`);
+        console.log(queryString);
+    }
+    if(ratingList.length > 0){
+        queryString.push(`ratingList=${ratingList.join(',')}`);
+        console.log(queryString);
+    }
+
+    if(queryString.length > 0) window.location.href = `${host}?${queryString.join('&')}`;
+
+    else window.location.href = `${host}`;
+};
 
 </script>

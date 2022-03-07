@@ -35,13 +35,6 @@
         @endguest
         </ul>
         <div class="row col-1 px-3">
-            {{-- <div class="input-group">
-            <input class="form-control col-9" type="text" id="search" name="keyword"
-             @if($keyword != null) value="{{ $keyword }}"@endif>
-                <button class="btn btn-outline-secondary border-start-0 col-3 p-0 m-0" type="button" id="keywordButton"
-                 onclick="go()">
-                    <img src="/images/magnifying_glass.png" style="width: 20px; height: auto;"></button>
-            </div> --}}
             </div>
 </div>
             {{-- 로그인모달 --}}
@@ -102,11 +95,5 @@
 
 
 <script>
-
-// console.log($(location).attr('pathname'));
-
-function go(){
-    location.href = "/?keyword=" + $("#search").val();
-}
 
 </script>

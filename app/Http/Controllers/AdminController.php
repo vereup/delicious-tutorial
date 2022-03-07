@@ -297,7 +297,6 @@ class AdminController extends Controller
     }
 
 
-
     public function deleteStore(Request $request){
 
         // //로그인된 사용자 확인

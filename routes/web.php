@@ -21,7 +21,7 @@ Route::get('/','MainController@getMainDatas')->name('home');
 Route::post('/removeWish','MainController@removeWish')->name('removeWish');
 Route::post('/addWish','MainController@addWish')->name('addWish');
 
-Route::get('/search','MainController@sea rch')->name('search');
+Route::get('/search','MainController@search')->name('search');
 
 Route::get('/signup', 'SignupController@getSignupDatas');
 
