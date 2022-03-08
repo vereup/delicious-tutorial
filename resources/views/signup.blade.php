@@ -100,35 +100,17 @@ function checkDuplicate(event) {
         return false;
     }
     else {
-        $.ajax({
-            type : 'GET',
-            url : "{{ route('checkId') }}",
-            data : {
-                'checkEmail' : checkEmail,
-            },
-            success : function(data) {
-                if(data) {
-                    if(data == 'ok') {
-                        console.log(data);
-                        alert('가입 가능한 이메일입니다.');
-                        $('#emailSignup').attr('style', 'border: solid green;');
-                        $('#emailCheck').val('check');
-                        
-                    }
-                    else if(data == 'duplicate') {
-                        console.log(data);
-                        alert('사용중인 이메일주소가 있습니다.');
-                        $('#emailSignup').attr('style', 'border: solid red;');
-                        $('#emailCheck').val('duplicate');
-    
-                    }
-                }
-            },
-            error : function(error) {
-                console.log(error);
-            }
-        });
-    }
+        // fetch
+
+        var url = '{{ route('checkId')}}/'+checkEmail;
+        console.log(url);
+        fetch(url)
+        .then((response) => console.log(response))
+        .then((data) => console.log(response))
+        .then((data) => console.log(data));
+        
+
+        }
 }
 
 function formCheck(event){

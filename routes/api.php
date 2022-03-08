@@ -17,7 +17,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
 Route::get('/checkId', 'CheckIdController@checkId')->name('checkId');
+Route::get('/checkId/{checkId}', 'CheckIdController@checkId');
 
 Route::get('/checkWish', 'MainController@checkWish')->name('checkWish');
 

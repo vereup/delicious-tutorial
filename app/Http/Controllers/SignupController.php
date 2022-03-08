@@ -22,11 +22,13 @@ class SignupController extends Controller
             ]);
             
             if(!User::where('email', '=', $request->checkEmail)->exists()) {
+                // $checkEmail = array("res" => "ok");
                 $checkEmail = 'ok';
                 return $checkEmail;
             }
     
             else {
+                // $checkEmail = array("res" => "duplicate");
                 $checkEmail = 'duplicate';
                 return $checkEmail;
             }
