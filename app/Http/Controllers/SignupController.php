@@ -15,25 +15,32 @@ class SignupController extends Controller
     }
 
 
-    public function checkId(Request $request){
+    // public function checkId(Request $request){
 
-            $request->validate([
-                'checkEmail' => 'bail|string',
-            ]);
+    //         // $request->validate([
+    //         //     'checkId' => 'bail|string|email',
+    //         // ]);
             
-            if(!User::where('email', '=', $request->checkEmail)->exists()) {
-                // $checkEmail = array("res" => "ok");
-                $checkEmail = 'ok';
-                return $checkEmail;
-            }
-    
-            else {
-                // $checkEmail = array("res" => "duplicate");
-                $checkEmail = 'duplicate';
-                return $checkEmail;
-            }
+    //         $test = $request->all();
+    //         // \Illuminate\Support\Facades\Log::info("no");
+            
+    //         dd($test);
+    //         return $test;
 
-    }
+
+    //         // if(!User::where('email', '=', $request->checkId)->exists()) {
+    //         //     // $checkEmail = array("res" => "ok");
+    //         //     $checkEmail = 'nononono';
+    //         //     return $checkEmail;
+    //         // }
+    
+    //         // else {
+    //         //     // $checkEmail = array("res" => "duplicate");
+    //         //     $checkEmail = 'duplicate';
+    //         //     return $checkEmail;
+    //         // }
+
+    // }
 
 
     // public function singup(Request $request){

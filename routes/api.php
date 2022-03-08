@@ -22,5 +22,4 @@ Route::get('/checkId', 'CheckIdController@checkId')->name('checkId');
 Route::get('/checkId/{checkId}', 'CheckIdController@checkId');
 
 Route::get('/checkWish', 'MainController@checkWish')->name('checkWish');
-
 Route::get('/address', 'AddressController@selectCity')->name('selectCity');

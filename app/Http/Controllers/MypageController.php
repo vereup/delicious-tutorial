@@ -22,40 +22,22 @@ class MypageController extends Controller
 
         $id = Auth::id();
         $user = Auth::user();
+        $tabIndex = 'Review';
         
-        $tabIndex = $request->tabIndex;
-
-        if ($tabIndex <= 1 || $tabIndex == null){
-            // $userReviewsCount = Review::where('user_id', $id)->count();
-            $userReviews = Review::where('user_id', $id)->paginate(2);
-            
-            return view('mypage', [
-                'id' => $id,
-                'user' => $user,
-                'userReviews' => $userReviews,
-                // 'userReviewsCount' => $userReviewsCount,
-                'request' => $request,
-                'tabIndex' => $tabIndex
-            ]);
+        if($request->has('tabIndex')){
+            $tabIndex = $request->tabIndex;
         }
-        
-        else{
-            // $userWishesCount = Wish::where('user_id', $id)->count();
-            $userWishes = Wish::where('user_id', $id)->paginate(2);
-
+        $model = "\\App\\Models\\" . $tabIndex;
+        $datas = $model::where('user_id', $id)->paginate(2);
 
             return view('mypage', [
                 'id' => $id,
                 'user' => $user,
-                'userWishes' => $userWishes,
-                // 'userWishesCount' => $userWishesCount,
+                'datas' => $datas,
                 'request' => $request,
                 'tabIndex' => $tabIndex
-
             ]);
-        }
     }
-
 
 
     public function modifyReview(Request $request){
@@ -63,7 +45,6 @@ class MypageController extends Controller
         $id = Auth::id();
         
         try {
-
             $request->validate([
                 'reviewId' => 'bail|required|numeric|exists:reviews,id',
                 'reviewTitle' => 'bail|required|between:5,30',
@@ -71,9 +52,8 @@ class MypageController extends Controller
             ]);
             
             DB::beginTransaction();
-            
             $review = Review::find($request->reviewId);
-            
+
             if ($review->user_id != $id) {
                 return redirect()->back()->with('error','리뷰 아이디 확인필요');;
             }
@@ -109,60 +89,26 @@ class MypageController extends Controller
             ]);
             
             DB::beginTransaction();
-            
             $review = Review::find($request->deleteReviewId);
             
             if ($review->user_id != Auth::id()) {
                 return redirect()->back()->with('error','리뷰 아이디 확인필요');;
             }
-                
-                $review->store->decrement('review_count');
-                
-                $store = $review->store;
-                
-                $review->delete();
-            // dd($review->store->id);
-            
+            $review->store->decrement('review_count');
+            $store = $review->store;
+            $review->delete();
             $reviews = Review::where('store_id', $store->id)->get();
 
-
             if($store->review_count == 0){
-                // $review->store->update(['rating_average' => 0.0]);
                 $store->rating_average = 0.0;
             }
             
             else {
-                // $storeId = $review->store->id;
-                // $sum = 0;
-                // foreach($reviews as $eachReview){
-                //     $sum = $sum + $eachReview->rating;
-                // }
-                
-                // $average = 0;
-                // $average = $sum / $reviews->count();
-                // $store->rating_average = $average;
-
                 $store->rating_average = $reviews->avg('rating');
-
-                // dd($review->store->rating_average);
-                // $review->store->update(['rating_average' => $average]);
-
-                // Store::find(5)->update(['rating_avarage' => $average]);
-                // dd($sum);
-                // dd($reviews->count());
-                // dump($review->store->rating_average);
-                // dump($average);
-
             }
 
-
-
             $store->save();
-
-
-            
             DB::commit();
-
             return redirect()->back()->with('success','리뷰가 삭제되었습니다.');;
             
         } 
@@ -181,7 +127,6 @@ class MypageController extends Controller
         dump($request->deleteWishId);
 
         try {
-
             $request->validate([
                 'deleteWishId' => 'bail|required|numeric|exists:wishes,id',
             ]);
@@ -195,9 +140,7 @@ class MypageController extends Controller
             }
             
             $wish->delete();
-            
             DB::commit();
-
             return redirect()->back()->with('success','찜이 삭제되었습니다.');;
             
         } 

@@ -118,7 +118,7 @@
               @foreach ($stores as $store)
               <tr style="height: 3rem">
               
-            <th class="text-center border-end border-start border-light" scope="row" style="vertical-align: middle">{{ $store->id }}</th>
+            <th class="text-center border-end border-start border-light" scope="row" style="vertical-align: middle">{{ $loop->index+1 }}</th>
             <td class="text-center border-end border-light" style="vertical-align: middle">{{ $store->name }}</td>
             <td class="text-center border-end border-light" style="vertical-align: middle">{{ $store->category->name }}</td>
             <td class="text-center border-end border-light" style="vertical-align: middle">{{ $store->county->city->city }} {{ $store->county->county }} {{$store->address_detail}}</td>
@@ -153,9 +153,6 @@
 
 
 
-
-
-
         {{-- 상세보기 모달 --}}
         <div class="modal" tabindex="-1" id="viewStoreModal">
           <div class="modal-dialog modal-dialog-centered">
@@ -167,9 +164,6 @@
                       </div>
                   </div>
                   <div class="modal-body">
-                      {{-- <form method="POST" id="viewForm" action="{{ route('modifyReview') }}">
-                          @csrf
-                          <input type="hidden" id="reviewId" name="reviewId"> --}}
                           <div class="mb-3">
                             <div class="row">
                             <div class="col-2">이름</div>
@@ -395,44 +389,6 @@ function selectCity(event){
         });
 
 }
-
-// 구버전
-// // 시도 선택시 시군구 요소값 변경
-// function selectCity(event){
-
-// var cityId = event.target.value;
-// var counties = @JSON($counties);
-
-// console.log(counties);
-// //시군구 요소 초기화
-// var countyList = document.querySelector('.countyList');
-// while(countyList.hasChildNodes()){
-//   countyList.removeChild(countyList.firstChild);
-// }
-// //시군구 첫번째 요소 추가
-// var countyElementFirst = document.createElement('option');
-// countyElementFirst.value = "none";
-// countyElementFirst.innerText = '시/군/구';
-
-// console.log(countyElementFirst);
-// countyList.appendChild(countyElementFirst);
-
-// //시군구 요소들 추가
-// for(i=0;i<counties.length;i++){
-//   if(counties[i].city_id == cityId){
-//     var countyElement = document.createElement('option');
-//     countyElement.value = counties[i].id;
-//     countyElement.innerText = counties[i].county;
-
-//     console.log(countyElement);
-
-//     countyList.appendChild(countyElement);
-//   }
-//   else{
-//     console.log(counties[i].city_id);
-//   }
-// }
-// }
 
 // 스토어 삭제 **check 삭제 성공시 메세지 변경 session??
 

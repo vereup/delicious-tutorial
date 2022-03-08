@@ -14,6 +14,7 @@ use App\Models\City;
 use App\Models\County;
 use App\Models\LocalCode;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 
 class AdminController extends Controller
@@ -292,6 +293,7 @@ class AdminController extends Controller
         catch (\Exception $exception) {
             DB::rollback();
             Session::flash('error', $exception->getMessage());
+            Log::error($exception->getMessage());
             throw $exception;
         }
     }

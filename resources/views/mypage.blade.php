@@ -14,36 +14,35 @@
 {{-- 틀시작 --}}
 
 <form method="GET" action="/mypage" id="reviewForm">
-    <input class="tap" type="hidden" name="tabIndex" value="1">
+    <input class="tap" type="hidden" name="tabIndex" value="Review">
   </form>
   <form method="GET" action="/mypage" id="wishForm">
-    <input class="tap" type="hidden" name="tabIndex" value="2">
+    <input class="tap" type="hidden" name="tabIndex" value="Wish">
   </form>
 
-  @if($tabIndex <= 1 || $tabIndex == null)
+  @if($tabIndex == 'Review')
         <ul class="nav nav-pills mb-3 border-bottom" id="pills-tab" role="tablist">
-          <li class="nav-item" role="presentation">
+        <li class="nav-item" role="presentation">
             <button class="nav-link active" id="pills-home-tab" data-coreui-toggle="pill" data-coreui-target="#pills-home" type="button" role="tab" 
             aria-controls="pills-home" aria-selected="true" onclick="submit('reviewForm')" style="width:220px;height:75px;border-radius: 10px 10px 0px 0px / 10px 10px 0px 0px;">내 리뷰</button>
-          </li>
-          <li class="nav-item" role="presentation">
+        </li>
+        <li class="nav-item" role="presentation">
             <button class="nav-link" id="pills-profile-tab" data-coreui-toggle="pill" data-coreui-target="#pills-profile" type="button" role="tab" 
             aria-controls="pills-profile" aria-selected="false" onclick="submit('wishForm')" style="width:220px;height:75px;border-radius: 10px 10px 0px 0px / 10px 10px 0px 0px;">찜 목록</button>
-          </li>
+        </li>
         </ul>
         <div class="tab-content" id="pills-tabContent">
-          <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
             <div class="row">
                 <h2 class="fs-5 fw-bold ps-4 pt-4 pb-2">내 리뷰 &#40;
                     <span>
-                       {{$userReviews->count()}}
+                        {{$datas->count()}}
                     </span>&#41;
                 </h2>
             </div>
             <div class="border-bottom">
             </div>
-            @foreach ($userReviews as $userReview)
-                {{-- @if($userReview->user_id == $user->id)       --}}
+            @foreach ($datas as $userReview)
                     <div class="d-flex border-bottom">
                         <div class="col-9 ps-3 py-2">
                             <p class="card-text">
@@ -71,14 +70,12 @@
                             <button type="submit" class="btn btn-secondary fs-4 btn-gray text-white rounded-pill ms-2" 
                             style="width: 100px; height:50px;" data-coreui-target="#deleteCheckModal" data-coreui-toggle="modal" value="{{ $userReview->id }}" 
                             onclick="selectReview({{ $userReview->id }});">삭제</button>
-                        
                         </div>
                     </div>
-                {{-- @endif --}}
             @endforeach
             <div class="p-2 docs-highlight">
             <div class="d-flex justify-content-center">
-                {{ $userReviews->appends(["tabIndex" => "1"])->links() }}
+                {{ $datas->appends(["tabIndex" => "Review"])->links() }}
             </div>
             </div>
           </div>
@@ -102,12 +99,12 @@
           <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
             <div class="row">
                 <h2 class="fs-5 fw-bold ps-4 pt-4 pb-2">찜 목록 &#40;
-                    {{$userWishes->count()}}
+                    {{$datas->count()}}
                     &#41;</h2>
                 </div>
                 <div class="d-flex border-bottom align-items-center">
                 </div>
-            @foreach ($userWishes as $userWish)
+            @foreach ($datas as $userWish)
                 {{-- @if($userWish->user_id == $user->id)  --}}
                     <div class="d-flex border-bottom align-items-center">
                         <div class="col-2 ps-3 py-2">
@@ -147,7 +144,7 @@
             @endforeach
             <div class="p-2 docs-highlight">
             <div class="d-flex justify-content-center">
-                {{ $userWishes->appends(["tabIndex" => "2"])->links() }}
+                {{ $datas->appends(["tabIndex" => "Wish"])->links() }}
             </div>
             </div>
 
@@ -348,7 +345,6 @@ event.preventDefault();
 return document.getElementById('deleteWish').submit();
 
 }
-
 
 </script>
 

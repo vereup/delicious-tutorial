@@ -91,6 +91,13 @@
 
 function checkDuplicate(event) {
 
+    // let email = new Array();
+    // email.address = $('#emailSignup').val();
+
+    // checkEmail.id = '$('#emailSignup').val()';
+
+    // console.log(email);
+
     let checkEmail = $('#emailSignup').val();
     let regEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
@@ -99,18 +106,63 @@ function checkDuplicate(event) {
         $('#emailSignup').attr('style', 'border: solid red;')
         return false;
     }
+
     else {
         // fetch
-
-        var url = '{{ route('checkId')}}/'+checkEmail;
+        
+        var url = '{{ route('checkId') }}/'+checkEmail;
         console.log(url);
         fetch(url)
-        .then((response) => console.log(response))
-        .then((data) => console.log(response))
-        .then((data) => console.log(data));
+        .then( async (response) => await response.json())
+        .then( response => {
+            if(response.status == 'ok'){
+                alert('가입 가능한 이메일입니다.');
+                $('#emailSignup').attr('style', 'border: solid green;');
+                $('#emailCheck').val('check');
+            }
+            else{
+                alert('사용중인 이메일주소가 있습니다.');
+                $('#emailSignup').attr('style', 'border: solid red;');
+                $('#emailCheck').val('duplicate');
+            }
+        })
+        .catch((error) => console.log(error));
         
 
-        }
+        // // ajax
+        // $.ajax({
+        //     type : 'GET',
+        //     url : "{{ route('checkId') }}",
+        //     data : {
+        //         'checkEmail' : checkEmail,
+        //     },
+        //     success : function(data) {
+        //         if(data) {
+        //             if(data == 'ok') {
+        //                 console.log(data);
+        //                 alert('가입 가능한 이메일입니다.');
+        //                 $('#emailSignup').attr('style', 'border: solid green;');
+        //                 $('#emailCheck').val('check');
+                        
+        //             }
+        //             else if(data == 'duplicate') {
+        //                 console.log(data);
+        //                 alert('사용중인 이메일주소가 있습니다.');
+        //                 $('#emailSignup').attr('style', 'border: solid red;');
+        //                 $('#emailCheck').val('duplicate');
+    
+        //             }
+        //         }
+
+
+            // },
+            // error : function(error) {
+            //     console.log(error);
+            // }
+        });
+
+
+    }
 }
 
 function formCheck(event){

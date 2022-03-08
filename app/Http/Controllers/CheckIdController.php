@@ -12,17 +12,15 @@ class CheckIdController extends Controller
     public function checkId(Request $request){
 
             $request->validate([
-                'checkEmail' => 'bail|string|email',
+                'checkId' => 'bail|string|email',
             ]);
-            
-            if(!User::where('email', '=', $request->checkEmail)->exists()) {
-                $checkEmail = 'ok';
-                return $checkEmail;
+
+            if(!User::where('email', '=', $request->checkId)->exists()) {
+                return response()->json(['status' => 'ok']);
             }
     
             else {
-                $checkEmail = 'duplicate';
-                return $checkEmail;
+                return response()->json(['status' => 'duplicate']);
             }
 
     }
