@@ -2,6 +2,11 @@
 
 @section('content')
 
+{{-- @if (session('error'))
+    <div class="alert alert-success">
+        {{ session('error') }}
+    </div>
+@endif --}}
 
 
 <meta name="csrf-token" content="{{ csrf_token() }}">

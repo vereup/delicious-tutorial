@@ -260,6 +260,9 @@ class AdminController extends Controller
             // 이미지 삭제 및 등록
             $input = $request->all();
 
+            // event??
+            // event('image.delete', $test);
+
             // 수정할 이미지 삭제
             for($i=0;$i<5;$i++){
                 $index = 'fileListCheck'.($i+1);
