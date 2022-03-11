@@ -20,12 +20,12 @@
   </div>
       
   {{-- 검색창 --}}
-  <div class="p-2 flex-column docs-highlight border">
+  <div class="m-2 flex-column docs-highlight border">
       <form method="GET" action="{{ route('adminSearch') }}">
         <div class="row m-2">
         <div class="col-sm-10">
       <div class="d-flex m-3">
-        <div class="input-group">
+        <div class="input-group" style="border-radius: 3px">
           <select class="form-select" aria-label="searchByKeyword"  onchange="select(event)">
             <option @if (isset($_REQUEST['storeName'])) selected @else @endif value="1">가게명</option>
             <option @if (isset($_REQUEST['storeTelephoneNumber'])) selected @else @endif value="2">전화번호</option>
@@ -43,7 +43,7 @@
         </div>
         <div class="input-group ps-3 align-items-center">
           <span class="input-group-text bg-white border-0 ms-3">카테고리</span>
-          <select class="form-select" aria-label="Default select example" name="adminCategory">
+          <select class="form-select" style="border-radius: 3px" aria-label="Default select example" name="adminCategory">
               <option value="">카테고리</option>
               @foreach ($categories as $category)
               <option value="{{ $category->id }}" @if (isset($_REQUEST['adminCategory']) && $_REQUEST['adminCategory'] == $category->id ) selected @else @endif>
@@ -61,7 +61,7 @@
       <div class="d-flex m-3">
         <div class="input-group w-75">
           <span class="input-group-text bg-white border-0">주소</span>
-          <select class="form-select" aria-label="Default select example" onchange="selectCity(event)" name="adminCity">
+          <select class="form-select" style="border-radius: 3px" aria-label="Default select example" onchange="selectCity(event)" name="adminCity">
             <option value="">광역시도</option>
             @foreach ($cities as $city)
             <option value="{{ $city->id }}" @if (isset($_REQUEST['adminCity']) && $_REQUEST['adminCity'] == $city->id ) selected @else @endif>
@@ -69,9 +69,9 @@
             @endforeach
           </select>
           <span class="px-3"></span>
-          <select class="form-select countyList" aria-label="Default select example" name="adminCounty" id="countyList">
+          <select class="form-select countyList" style="border-radius: 3px" aria-label="Default select example" name="adminCounty" id="countyList">
             <option value="none">시/군/구</option>
-            @if (isset($_REQUEST['adminCity']) && ($_REQUEST['adminCity']) != null)
+            {{-- @if (isset($_REQUEST['adminCity']) && ($_REQUEST['adminCity']) != "")
             @foreach ($counties as $county)
               @if ($county->city_id == ($_REQUEST['adminCity']))
               <option value="{{ $county->id }}" @if (isset($_REQUEST['adminCounty']) && $_REQUEST['adminCounty'] == $county->id ) selected @else @endif>
@@ -83,7 +83,7 @@
             <option value="{{ $county->id }}">
               {{ $county->county }}</option>
               @endforeach
-            @endif
+            @endif --}}
           </select>
         </div>
 
@@ -94,7 +94,7 @@
     </div>
       <div class="col-sm-2 align-self-center">
       <div class="d-flex justify-content-center">
-      <button type="submit" id="searchSubmit"class="btn btn-secondary btn-gray text-white rounded-pill w-75"><img class="w-50" src="/images/magnifying_glass.png" ></button>
+      <button type="submit" id="searchSubmit" class="btn btn-secondary text-white rounded-pill w-75" style="background-color: #DFDFDF; border-color:#DFDFDF;"><img class="w-50" src="/images/magnifying_glass.png" ></button>
       </div>
       </div>
     </div>
@@ -128,9 +128,12 @@
             <td class="text-center border-end border-light" style="vertical-align: middle">{{ $store->category->name }}</td>
             <td class="text-center border-end border-light" style="vertical-align: middle">{{ $store->county->city->city }} {{ $store->county->county }} {{$store->address_detail}}</td>
             <td class="text-center border-end border-light" style="vertical-align: middle"><span class="telephone">{{ $store->localCode->number }}{{$store->telephone_number}}</span></td>
-            <td class="text-center border-end border-light" style="vertical-align: middle">{{ $store->rating_average }}</td>
+            @php
+              $rating_average = number_format($store->rating_average, 1);
+            @endphp
+            <td class="text-center border-end border-light" style="vertical-align: middle">{{ $rating_average }} &#40;{{ $store->review_count }}&#41;</td>
             <td class="text-center border-end border-light" style="vertical-align: middle">{{ $store->wishes->count() }}</td>
-            <td class="text-center border-end border-light" style="vertical-align: middle"><a class="text-blue" data-coreui-toggle="modal" data-coreui-target="#viewStoreModal" style="cursor: pointer"
+            <td class="text-center border-end border-light" style="vertical-align: middle"><a class="text-dark" data-coreui-toggle="modal" data-coreui-target="#viewStoreModal" style="cursor: pointer"
               data-storeName="{{ $store->name }}"
               data-storeCategory="{{ $store->category->name }}"
               data-storeAddress="{{ $store->county->city->city }} {{ $store->county->county }} {{$store->address_detail}}"
@@ -141,8 +144,8 @@
               data-storeReviewCount="{{ $store->review_count }}"
               data-storeWishCount="{{ $store->wishes->count() }}"
               >보기</a></td>
-            <td class="text-center border-end border-light" style="vertical-align: middle"><a class="text-blue" href="/admin/modify/{{ $store->id }}" style="cursor: pointer">수정</a></td>
-            <td class="text-center border-end border-light" style="vertical-align: middle"><a class="text-blue" style="cursor: pointer" id="deleteButton" data-coreui-toggle="modal" data-coreui-target="#deleteCheckModal" data-storeId="{{ $store->id }}">삭제</a></td>
+            <td class="text-center border-end border-light" style="vertical-align: middle"><a class="text-dark" href="/admin/modify/{{ $store->id }}" style="cursor: pointer">수정</a></td>
+            <td class="text-center border-end border-light" style="vertical-align: middle"><a class="text-dark" style="cursor: pointer" id="deleteButton" data-coreui-toggle="modal" data-coreui-target="#deleteCheckModal" data-storeId="{{ $store->id }}">삭제</a></td>
           </tr>
             @endforeach
           </tbody>
@@ -276,7 +279,7 @@
 // 전화번호 형식변경 
 $('.telephone').each(function(){
   var number = $(this).text(); 
-$(this).text(number.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1-$2-$3`));
+$(this).text(number.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/, `$1)$2$3`));
 });
 
 // 상세보기 모달
@@ -359,7 +362,26 @@ function select(event){
 function selectCity(event){
 
   var cityId = event.target.value;
+  console.log(cityId);
 
+  if(cityId == ''){
+
+    console.log(cityId);
+
+    //시군구 요소 초기화
+    var countyList = document.querySelector('.countyList');
+    while(countyList.hasChildNodes()){
+    countyList.removeChild(countyList.firstChild);
+    }
+    //시군구 첫번째 요소 추가
+    var countyElementFirst = document.createElement('option');
+    countyElementFirst.value = "none";
+    countyElementFirst.innerText = '시/군/구';
+    countyList.appendChild(countyElementFirst);
+  }
+
+ 
+  else{
   $.ajax({
             type : 'GET',
             url : "{{ route('selectCity') }}",
@@ -392,7 +414,7 @@ function selectCity(event){
                 console.log(error);
             }
         });
-
+      }
 }
 
 // 스토어 삭제 **check 삭제 성공시 메세지 변경 session??

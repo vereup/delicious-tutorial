@@ -40,7 +40,12 @@ class MainController extends Controller
         if(isset($request->ratingList)){
             $ratingList = explode(',', $request->ratingList);
             $min = min($ratingList);
-            $max = max($ratingList);
+            if(count($ratingList) == 1){
+                $max = 5;
+            }
+            else{
+                $max = max($ratingList);
+            }
             $query->whereBetween('rating_average', [$min,$max]);
         }
 

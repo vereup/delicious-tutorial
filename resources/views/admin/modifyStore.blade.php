@@ -46,20 +46,11 @@
                                 </select>
                                 <span class="px-3"></span>
                                 <select class="form-select countyList" aria-label="Default select example" name="adminCounty" id="countyList">
-                                  <option value="none">시/군/구</option>
-                                  @if (isset($_REQUEST['adminCity']) && ($_REQUEST['adminCity']) != null)
-                                  @foreach ($counties as $county)
-                                    @if ($county->city_id == ($_REQUEST['adminCity']))
-                                    <option value="{{ $county->id }}" @if($county->id == $store->county_id) selected @else @endif>
-                                    {{ $county->county }}</option>
-                                    @endif
-                                    @endforeach
-                                  @else
-                                  @foreach ($counties as $county)
-                                  <option value="{{ $county->id }}" @if($county->id == $store->county_id) selected @else @endif>
-                                    {{ $county->county }}</option>
-                                    @endforeach
-                                  @endif
+                                    <option value="none">시/군/구</option>
+                                    @foreach ($counties as $county)
+                                        <option value="{{ $county->id }}" @if($county->id == $store->county_id) selected @else @endif>
+                                            {{ $county->county }}</option>
+                                        @endforeach
                                 </select>
                             </div>
                             <input type="text" class="form-control mt-3" id="addressDetail" name="addressDetail" placeholder="상세주소" value="{{ $store->address_detail }}">
@@ -373,30 +364,59 @@ function formCheck(event){
 function selectCity(event){
 
 var cityId = event.target.value;
-var counties = @JSON($counties);
+console.log(cityId);
 
-console.log(counties);
-//시군구 요소 초기화
-var countyList = document.querySelector('.countyList');
-while(countyList.hasChildNodes()){
-    countyList.removeChild(countyList.firstChild);
+if(cityId == ''){
+
+  console.log(cityId);
+
+  //시군구 요소 초기화
+  var countyList = document.querySelector('.countyList');
+  while(countyList.hasChildNodes()){
+  countyList.removeChild(countyList.firstChild);
+  }
+  //시군구 첫번째 요소 추가
+  var countyElementFirst = document.createElement('option');
+  countyElementFirst.value = "none";
+  countyElementFirst.innerText = '시/군/구';
+  countyList.appendChild(countyElementFirst);
 }
 
-//시군구 요소들 추가
-for(i=0;i<counties.length;i++){
-    if(counties[i].city_id == cityId){
-        var countyElement = document.createElement('option');
-        countyElement.value = counties[i].id;
-        countyElement.innerText = counties[i].county;
 
-        console.log(countyElement);
+else{
+$.ajax({
+          type : 'GET',
+          url : "{{ route('selectCity') }}",
+          data : {
+              'cityId' : cityId,
+          },
+          success : function(data) {
 
-        countyList.appendChild(countyElement);
+              //시군구 요소 초기화
+              var countyList = document.querySelector('.countyList');
+              while(countyList.hasChildNodes()){
+                countyList.removeChild(countyList.firstChild);
+              }
+              //시군구 첫번째 요소 추가
+              var countyElementFirst = document.createElement('option');
+              countyElementFirst.value = "none";
+              countyElementFirst.innerText = '시/군/구';
+              countyList.appendChild(countyElementFirst);
+
+              //시군구 요소들 추가
+              for(i=0;i<data.length;i++){
+                  var countyElement = document.createElement('option');
+                  countyElement.value = data[i].id;
+                  countyElement.innerText = data[i].county;
+                  countyList.appendChild(countyElement);
+                }
+          },
+          
+          error : function(error) {
+              console.log(error);
+          }
+      });
     }
-    else{
-        console.log(counties[i].city_id);
-    }
-}
 }
 
 //파일선택클릭

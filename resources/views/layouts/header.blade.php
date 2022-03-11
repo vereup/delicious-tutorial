@@ -1,5 +1,5 @@
 <div class="header">
-    <a class="header-brand flex-grow-1" href="/">
+    <a class="header-brand flex-grow-1" href="@if(Auth()->id() != 1)/@else/admin @endguest">
         <img
             src="/images/logo.png"
             width="50"

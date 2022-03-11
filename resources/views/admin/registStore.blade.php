@@ -36,7 +36,7 @@
                         <div class="p-2 docs-highlight">
                             <label for="address" class="form-label">주소</label>
                             <div class="input-group">
-                                <select class="form-select" aria-label="Default select example" onchange="selectCity(event)" name="adminCity" id="cityList">
+                                <select class="form-select" style="border-radius: 3px" aria-label="Default select example" onchange="selectCity(event)" name="adminCity" id="cityList">
                                   <option value="">광역시도</option>
                                   @foreach ($cities as $city)
                                   <option value="{{ $city->id }}">
@@ -44,9 +44,9 @@
                                   @endforeach
                                 </select>
                                 <span class="px-3"></span>
-                                <select class="form-select countyList" aria-label="Default select example" name="adminCounty" id="countyList">
+                                <select class="form-select countyList" style="border-radius: 3px" aria-label="Default select example" name="adminCounty" id="countyList">
                                   <option value="none">시/군/구</option>
-                                  @if (isset($_REQUEST['adminCity']) && ($_REQUEST['adminCity']) != null)
+                                  {{-- @if (isset($_REQUEST['adminCity']) && ($_REQUEST['adminCity']) != null)
                                   @foreach ($counties as $county)
                                     @if ($county->city_id == ($_REQUEST['adminCity']))
                                     <option value="{{ $county->id }}">
@@ -58,7 +58,7 @@
                                   <option value="{{ $county->id }}">
                                     {{ $county->county }}</option>
                                     @endforeach
-                                  @endif
+                                  @endif --}}
                                 </select>
                             </div>
                             <input type="text" class="form-control mt-3" id="addressDetail" name="addressDetail" placeholder="상세주소">
@@ -68,7 +68,7 @@
                         <div class="p-2 docs-highlight">
                             <label for="address" class="form-label">전화번호</label>
                             <div class="input-group">
-                                <select class="form-select" aria-label="Default select example" name="localCode" id="localCode">
+                                <select class="form-select" style="border-radius: 3px" aria-label="Default select example" name="localCode" id="localCode">
                                   <option value="">지역번호</option>
                                   @foreach ($localCodes as $localCode)
                                   <option value="{{ $localCode->id }}">
@@ -76,16 +76,16 @@
                                   @endforeach
                                 </select>
                                 <span class="px-2"></span>
-                                <input type="text" class="form-control" id="middleNumber" name="middleNumber">
+                                <input type="text" style="border-radius: 3px" class="form-control" id="middleNumber" name="middleNumber">
                                 <span class="px-3 align-self-center">-</span>
-                                <input type="text" class="form-control" id="lastNumber" name="lastNumber">
+                                <input type="text" style="border-radius: 3px"class="form-control" id="lastNumber" name="lastNumber">
                             </div>
                         </div>
 
                         <div class="p-2 docs-highlight file-select">
                             <label for="address" class="form-label" id="fileSelectForm" value="1">사진</label>
                             @for($i=1;$i<=5;$i++)
-                            <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i }}" @if($i != 1) hidden @endif>
+                            <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i }}" @if($i != 1) hidden data-value="off" @else data-value="on"@endif>
                                 <input type="text" class="form-control bg-white" name="filename{{ $i }}" disabled="disabled" placeholder="파일선택" value="" id="fileName{{ $i }}">
                                 <button class="btn btn-outline-secondary btn-dark" type="button" onclick="chooseFile({{ $i }});">
                                     <span style="color: white;">파일선택</span>
@@ -115,7 +115,7 @@
                         </div> --}}
                         <p class="ps-3" style="color:#BDBDBD">* 사진은 최대 5장 까지 등록 가능합니다. (jpg, jpeg, png)</p>
 
-                        <div class="d-flex flex-wrap gap-3" id="imageThumnail">
+                        <div class="d-flex flex-wrap ps-2 gap-4" id="imageThumnail">
                             @for($i=1;$i<=5;$i++)
                             <div class="img-thumbnail" id="thumbnail{{ $i }}" style="width: 30%;" hidden>
                                 <img style="width: 100%;" src="">
@@ -315,31 +315,61 @@ function formCheck(event){
 function selectCity(event){
 
 var cityId = event.target.value;
-var counties = @JSON($counties);
+console.log(cityId);
 
-console.log(counties);
-//시군구 요소 초기화
-var countyList = document.querySelector('.countyList');
-while(countyList.hasChildNodes()){
-    countyList.removeChild(countyList.firstChild);
+if(cityId == ''){
+
+  console.log(cityId);
+
+  //시군구 요소 초기화
+  var countyList = document.querySelector('.countyList');
+  while(countyList.hasChildNodes()){
+  countyList.removeChild(countyList.firstChild);
+  }
+  //시군구 첫번째 요소 추가
+  var countyElementFirst = document.createElement('option');
+  countyElementFirst.value = "none";
+  countyElementFirst.innerText = '시/군/구';
+  countyList.appendChild(countyElementFirst);
 }
 
-//시군구 요소들 추가
-for(i=0;i<counties.length;i++){
-    if(counties[i].city_id == cityId){
-        var countyElement = document.createElement('option');
-        countyElement.value = counties[i].id;
-        countyElement.innerText = counties[i].county;
 
-        console.log(countyElement);
+else{
+$.ajax({
+          type : 'GET',
+          url : "{{ route('selectCity') }}",
+          data : {
+              'cityId' : cityId,
+          },
+          success : function(data) {
 
-        countyList.appendChild(countyElement);
+              //시군구 요소 초기화
+              var countyList = document.querySelector('.countyList');
+              while(countyList.hasChildNodes()){
+                countyList.removeChild(countyList.firstChild);
+              }
+              //시군구 첫번째 요소 추가
+              var countyElementFirst = document.createElement('option');
+              countyElementFirst.value = "none";
+              countyElementFirst.innerText = '시/군/구';
+              countyList.appendChild(countyElementFirst);
+
+              //시군구 요소들 추가
+              for(i=0;i<data.length;i++){
+                  var countyElement = document.createElement('option');
+                  countyElement.value = data[i].id;
+                  countyElement.innerText = data[i].county;
+                  countyList.appendChild(countyElement);
+                }
+          },
+          
+          error : function(error) {
+              console.log(error);
+          }
+      });
     }
-    else{
-        console.log(counties[i].city_id);
-    }
 }
-}
+
 
 function chooseFile(num){
     console.log(num);
@@ -392,38 +422,96 @@ function sendFile(obj) {
     addThumnail(obj, num);
 }
 
-// 파일선택시 파일추가
+
+// 파일선택시 추가
 function addFileList(){
 
-    var fileCount = $('.fileSelect:visible').length+1;
-    console.log(fileCount);
+var fileCount = $('.fileSelect:visible').length+1;
+console.log(fileCount);
 
-    if(fileCount <= 5){
-        $('#fileSelect'+fileCount).removeAttr('hidden');
-        if(fileCount >= 5){
-            $('#icon1').text('');
-        }
-    }
+if(fileCount <= 5){
 
-    else{
-        alert('이미지는 최대 5개까지 업로드 가능합니다.');
+    for(i=1;i<=5;i++){
+        console.log('i'+i);
+        console.log($('#fileSelect'+i).data('value'));
+        if($('#fileSelect'+i).attr('data-value') == 'off'){
+            $('#fileSelect'+i).removeAttr('hidden');
+            $('#fileSelect'+i).attr('data-value','on');
+            $('#fileListCheck'+i).attr('value','on');
+            
+            break;
+        } 
+    }  
+
+    if(fileCount >= 5){
+        $('#icon1').text('');
     }
 }
 
-// 파일선택 지우기
+else{
+    alert('이미지는 최대 5개까지 업로드 가능합니다.');
+}
+}
+
+// // 파일선택시 파일추가
+// function addFileList(){
+
+//     var fileCount = $('.fileSelect:visible').length+1;
+//     console.log(fileCount);
+
+//     if(fileCount <= 5){
+//         $('#fileSelect'+fileCount).removeAttr('hidden');
+//         if(fileCount >= 5){
+//             $('#icon1').text('');
+//         }
+//     }
+
+//     else{
+//         alert('이미지는 최대 5개까지 업로드 가능합니다.');
+//     }
+// }
+
+
 function deleteFileList(value){
 
-    var fileCount = $('.fileSelect:visible').length;
-    console.log(fileCount);
 
-    $('#fileSelect'+fileCount).attr('hidden','');
-    $('#thumbnail'+fileCount).attr('hidden','');
+var fileCount = $('.fileSelect:visible').length;
+console.log(fileCount);
 
-    if(fileCount <= 5){
-            $('#icon1').text('+');
-    }
+$('#fileSelect'+value).attr('hidden','');
+$('#fileSelect'+value).attr('data-value','off');
+
+$('#fileListCheck'+value).attr('value','off');
+
+$('#fileName'+value).val("");
+$('#fileName'+value).attr('placeholder','파일선택');
+
+$('#thumbnail'+value).attr('hidden','');
+
+
+if(fileCount <= 5){
+        $('#icon1').text('+');
+}
+
+// readFileList();
 
 }
+
+
+// // 파일선택 지우기
+// function deleteFileList(value){
+
+//     var fileCount = $('.fileSelect:visible').length;
+//     console.log(fileCount);
+
+//     $('#fileSelect'+fileCount).attr('hidden','');
+//     $('#thumbnail'+fileCount).attr('hidden','');
+
+//     if(fileCount <= 5){
+//             $('#icon1').text('+');
+//     }
+
+// }
 
 
 // 추가형

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Store;
 use App\Models\Image;
+use App\Models\Review;
 use App\Models\Wish;
 use App\Models\City;
 use App\Models\County;
@@ -161,7 +162,7 @@ class AdminController extends Controller
         $categories = Category::get();
         $cities = City::get();
         $city = $store->county->city->id;
-        $counties = County::get();
+        $counties = County::where('city_id',$city)->get();
         $localCodes = LocalCode::get();
         $store->get();
 
@@ -195,7 +196,7 @@ class AdminController extends Controller
             'store' => $store,
             'categories' => $categories,
             'cities' => $cities,
-            'city' => $city,
+            // 'city' => $city,
             'counties' => $counties,
             'localCodes' => $localCodes,
             'middleNumber' => $middleNumber,
@@ -304,12 +305,12 @@ class AdminController extends Controller
 
     public function deleteStore(Request $request){
 
-        // //로그인된 사용자 확인
-        // $user_id = Auth::id();
-        // dd($user_id);
-        // if($user_id != 1){
-        //     return redirect()->route('home')->with('error','아이디를 확인하세요.');
-        // }
+        // 찜 있을시 제외
+        $user_id = Wish::where('store_id', $request->id)->exists();
+        
+        if(Wish::where('store_id', $request->id)->exists()){
+            return redirect()->back()->with('error','찜을 삭제해주세요.');
+        }
         
         try {
             
@@ -334,6 +335,14 @@ class AdminController extends Controller
             $image = Image::where('store_id', $request->id);
             $image->delete();
             
+            // // 리뷰삭제
+            // $reviews = Review::where('store_id', $request->id);
+            // $reviews->delete();
+
+            // // 찜삭제
+            // $wishes = Wish::where('store_id', $request->id);
+            // $wishes->delete();
+
             // 스토어 삭제
             $store->delete();
             
