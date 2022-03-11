@@ -82,7 +82,7 @@
                             @if($imageNames[$i] != "")
                             <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i+1 }}" data-value="on">
                                 <input type="hidden" id="fileListCheck{{ $i+1 }}" name="fileListCheck{{ $i+1 }}" value="on">
-                                <input type="text" class="form-control bg-white" name="filename{{ $i+1 }}" disabled="disabled" placeholder="{{ $imageNames[$i] }}" value="{{ $imageNames[$i] }}" id="fileName{{ $i+1 }}">
+                                <input type="text" class="form-control bg-white rounded-start" name="filename{{ $i+1 }}" disabled="disabled" placeholder="{{ $imageNames[$i] }}" value="{{ $imageNames[$i] }}" id="fileName{{ $i+1 }}">
                                 <button class="btn btn-outline-secondary btn-dark" type="button" onclick="chooseFile({{ $i+1 }});">
                                     <span style="color: white;">파일선택</span>
                                 </button>                                
@@ -94,7 +94,7 @@
                             @else
                             <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i+1 }}" hidden data-value="off">
                                 <input type="hidden" id="fileListCheck{{ $i+1 }}" name="fileListCheck{{ $i+1 }}" value="off">
-                                <input type="text" class="form-control bg-white" name="filename{{ $i+1 }}" disabled="disabled" placeholder="파일선택" value="" id="fileName{{ $i+1 }}">
+                                <input type="text" class="form-control bg-white rounded-start" name="filename{{ $i+1 }}" disabled="disabled" placeholder="파일선택" value="" id="fileName{{ $i+1 }}">
                                 <button class="btn btn-outline-secondary btn-dark" type="button" onclick="chooseFile({{ $i+1 }});">
                                     <span style="color: white;">파일선택</span>
                                 </button>                                
@@ -158,11 +158,11 @@
 
                         
 
-                        <div class="d-flex flex-wrap gap-3" id="imageThumnail">
+                        <div class="d-flex flex-wrap ps-2 gap-4" id="imageThumnail">
                             @for($i=0;$i<5;$i++)
                             @if($imageNames[$i] != "")
                             <div class="img-thumbnail" id="thumbnail{{ $i+1 }}" style="width: 30%;" >
-                                <img style="width: 100%;" src="/storage/images/{{ $imageNames[$i] }}">
+                                <img style="width: 100%;" src="{{$store->images[$i]->path}}">
                             </div>
                             @else
                             <div class="img-thumbnail" id="thumbnail{{ $i+1 }}" style="width: 30%;" hidden>

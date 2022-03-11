@@ -86,7 +86,7 @@
                             <label for="address" class="form-label" id="fileSelectForm" value="1">사진</label>
                             @for($i=1;$i<=5;$i++)
                             <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i }}" @if($i != 1) hidden data-value="off" @else data-value="on"@endif>
-                                <input type="text" class="form-control bg-white" name="filename{{ $i }}" disabled="disabled" placeholder="파일선택" value="" id="fileName{{ $i }}">
+                                <input type="text" class="form-control bg-white rounded-start" name="filename{{ $i }}" disabled="disabled" placeholder="파일선택" value="" id="fileName{{ $i }}">
                                 <button class="btn btn-outline-secondary btn-dark" type="button" onclick="chooseFile({{ $i }});">
                                     <span style="color: white;">파일선택</span>
                                 </button>                                
