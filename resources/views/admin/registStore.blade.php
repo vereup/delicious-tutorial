@@ -86,14 +86,14 @@
                             <label for="address" class="form-label" id="fileSelectForm" value="1">사진</label>
                             @for($i=1;$i<=5;$i++)
                             <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i }}" @if($i != 1) hidden data-value="off" @else data-value="on"@endif>
-                                <input type="text" class="form-control bg-white rounded-start" name="filename{{ $i }}" disabled="disabled" placeholder="파일선택" value="" id="fileName{{ $i }}">
-                                <button class="btn btn-outline-secondary btn-dark" type="button" onclick="chooseFile({{ $i }});">
+                                <input type="text" class="form-control bg-white rounded-start fileSelectItem{{ $i }}" name="filename{{ $i }}" disabled="disabled" placeholder="파일선택" value="" id="fileName{{ $i }}">
+                                <button class="btn btn-outline-secondary btn-dark fileSelectItem{{ $i }}" type="button" id="fileNameSelectButton{{ $i }}" onclick="chooseFile({{ $i }});">
                                     <span style="color: white;">파일선택</span>
                                 </button>                                
-                                <button class="btn btn-outline-secondary btn-white rounded-end" style="width: 40px;" type="button" id="addFileSelect{{ $i }}" value="{{ $i }}" @if($i == 1) onclick="addFileList()"@else onclick="deleteFileList({{ $i }}) @endif">
+                                <button class="btn btn-outline-secondary btn-white rounded-end fileSelectItem{{ $i }}" style="width: 40px;" type="button" id="addFileSelect{{ $i }}" value="{{ $i }}" @if($i == 1) onclick="addFileList()"@else onclick="deleteFileList({{ $i }}) @endif">
                                     <span style="color: black;" id="icon1">@if($i== 1)+@else-@endif</span>
                                 </button>                                
-                                <input type="file" class="form-control" hidden id="inputFile{{ $i }}" data-id="{{ $i }}" name="inputFile{{ $i }}" onchange="sendFile(this)">
+                                <input type="file" class="form-control fileSelectItem{{ $i }}" hidden id="inputFile{{ $i }}" data-id="{{ $i }}" name="inputFile{{ $i }}" onchange="sendFile(this)">
                             </div>
                             @endfor
 
@@ -115,9 +115,9 @@
                         </div> --}}
                         <p class="ps-3" style="color:#BDBDBD">* 사진은 최대 5장 까지 등록 가능합니다. (jpg, jpeg, png)</p>
 
-                        <div class="d-flex flex-wrap ps-2 gap-4" id="imageThumnail">
+                        <div class="d-flex flex-wrap px-2 justify-content-between" style="flex-grow: 1;" id="imageThumnail">
                             @for($i=1;$i<=5;$i++)
-                            <div class="img-thumbnail" id="thumbnail{{ $i }}" style="width: 30%;" hidden>
+                            <div class="img-thumbnail mb-3" id="thumbnail{{ $i }}" style="width: 30%;" hidden>
                                 <img style="width: 100%;" src="">
                             </div>
                             @endfor
@@ -477,6 +477,116 @@ function deleteFileList(value){
 
 var fileCount = $('.fileSelect:visible').length;
 console.log(fileCount);
+console.log(value);
+
+// 모두
+if(value < fileCount){
+    for(i=value;i<fileCount;i++){
+        var j = i+1
+        var fileSelect1 = $('#fileSelect'+i);
+        var fileSelect2 = $('#fileSelect'+j);
+        var fileName1 = $('#fileName'+i);
+        var fileName2 = $('#fileName'+j);
+        var fileSelectButton1 = $('#fileNameSelectButton'+i);
+        var fileSelectButton2 = $('#fileNameSelectButton'+j);
+        var addFileSelect1 = $('#addFileSelect'+i);
+        var addFileSelect2 = $('#addFileSelect'+j);
+        var inputFile1 = $('#inputFile'+i);
+        var inputFile2 = $('#inputFile'+j);
+        var thumnail1 = $('#thumbnail'+i);
+        var thumnail2 = $('#thumbnail'+j);
+        
+        // 위치 변경
+        fileSelect1.insertAfter(fileSelect2);
+        thumnail1.insertAfter(thumnail2);
+
+        // fileSelect 요소값 치환
+        var tempfileSelectId = fileSelect2.attr('id');
+        fileSelect2.attr('id',fileSelect1.attr('id'));
+        fileSelect1.attr('id',tempfileSelectId);
+        
+        // fileName 요소값 치환
+        var tempfileName = fileName2.attr('name');
+        fileName2.attr('name',fileName1.attr('name'));
+        fileName1.attr('name',tempfileName);
+        
+        var tempfileNameClass = fileName2.attr('class');
+        fileName2.attr('class',fileName1.attr('class'));
+        fileName1.attr('class',tempfileNameClass);
+
+        var tempfileNameId = fileName2.attr('id');
+        fileName2.attr('id',fileName1.attr('id'));
+        fileName1.attr('id',tempfileNameId);
+        
+        // fileSelectButton 요소값 치환
+        var tempfileSelectButtonClass = fileSelectButton2.attr('class');
+        fileSelectButton2.attr('class',fileSelectButton1.attr('class'));
+        fileSelectButton1.attr('class',tempfileSelectButtonClass);
+
+        var tempfileSelectButtonOnclick = fileSelectButton2.attr('onclick');
+        fileSelectButton2.attr('onclick',fileSelectButton1.attr('onclick'));
+        fileSelectButton1.attr('onclick',tempfileSelectButtonOnclick);
+
+        var tempfileSelectButtonId = fileSelectButton2.attr('id');
+        fileSelectButton2.attr('id',fileSelectButton1.attr('id'));
+        fileSelectButton1.attr('id',tempfileSelectButtonId);
+        
+        var tempthumnailId = thumnail2.attr('id');
+        thumnail2.attr('id',thumnail1.attr('id'));
+        thumnail1.attr('id',tempthumnailId);
+
+        // addFileSelect 요소값 치환
+        var tempaddFileSelectClass = addFileSelect2.attr('class');
+        addFileSelect2.attr('class',addFileSelect1.attr('class'));
+        addFileSelect1.attr('class',tempaddFileSelectClass);
+
+        var tempaddFileSelectValue = addFileSelect2.attr('value');
+        addFileSelect2.attr('value',addFileSelect1.attr('value'));
+        addFileSelect1.attr('value',tempaddFileSelectValue);
+
+        var tempaddFileSelectOnclick = addFileSelect2.attr('onclick');
+        addFileSelect2.attr('onclick',addFileSelect1.attr('onclick'));
+        addFileSelect1.attr('onclick',tempaddFileSelectOnclick);
+
+        var tempaddFileSelectId = addFileSelect2.attr('id');
+        addFileSelect2.attr('id',addFileSelect1.attr('id'));
+        addFileSelect1.attr('id',tempaddFileSelectId);
+
+        // inputFile 요소값 치환
+        var tempinputFileClass = inputFile2.attr('class');
+        inputFile2.attr('class',inputFile1.attr('class'));
+        inputFile1.attr('class',tempinputFileClass);
+
+        var tempinputFileDataId = inputFile2.attr('data-id');
+        inputFile2.attr('data-id',inputFile1.attr('data-id'));
+        inputFile1.attr('data-id',tempinputFileDataId);
+
+        var tempinputFileName = inputFile2.attr('name');
+        inputFile2.attr('name',inputFile1.attr('name'));
+        inputFile1.attr('name',tempinputFileName);
+
+        var tempinputFileOnchange = inputFile2.attr('onchange');
+        inputFile2.attr('onchange',inputFile1.attr('onchange'));
+        inputFile1.attr('onchange',tempinputFileOnchange);
+
+        var tempinputFileId = inputFile2.attr('id');
+        inputFile2.attr('id',inputFile1.attr('id'));
+        inputFile1.attr('id',tempinputFileId);
+
+    }
+    // 하나 지우기
+    $('#fileSelect'+fileCount).attr('hidden','');
+    $('#fileSelect'+fileCount).attr('data-value','off');
+
+    $('#fileListCheck'+fileCount).attr('value','off');
+
+    $('#fileName'+fileCount).val("");
+    $('#fileName'+fileCount).attr('placeholder','파일선택');
+
+    $('#thumbnail'+fileCount).attr('hidden','');
+}
+
+else{
 
 $('#fileSelect'+value).attr('hidden','');
 $('#fileSelect'+value).attr('data-value','off');
@@ -488,6 +598,7 @@ $('#fileName'+value).attr('placeholder','파일선택');
 
 $('#thumbnail'+value).attr('hidden','');
 
+}
 
 if(fileCount <= 5){
         $('#icon1').text('+');

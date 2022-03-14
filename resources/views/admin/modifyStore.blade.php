@@ -37,7 +37,7 @@
                         <div class="p-2 docs-highlight">
                             <label for="address" class="form-label">주소</label>
                             <div class="input-group">
-                                <select class="form-select" aria-label="Default select example" onchange="selectCity(event)" name="adminCity" id="cityList">
+                                <select class="form-select" style="border-radius: 3px" aria-label="Default select example" onchange="selectCity(event)" name="adminCity" id="cityList">
                                   <option value="">광역시도</option>
                                   @foreach ($cities as $city)
                                   <option value="{{ $city->id }}" @if($city->id == $store->county->city->id) selected @else @endif>
@@ -45,7 +45,7 @@
                                   @endforeach
                                 </select>
                                 <span class="px-3"></span>
-                                <select class="form-select countyList" aria-label="Default select example" name="adminCounty" id="countyList">
+                                <select class="form-select countyList" style="border-radius: 3px" aria-label="Default select example" name="adminCounty" id="countyList">
                                     <option value="none">시/군/구</option>
                                     @foreach ($counties as $county)
                                         <option value="{{ $county->id }}" @if($county->id == $store->county_id) selected @else @endif>
@@ -60,7 +60,7 @@
                         <div class="p-2 docs-highlight">
                             <label for="address" class="form-label">전화번호</label>
                             <div class="input-group">
-                                <select class="form-select" aria-label="Default select example" name="localCode" id="localCode">
+                                <select class="form-select" style="border-radius: 3px" aria-label="Default select example" name="localCode" id="localCode">
                                   <option value="">지역번호</option>
                                   @foreach ($localCodes as $localCode)
                                   <option value="{{ $localCode->id }}" @if($localCode->id == $store->local_code_id) selected @else @endif>
@@ -68,25 +68,27 @@
                                   @endforeach
                                 </select>
                                 <span class="px-2"></span>
-                                <input type="text" class="form-control" id="middleNumber" name="middleNumber" value="{{ $middleNumber }}">
+                                <input type="text" class="form-control" style="border-radius: 3px" id="middleNumber" name="middleNumber" value="{{ $middleNumber }}">
                                 <span class="px-3 align-self-center">-</span>
-                                <input type="text" class="form-control" id="lastNumber" name="lastNumber" value="{{ $lastNumber }}">
+                                <input type="text" class="form-control" style="border-radius: 3px" id="lastNumber" name="lastNumber" value="{{ $lastNumber }}">
                             </div>
                         </div>
 
 
                         <div class="p-2 docs-highlight file-select">
                             <label for="address" class="form-label" id="fileSelectForm">사진</label>
-
+                            <input type="hidden" data-id="deletedFileList" name="deletedFileList">
+                            <input type="hidden" data-id="changedFileList" name="changedFileList">
+                            
                             @for($i=0;$i<5;$i++)
                             @if($imageNames[$i] != "")
                             <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i+1 }}" data-value="on">
                                 <input type="hidden" id="fileListCheck{{ $i+1 }}" name="fileListCheck{{ $i+1 }}" value="on">
                                 <input type="text" class="form-control bg-white rounded-start" name="filename{{ $i+1 }}" disabled="disabled" placeholder="{{ $imageNames[$i] }}" value="{{ $imageNames[$i] }}" id="fileName{{ $i+1 }}">
-                                <button class="btn btn-outline-secondary btn-dark" type="button" onclick="chooseFile({{ $i+1 }});">
+                                <button class="btn btn-outline-secondary btn-dark" type="button" id="fileNameSelectButton{{ $i+1 }}" onclick="chooseFile({{ $i+1 }});">
                                     <span style="color: white;">파일선택</span>
                                 </button>                                
-                                <button class="btn btn-outline-secondary btn-white rounded-end" style="width: 40px;" type="button" id="addFileSelect{{ $i+1 }}" value="{{ $i+1 }}" @if($i == 0) onclick="addFileList()"@else onclick="deleteFileList({{ $i+1 }}) @endif">
+                                <button class="btn btn-outline-secondary btn-white rounded-end" style="width: 40px;" type="button" id="addFileSelect{{ $i+1 }}" value="{{ $i+1 }}" data-old-index="{{ $i+1 }}" @if($i == 0) onclick="addFileList()"@else onclick="deleteFileList({{ $i+1 }}) @endif">
                                     <span style="color: black;" id="icon1">@if($i== 0)+@else-@endif</span>
                                 </button>                                
                                 <input type="file" class="form-control" hidden id="inputFile{{ $i+1 }}" data-id="{{ $i+1 }}" name="inputFile{{ $i+1 }}" onchange="sendFile(this)">
@@ -95,7 +97,7 @@
                             <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i+1 }}" hidden data-value="off">
                                 <input type="hidden" id="fileListCheck{{ $i+1 }}" name="fileListCheck{{ $i+1 }}" value="off">
                                 <input type="text" class="form-control bg-white rounded-start" name="filename{{ $i+1 }}" disabled="disabled" placeholder="파일선택" value="" id="fileName{{ $i+1 }}">
-                                <button class="btn btn-outline-secondary btn-dark" type="button" onclick="chooseFile({{ $i+1 }});">
+                                <button class="btn btn-outline-secondary btn-dark" type="button" id="fileNameSelectButton{{ $i+1 }}" onclick="chooseFile({{ $i+1 }});">
                                     <span style="color: white;">파일선택</span>
                                 </button>                                
                                 <button class="btn btn-outline-secondary btn-white rounded-end" style="width: 40px;" type="button" id="addFileSelect{{ $i+1 }}" value="{{ $i+1 }}" @if($i == 0) onclick="addFileList()"@else onclick="deleteFileList({{ $i+1 }}) @endif">
@@ -158,14 +160,14 @@
 
                         
 
-                        <div class="d-flex flex-wrap ps-2 gap-4" id="imageThumnail">
+                        <div class="d-flex flex-wrap px-2 justify-content-between" style="flex-grow: 1;" id="imageThumnail">
                             @for($i=0;$i<5;$i++)
                             @if($imageNames[$i] != "")
-                            <div class="img-thumbnail" id="thumbnail{{ $i+1 }}" style="width: 30%;" >
+                            <div class="img-thumbnail mb-3" id="thumbnail{{ $i+1 }}" style="width: 30%;" >
                                 <img style="width: 100%;" src="{{$store->images[$i]->path}}">
                             </div>
                             @else
-                            <div class="img-thumbnail" id="thumbnail{{ $i+1 }}" style="width: 30%;" hidden>
+                            <div class="img-thumbnail mb-3" id="thumbnail{{ $i+1 }}" style="width: 30%;" hidden>
                                 <img style="width: 100%;" src="">
                             </div>
                             @endif
@@ -268,6 +270,34 @@ function formCheck(event){
 
     var storeNameLength = storeName.length;
     var storeIntroLength = storeIntro.length;
+
+    // 지운 이미지 확인 및 폼채우기
+
+    let deleteList = new Array();
+    $("button[data-delete=delete]").each(function(index, item){
+        deleteList.push($(item).attr('data-old-index'));
+    });
+    
+    console.log('deleteListFormcheck:'+deleteList);
+    deleteList.sort().join(", ");
+    $("input[data-id=deletedFileList]").val(deleteList);
+
+    console.log($("input[data-id=deletedFileList]").val());
+
+    let changedList = new Array();
+    $("button[data-delete=changed]").each(function(index, item){
+        changedList.push($(item).attr('data-old-index'));
+    });
+    
+    changedList.sort().join(", ");
+    $("input[data-id=changedFileList]").val(changedList);
+
+    
+
+    
+
+
+
 
     var regMiddleNumber = /\d{3,4}/;
     var regLastNumber = /\d{4}/;
@@ -423,6 +453,12 @@ $.ajax({
 function chooseFile(num){
     console.log(num);
     $('#inputFile'+num).click();
+
+    // 지운이미지표시 -- 파일 업로드시에만 변경
+    var old = event.target;
+    old.setAttribute("data-delete", "delete");
+    console.log(old.getAttribute('data-delete'));
+
 }
 
 // //파일변경선택클릭
@@ -574,18 +610,151 @@ function deleteFileList(value){
 
 
 var fileCount = $('.fileSelect:visible').length;
-console.log(fileCount);
+
+// 지운이미지표시
+var old = event.target;
+old.setAttribute("data-delete", "delete");
+console.log(old.getAttribute('data-delete'));
+
+
+
+// 모두
+if(value < fileCount){
+    for(i=value;i<fileCount;i++){
+        var j = i+1
+        var fileSelect1 = $('#fileSelect'+i);
+        var fileSelect2 = $('#fileSelect'+j);
+        var fileListCheck1 = $('#fileListCheck'+i);
+        var fileListCheck2 = $('#fileListCheck'+j);
+        var fileName1 = $('#fileName'+i);
+        var fileName2 = $('#fileName'+j);
+        var fileSelectButton1 = $('#fileNameSelectButton'+i);
+        var fileSelectButton2 = $('#fileNameSelectButton'+j);
+        var addFileSelect1 = $('#addFileSelect'+i);
+        var addFileSelect2 = $('#addFileSelect'+j);
+        var inputFile1 = $('#inputFile'+i);
+        var inputFile2 = $('#inputFile'+j);
+        var thumnail1 = $('#thumbnail'+i);
+        var thumnail2 = $('#thumbnail'+j);
+        
+        // 위치 변경
+        fileSelect1.insertAfter(fileSelect2);
+        thumnail1.insertAfter(thumnail2);
+
+        // fileSelect 요소값 치환
+        var tempfileSelectId = fileSelect2.attr('id');
+        fileSelect2.attr('id',fileSelect1.attr('id'));
+        fileSelect1.attr('id',tempfileSelectId);
+
+        // fileListCheck 요소값 치환
+        var tempfileListCheckName = fileListCheck2.attr('name');
+        fileListCheck2.attr('name',fileListCheck1.attr('name'));
+        fileListCheck1.attr('name',tempfileListCheckName);
+
+        var tempfileListCheckValue = fileListCheck2.attr('value');
+        fileListCheck2.attr('value',fileListCheck1.attr('value'));
+        fileListCheck1.attr('value',tempfileListCheckValue);
+
+        var tempfileListCheckId = fileListCheck2.attr('id');
+        fileListCheck2.attr('id',fileListCheck1.attr('id'));
+        fileListCheck1.attr('id',tempfileListCheckId);
+
+        // fileName 요소값 치환
+        var tempfileName = fileName2.attr('name');
+        fileName2.attr('name',fileName1.attr('name'));
+        fileName1.attr('name',tempfileName);
+        
+        var tempfileNameClass = fileName2.attr('class');
+        fileName2.attr('class',fileName1.attr('class'));
+        fileName1.attr('class',tempfileNameClass);
+
+        var tempfileNameId = fileName2.attr('id');
+        fileName2.attr('id',fileName1.attr('id'));
+        fileName1.attr('id',tempfileNameId);
+        
+        // fileSelectButton 요소값 치환
+        var tempfileSelectButtonClass = fileSelectButton2.attr('class');
+        fileSelectButton2.attr('class',fileSelectButton1.attr('class'));
+        fileSelectButton1.attr('class',tempfileSelectButtonClass);
+
+        var tempfileSelectButtonOnclick = fileSelectButton2.attr('onclick');
+        fileSelectButton2.attr('onclick',fileSelectButton1.attr('onclick'));
+        fileSelectButton1.attr('onclick',tempfileSelectButtonOnclick);
+
+        var tempfileSelectButtonId = fileSelectButton2.attr('id');
+        fileSelectButton2.attr('id',fileSelectButton1.attr('id'));
+        fileSelectButton1.attr('id',tempfileSelectButtonId);
+        
+        var tempthumnailId = thumnail2.attr('id');
+        thumnail2.attr('id',thumnail1.attr('id'));
+        thumnail1.attr('id',tempthumnailId);
+
+        // addFileSelect 요소값 치환
+        var tempaddFileSelectClass = addFileSelect2.attr('class');
+        addFileSelect2.attr('class',addFileSelect1.attr('class'));
+        addFileSelect1.attr('class',tempaddFileSelectClass);
+
+        var tempaddFileSelectValue = addFileSelect2.attr('value');
+        addFileSelect2.attr('value',addFileSelect1.attr('value'));
+        addFileSelect1.attr('value',tempaddFileSelectValue);
+
+        var tempaddFileSelectOnclick = addFileSelect2.attr('onclick');
+        addFileSelect2.attr('onclick',addFileSelect1.attr('onclick'));
+        addFileSelect1.attr('onclick',tempaddFileSelectOnclick);
+        
+        addFileSelect2.attr('data-delete', 'changed');
+
+        var tempaddFileSelectId = addFileSelect2.attr('id');
+        addFileSelect2.attr('id',addFileSelect1.attr('id'));
+        addFileSelect1.attr('id',tempaddFileSelectId);
+
+        // inputFile 요소값 치환
+        var tempinputFileClass = inputFile2.attr('class');
+        inputFile2.attr('class',inputFile1.attr('class'));
+        inputFile1.attr('class',tempinputFileClass);
+
+        var tempinputFileDataId = inputFile2.attr('data-id');
+        inputFile2.attr('data-id',inputFile1.attr('data-id'));
+        inputFile1.attr('data-id',tempinputFileDataId);
+
+        var tempinputFileName = inputFile2.attr('name');
+        inputFile2.attr('name',inputFile1.attr('name'));
+        inputFile1.attr('name',tempinputFileName);
+
+        var tempinputFileOnchange = inputFile2.attr('onchange');
+        inputFile2.attr('onchange',inputFile1.attr('onchange'));
+        inputFile1.attr('onchange',tempinputFileOnchange);
+
+        var tempinputFileId = inputFile2.attr('id');
+        inputFile2.attr('id',inputFile1.attr('id'));
+        inputFile1.attr('id',tempinputFileId);
+
+    }
+    // 하나 지우기
+    $('#fileSelect'+fileCount).attr('hidden','');
+    $('#fileSelect'+fileCount).attr('data-value','off');
+
+    $('#fileListCheck'+fileCount).attr('value','off');
+
+    $('#fileName'+fileCount).val("");
+    $('#fileName'+fileCount).attr('placeholder','파일선택');
+
+    $('#thumbnail'+fileCount).attr('hidden','');
+}
+
+else{
 
 $('#fileSelect'+value).attr('hidden','');
 $('#fileSelect'+value).attr('data-value','off');
 
 $('#fileListCheck'+value).attr('value','off');
 
-$('#fileName'+value).attr('value','');
-$('#fileName'+value).attr('placeholder','');
+$('#fileName'+value).val("");
+$('#fileName'+value).attr('placeholder','파일선택');
 
 $('#thumbnail'+value).attr('hidden','');
 
+}
 
 if(fileCount <= 5){
         $('#icon1').text('+');
