@@ -145,7 +145,7 @@
               data-storeWishCount="{{ $store->wishes->count() }}"
               >보기</a></td>
             <td class="text-center border-end border-light" style="vertical-align: middle"><a class="text-dark" href="/admin/modify/{{ $store->id }}" style="cursor: pointer">수정</a></td>
-            <td class="text-center border-end border-light" style="vertical-align: middle"><a class="text-dark" style="cursor: pointer" id="deleteButton" data-coreui-toggle="modal" data-coreui-target="#deleteCheckModal" data-storeId="{{ $store->id }}">삭제</a></td>
+            <td class="text-center border-end border-light" style="vertical-align: middle"><a class="text-dark" style="cursor: pointer" data-coreui-toggle="modal" data-coreui-target="#deleteCheckModal" data-storeId="{{ $store->id }}">삭제</a></td>
           </tr>
             @endforeach
           </tbody>
@@ -263,7 +263,7 @@
                       <p class="fw-bold text-center">맛집을 삭제하시겠습니까?</p>
                   </div>
                   <div class="modal-footer" style="justify-content: center;">
-                      <button type="button" class="btn btn-dark rounded-pill btn-primary px-4" onclick="deleteStore()">확인</button>
+                      <button type="button" id="deleteOk" class="btn btn-dark rounded-pill btn-primary px-4" onclick="deleteStore()">확인</button>
                       <button
                           type="button"
                           class="btn btn-gray rounded-pill btn-secondary px-4"
@@ -284,7 +284,7 @@ $(this).text(number.replace(/[^0-9]/, '').replace(/^(\d{2,3})(\d{3,4})(\d{4})$/,
 
 // 상세보기 모달
 
-var detailModal = document.getElementById('viewStoreModal')
+var detailModal = document.getElementById('viewStoreModal');
 detailModal.addEventListener('show.coreui.modal', function (event) {
   var name = event.relatedTarget.getAttribute('data-storeName');
   var category = event.relatedTarget.getAttribute('data-storeCategory');
@@ -419,10 +419,18 @@ function selectCity(event){
 
 // 스토어 삭제 **check 삭제 성공시 메세지 변경 session??
 
+var deleteCheckModal = document.getElementById('deleteCheckModal');
+deleteCheckModal.addEventListener('show.coreui.modal', function (event) {
+    var id = event.relatedTarget.getAttribute('data-storeId');
+    var deleteOkButton = document.getElementById('deleteOk');
+    deleteOkButton.setAttribute('data-storeId', id);
+  });
+
 function deleteStore(){
-  var deleteButton = document.getElementById('deleteButton')
-  var id = deleteButton.getAttribute('data-storeId');
   
+  var deleteOkButton = document.getElementById('deleteOk');
+  var id = deleteOkButton.getAttribute('data-storeId');
+
   console.log(id);
 
   $.ajax({
@@ -442,6 +450,5 @@ function deleteStore(){
         });
   
 }
-
 </script>
 @endsection

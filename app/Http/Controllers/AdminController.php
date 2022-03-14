@@ -237,8 +237,9 @@ class AdminController extends Controller
             // 이미지 이름 추출
             $imageNames = array(0 => "", 1 => "", 2 => "", 3 => "", 4 => "");
             foreach($store->images as $image){
-                $name = str_replace('/storage/images/','',$image->path);
-
+                $name = $image->path;
+                // $name = str_replace('/storage/images/','',$image->path);
+                
                 switch(true){
                     case (strpos($name, '-1')):
                         $imageNames[0] = $name;
@@ -255,27 +256,51 @@ class AdminController extends Controller
                     case (strpos($name, '-5')):
                         $imageNames[4] = $name;
                         break;
+                    }
                 }
-            }
+                
+            $deleteFileList = explode(",", $request->deletedFileList);
+
+            $changedFileList = explode(",", $request->changedFileList);
+
+            
+
 
             // 이미지 삭제 및 등록
             $input = $request->all();
 
-            // event??
-            // event('image.delete', $test);
+            if($deleteFileList[0] != ""){
+                // 수정할 이미지 삭제
+                foreach($deleteFileList as $deleteFileIndex){
+                    $deleteFileIndex = intval($deleteFileIndex) -1;
+                    if($imageNames[$deleteFileIndex] != ''){
+                        // 삭제
+                        Storage::disk('images')->delete(basename($imageNames[$deleteFileIndex]));
+                        $previous_path = $imageNames[$deleteFileIndex];
+                        $previousImage = Image::where('path', $previous_path)->first();
+                        $previousImage->delete();
+                        $imageNames[$deleteFileIndex] = 'deleted';
+                    }
+                }
 
-            // 수정할 이미지 삭제
-            for($i=0;$i<5;$i++){
-                $index = 'fileListCheck'.($i+1);
-                $fileListCheck = $request->$index;
-                if($request->hasFile('inputFile'.($i+1)) && $imageNames[$i] != '' || $fileListCheck == 'off' && $imageNames[$i] != ''){
-                    Storage::disk('images')->delete(basename($imageNames[$i]));
-                    $previous_path = '/storage/images/'.$imageNames[$i];
-                    $previousImage = Image::where('path', $previous_path)->first();
-                    $previousImage->delete();
+                // 기존파일명 수정
+                if($changedFileList[0] != ""){
+                    for($i=0;$i<5;$i++){
+                        if($imageNames[$i] == 'deleted' ){
+                            $firstIndex = $i;
+                            break;
+                        }
+                    }
+                    foreach($changedFileList as $changedFileIndex){
+                        $changedFileIndex = intval($changedFileIndex) -1;
+                        // dd($imageNames[$changedFileIndex]);
+                        
+                        Image::where('path', $imageNames[$changedFileIndex])->update(['path' => substr($imageNames[$changedFileIndex], 0, -5).($firstIndex+1).'.png']);
+                        Storage::disk('images')->move(basename($imageNames[$changedFileIndex]), substr(basename($imageNames[$changedFileIndex]), 0, -5).($firstIndex+1).'.png');
+                        $firstIndex = $firstIndex + 1;
+                    }
                 }
             }
-            
             // 이미지등록
             for($i=0;$i<5;$i++){
                 if($request->hasFile('inputFile'.($i+1))){
@@ -291,7 +316,7 @@ class AdminController extends Controller
     
             DB::commit();
             
-            return redirect()->back()->with('success','맛집이 수정되었습니다.');;
+            return redirect()->back()->with('success','맛집이 수정되었습니다.');
             
         } 
         catch (\Exception $exception) {
@@ -309,7 +334,11 @@ class AdminController extends Controller
         $user_id = Wish::where('store_id', $request->id)->exists();
         
         if(Wish::where('store_id', $request->id)->exists()){
-            return redirect()->back()->with('error','찜을 삭제해주세요.');
+            return redirect()->back()->with('error','스토어의 찜을 삭제해주세요.');
+        }
+        
+        if(Review::where('store_id', $request->id)->exists()){
+            return redirect()->back()->with('error','스토어의 리뷰를 삭제해주세요.');
         }
         
         try {
