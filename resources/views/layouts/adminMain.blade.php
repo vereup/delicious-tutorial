@@ -38,6 +38,9 @@
         </header>
 
         <main>
+            <div id="app">
+                @include('flash-message')
+            </div>
             @yield('content')
         </main>
 

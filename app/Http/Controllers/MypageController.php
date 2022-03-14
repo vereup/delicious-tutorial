@@ -136,12 +136,12 @@ class MypageController extends Controller
             $wish = Wish::find($request->deleteWishId);
             
             if ($wish->id != $request->deleteWishId) {
-                return redirect()->back()->with('error','찜 아이디 확인필요');;
+                return redirect()->back()->with('error','찜 아이디 확인필요');
             }
             
             $wish->delete();
             DB::commit();
-            return redirect()->back()->with('success','찜이 삭제되었습니다.');;
+            return redirect()->back()->with('success','찜이 삭제되었습니다.');
             
         } 
         catch (\Exception $exception) {

@@ -114,7 +114,7 @@ class MainController extends Controller
             
             DB::commit();
 
-            return redirect()->back()->with('success','찜이 삭제되었습니다.');;
+            return redirect()->back()->with('success','찜이 추가되었습니다.');;
             
         } 
         catch (\Exception $exception) {

@@ -330,6 +330,7 @@ class AdminController extends Controller
 
     public function deleteStore(Request $request){
 
+        // dd(Review::where('store_id', $request->id)->exists());
         // 찜 있을시 제외
         $user_id = Wish::where('store_id', $request->id)->exists();
         
