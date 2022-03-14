@@ -28,7 +28,7 @@
                                         <form method="POST" action="{{ $wish ? route('removeWish', ['storeId' => $store->id]) : route('addWish', ['storeId' => $store->id]) }}">
                                             @csrf
                                                 <button type="submit" class="p-2 bg-white" style="border: 1px solid #A0A0A0; border-radius: 50%;">
-                                                    <img name="{{ $store->id }}" src="/images/{{ $wish ? 'redheart' : 'whiteHeart' }}.png" width="23" height="26">
+                                                    <img name="{{ $store->id }}" src="/images/{{ $wish ? 'redheart' : 'whiteheart' }}.png" width="23" height="26">
                                                 </button>
                                         </form>
 
