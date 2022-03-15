@@ -108,53 +108,6 @@
                             @endif
                             @endfor
 
-
-                            {{-- 카운트형
-                            @php
-                            $imageCount = count($imageNames);
-                            @endphp
-                            @for($i=0;$i<$imageCount;$i++)
-                            <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i+1 }}" data-value="on">
-                                <input type="hidden" id="fileListCheck{{ $i+1 }}" name="fileListCheck{{ $i+1 }}" value="on">
-                                <input type="text" class="form-control bg-white" name="filename{{ $i+1 }}" disabled="disabled" placeholder="{{ $imageNames[$i] }}" value="{{ $imageNames[$i] }}" id="fileName{{ $i+1 }}">
-                                <button class="btn btn-outline-secondary btn-dark" type="button" onclick="chooseFile({{ $i+1 }});">
-                                    <span style="color: white;">파일선택</span>
-                                </button>                                
-                                <button class="btn btn-outline-secondary btn-white rounded-end" style="width: 40px;" type="button" id="addFileSelect{{ $i+1 }}" value="{{ $i+1 }}" @if($i == 0) onclick="addFileList()"@else onclick="deleteFileList({{ $i+1 }}) @endif">
-                                    <span style="color: black;" id="icon1">@if($i== 0)+@else-@endif</span>
-                                </button>                                
-                                <input type="file" class="form-control" hidden id="inputFile{{ $i+1 }}" data-id="{{ $i+1 }}" name="inputFile{{ $i+1 }}" onchange="sendFile(this)">
-                            </div>
-                            @endfor
-                            @for($i=$imageCount;$i<5;$i++)
-                            <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i+1 }}" hidden data-value="off">
-                                <input type="hidden" id="fileListCheck{{ $i+1 }}" name="fileListCheck{{ $i+1 }}" value="off">
-                                <input type="text" class="form-control bg-white" name="filename{{ $i+1 }}" disabled="disabled" placeholder="파일선택" value="" id="fileName{{ $i+1 }}">
-                                <button class="btn btn-outline-secondary btn-dark" type="button" onclick="chooseFile({{ $i+1 }});">
-                                    <span style="color: white;">파일선택</span>
-                                </button>                                
-                                <button class="btn btn-outline-secondary btn-white rounded-end" style="width: 40px;" type="button" id="addFileSelect{{ $i+1 }}" value="{{ $i+1 }}" @if($i == 0) onclick="addFileList()"@else onclick="deleteFileList({{ $i+1 }}) @endif">
-                                    <span style="color: black;" id="icon1">@if($i== 0)+@else-@endif</span>
-                                </button>                                
-                                <input type="file" class="form-control" hidden id="inputFile{{ $i+1 }}" data-id="{{ $i+1 }}" name="inputFile{{ $i+1 }}" onchange="sendFile(this)">
-                            </div>
-                            @endfor --}}
-
-
-
-{{-- 추가형 --}}
-                            {{-- @foreach($imageNames as $imageName)
-                            <div class="input-group mb-3 fileSelect" id="fileSelect{{ $loop->index+1 }}" @if($loop->index != 0) hidden @endif>
-                                <input type="text" class="form-control bg-white" name="filename{{ $loop->index+1 }}" disabled="disabled" placeholder="{{ $imageName }}" value="{{ $imageName }}" id="fileName{{ $loop->index+1 }}">
-                                <button class="btn btn-outline-secondary btn-dark" type="button" id="fileSelect{{ $loop->index+1 }}" value="{{ $loop->index+1 }}" onclick="changeFile({{ $loop->index+1 }});">
-                                    <span style="color: white;">파일선택</span>
-                                </button>                                
-                                <button class="btn btn-outline-secondary btn-white rounded-end" style="width: 40px;" type="button" id="addFileSelect{{ $loop->index+1 }}" value="{{ $loop->index+1 }}" @if($loop->index == 0) onclick="addFileList()"@else onclick="deleteFileList({{ $loop->index+1 }}) @endif">
-                                    <span style="color: black;" id="icon1">@if($loop->index == 0)+@else-@endif</span>
-                                </button>                                
-                                <input type="file" class="form-control" hidden id="inputFile{{ $loop->index+1 }}" data-id="{{ $loop->index+1 }}" name="inputFile{{ $loop->index+1 }}" onchange="sendFile(this)">
-                            </div>
-                            @endforeach --}}
                         </div>
                         <p class="ps-3" style="color:#BDBDBD">* 사진은 최대 5장 까지 등록 가능합니다. (jpg, jpeg, png)</p>
 
@@ -210,49 +163,7 @@
 
 <script>
 
-
-//클릭시 이메일 중복검사
-
-function checkDuplicate(event) {
-
-    let checkEmail = $('#emailSignup').val();
-    let regEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-
-    if(regEmail.test(checkEmail)!=true){
-        alert('이메일 형식에 맞게 입력해주세요');
-        $('#emailSignup').attr('style', 'border: solid red;')
-        return false;
-    }
-    else {
-        $.ajax({
-            type : 'GET',
-            url : "{{ route('checkId') }}",
-            data : {
-                'checkEmail' : checkEmail,
-            },
-            success : function(data) {
-                if(data) {
-                    if(data == 'ok') {
-                        console.log(data);
-                        alert('가입 가능한 이메일입니다.');
-                        $('#emailSignup').attr('style', 'border: solid green;');
-                        $('#emailCheck').val('check');
-                    }
-                    else if(data == 'duplicate') {
-                        console.log(data);
-                        alert('사용중인 이메일주소가 있습니다.');
-                        $('#emailSignup').attr('style', 'border: solid red;');
-                        $('#emailCheck').val('duplicate');
-                    }
-                }
-            },
-            error : function(error) {
-                console.log(error);
-            }
-        });
-    }
-}
-
+//입력값 검사
 function formCheck(event){
 
     event.preventDefault();
@@ -292,27 +203,9 @@ function formCheck(event){
     changedList.sort().join(", ");
     $("input[data-id=changedFileList]").val(changedList);
 
-    
-
-    
-
-
-
-
+    //전화번호 체크용
     var regMiddleNumber = /\d{3,4}/;
     var regLastNumber = /\d{4}/;
-
-    console.log(form);
-    console.log(storeName.length);
-    console.log(storeIntro);
-    console.log(categoryId);
-    console.log(cityId);
-    console.log(countyId);
-    console.log(addressDetail);
-    console.log(localCode);
-    console.log(middleNumber);
-    console.log(lastNumber);
-    console.log(firstImgPath);
     
     if (storeName = null){
         alert('가게 이름을 입력해주세요.');
@@ -354,7 +247,7 @@ function formCheck(event){
             return false;
     }
 
-    else if (countyId == ''){
+    else if (countyId == '' || countyId == 'none'){
         alert('시군구를 선택해주세요');
             return false;
     }
@@ -370,15 +263,14 @@ function formCheck(event){
     }
 
     else if (middleNumber == '' || lastNumber == ''){
-        alert('전화번호를 형식에 맞게 입력해주세요');
+        alert('전화번호를 입력해주세요');
             return false;
     }
 
-
-    // else if (middleNumber == '' || lastNumber == '' || regMiddleNumber.test(middleNumber) == false || regLastNumber.test(regLastNumber) == false){
-    //     alert('전화번호를 형식에 맞게 입력해주세요');
-    //         return false;
-    // }
+    else if (regMiddleNumber.test(middleNumber) != true || regLastNumber.test(lastNumber) != true){
+        alert('전화번호를 형식에 맞게 입력해주세요');
+            return false;
+    }
 
     else if (firstImgPath == '파일선택'){
         alert('사진을 최소 1장이상 등록해주세요.');
@@ -398,54 +290,53 @@ console.log(cityId);
 
 if(cityId == ''){
 
-  console.log(cityId);
+    console.log(cityId);
 
-  //시군구 요소 초기화
-  var countyList = document.querySelector('.countyList');
-  while(countyList.hasChildNodes()){
-  countyList.removeChild(countyList.firstChild);
-  }
-  //시군구 첫번째 요소 추가
-  var countyElementFirst = document.createElement('option');
-  countyElementFirst.value = "none";
-  countyElementFirst.innerText = '시/군/구';
-  countyList.appendChild(countyElementFirst);
+    //시군구 요소 초기화
+    var countyList = document.querySelector('.countyList');
+    while(countyList.hasChildNodes()){
+    countyList.removeChild(countyList.firstChild);
+    }
+    //시군구 첫번째 요소 추가
+    var countyElementFirst = document.createElement('option');
+    countyElementFirst.value = "none";
+    countyElementFirst.innerText = '시/군/구';
+    countyList.appendChild(countyElementFirst);
 }
-
 
 else{
 $.ajax({
-          type : 'GET',
-          url : "{{ route('selectCity') }}",
-          data : {
-              'cityId' : cityId,
-          },
-          success : function(data) {
+        type : 'GET',
+        url : "{{ route('selectCity') }}",
+        data : {
+            'cityId' : cityId,
+        },
+        success : function(data) {
 
-              //시군구 요소 초기화
-              var countyList = document.querySelector('.countyList');
-              while(countyList.hasChildNodes()){
-                countyList.removeChild(countyList.firstChild);
-              }
-              //시군구 첫번째 요소 추가
-              var countyElementFirst = document.createElement('option');
-              countyElementFirst.value = "none";
-              countyElementFirst.innerText = '시/군/구';
-              countyList.appendChild(countyElementFirst);
+            //시군구 요소 초기화
+            var countyList = document.querySelector('.countyList');
+            while(countyList.hasChildNodes()){
+            countyList.removeChild(countyList.firstChild);
+            }
+            //시군구 첫번째 요소 추가
+            var countyElementFirst = document.createElement('option');
+            countyElementFirst.value = "none";
+            countyElementFirst.innerText = '시/군/구';
+            countyList.appendChild(countyElementFirst);
 
-              //시군구 요소들 추가
-              for(i=0;i<data.length;i++){
-                  var countyElement = document.createElement('option');
-                  countyElement.value = data[i].id;
-                  countyElement.innerText = data[i].county;
-                  countyList.appendChild(countyElement);
-                }
-          },
-          
-          error : function(error) {
-              console.log(error);
-          }
-      });
+            //시군구 요소들 추가
+            for(i=0;i<data.length;i++){
+                var countyElement = document.createElement('option');
+                countyElement.value = data[i].id;
+                countyElement.innerText = data[i].county;
+                countyList.appendChild(countyElement);
+            }
+        },
+        
+        error : function(error) {
+            console.log(error);
+        }
+    });
     }
 }
 
@@ -461,16 +352,8 @@ function chooseFile(num){
 
 }
 
-// //파일변경선택클릭
-// function changeFile(num){
-//     console.log(num);
-    
-//     $('#inputFile'+num).click();
-// }
 
-
-
-// 퍼온코드응용 check 파일이름 얻기
+// 파일 이름 얻기
 function sendFileFunction(obj) {
     var fileObj, pathHeader , pathMiddle, pathEnd, allFilename, fileName, extName;
     
@@ -489,23 +372,13 @@ function sendFileFunction(obj) {
             extName = fileObj.substring(pathMiddle+1, pathEnd);
             allFilename = fileName+"."+extName;
 
-            // if(stype == "all") {
-                    return allFilename; // 확장자 포함 파일명
-            // } else if(stype == "name") {
-            //         return fileName; // 순수 파일명만(확장자 제외)
-            // } else if(stype == "ext") {
-            //         return extName; // 확장자
-            // } else {
-            //         return fileName; // 순수 파일명만(확장자 제외)
-            // }
+            return allFilename; // 확장자 포함 파일명
     } 
 
     else {
             alert("파일을 선택해주세요");
             return false;
     }
-    // getCmaFileView(this,'name');
-    // getCmaFileView('upFile','all');
 }
 
 function sendFile(obj) {
@@ -517,38 +390,6 @@ function sendFile(obj) {
     
     addThumnail(obj, num);
 }
-
-// // 선택한 파일리스트 읽기
-
-// function readFileList(){
-//     var fileList = [];
-//     for(i=1;i<=5;i++){
-//         if($('#fileSelect'+i).attr('data-value') == 'off'){
-//             fileList.push(i);
-//         } 
-//     }  
-//     console.log(fileList);
-
-
-// // ajax 실패 check
-//     // $.ajax({
-//     //         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-//     //         type : 'post',
-//     //         url : "{{ route('modifyStore') }}",
-//     //         data : {
-//     //             'fileList' : fileList,
-//     //         },
-//     //         success : function(data) {
-//     //                     console.log(data);
-//     //                     console.log('ajax성공');
-//     //         },
-            
-//     //         error : function(error) {
-//     //             console.log(error);
-//     //         }
-//     // });
-// }
-
 
 // 파일선택시 추가
 function addFileList(){
@@ -580,32 +421,7 @@ else{
 }
 }
 
-// // 추가형
-// function addFileList(){
-
-//     var value = document.getElementById('fileSelectForm').getAttribute('value');
-//     var fileCount = $('.fileSelect').length;
-
-//     if(fileCount <= 4){
-//         var newValue = Number(value) + 1;
-//         $('#fileSelectForm').attr('value', newValue);
-//         var fileForm = document.querySelector('.file-select');
-//         var fileElementFirst = document.createElement('div');
-//         fileElementFirst.className = "input-group mb-3 fileSelect";
-//         fileElementFirst.setAttribute('id', 'fileSelect'+newValue);
-//         fileElementFirst.innerHTML = "<input type='text' class='form-control bg-white' name='filename"+newValue+"' disabled='disabled' placeholder='파일선택' value='' id='fileName"+newValue+"'><button class='btn btn-outline-secondary btn-dark' type='button' id='fileSelect"+newValue+"' value='"+newValue+"' onclick='chooseFile(this.value);'><span style='color: white;'>파일선택</span></button><button class='btn btn-outline-secondary btn-white rounded-end' style='width: 40px;' type='button' id='addFileSelect"+newValue+"' value='"+newValue+"' onclick = 'deleteFileList("+newValue+")'><span style='color: black;'>-</span></button><input type='file' class='form-control' hidden id='inputFile"+newValue+"' data-id="+newValue+" name='inputFile"+newValue+"'onchange='sendFile(this)'>";
-//         fileForm.appendChild(fileElementFirst);
-
-//         if(fileCount >= 4){
-//             $('#icon1').text('');
-//         }
-//     }
-
-//     else{
-//         alert('이미지는 최대 5개까지 업로드 가능합니다.');
-//     }
-// }
-
+// 파일 리스트 삭제
 function deleteFileList(value){
 
 
@@ -615,8 +431,6 @@ var fileCount = $('.fileSelect:visible').length;
 var old = event.target;
 old.setAttribute("data-delete", "delete");
 console.log(old.getAttribute('data-delete'));
-
-
 
 // 모두
 if(value < fileCount){
@@ -730,68 +544,48 @@ if(value < fileCount){
         inputFile1.attr('id',tempinputFileId);
 
     }
-    // 하나 지우기
-    $('#fileSelect'+fileCount).attr('hidden','');
-    $('#fileSelect'+fileCount).attr('data-value','off');
+        // 하나 지우기
+        $('#fileSelect'+fileCount).attr('hidden','');
+        $('#fileSelect'+fileCount).attr('data-value','off');
 
-    $('#fileListCheck'+fileCount).attr('value','off');
+        $('#fileListCheck'+fileCount).attr('value','off');
 
-    $('#fileName'+fileCount).val("");
-    $('#fileName'+fileCount).attr('placeholder','파일선택');
+        $('#fileName'+fileCount).val("");
+        $('#fileName'+fileCount).attr('placeholder','파일선택');
 
-    $('#inputFile'+fileCount).val('');
-    $('#inputFile'+fileCount).attr('type','hidden');
-    $('#inputFile'+fileCount).attr('type','file');
+        $('#inputFile'+fileCount).val('');
+        $('#inputFile'+fileCount).attr('type','hidden');
+        $('#inputFile'+fileCount).attr('type','file');
 
-    $('#thumbnail'+fileCount).attr('hidden','');
-}
+        $('#thumbnail'+fileCount).attr('hidden','');
+    }
 
-else{
+    else{
 
-$('#fileSelect'+value).attr('hidden','');
-$('#fileSelect'+value).attr('data-value','off');
+    $('#fileSelect'+value).attr('hidden','');
+    $('#fileSelect'+value).attr('data-value','off');
 
-$('#fileListCheck'+value).attr('value','off');
+    $('#fileListCheck'+value).attr('value','off');
 
-$('#fileName'+value).val("");
-$('#fileName'+value).attr('placeholder','파일선택');
+    $('#fileName'+value).val("");
+    $('#fileName'+value).attr('placeholder','파일선택');
 
-$('#inputFile'+value).val('');
-$('#inputFile'+value).attr('type','hidden');
-$('#inputFile'+value).attr('type','file');
+    $('#inputFile'+value).val('');
+    $('#inputFile'+value).attr('type','hidden');
+    $('#inputFile'+value).attr('type','file');
 
-$('#thumbnail'+value).attr('hidden','');
+    $('#thumbnail'+value).attr('hidden','');
 
-}
+    }
 
-if(fileCount <= 5){
-        $('#icon1').text('+');
-}
-
-// readFileList();
+    if(fileCount <= 5){
+            $('#icon1').text('+');
+    }
 
 }
 
-// // 추가형
-// function deleteFileList(value){
 
-//     var fileCount = $('.fileSelect').length;
-    
-//     var fileForm = document.querySelector('#fileSelect'+value);
-//     fileForm.remove();
-//     $("#thumbnail"+value).remove();
-
-//     var oldValue = document.getElementById('fileSelectForm').getAttribute('value');
-//     var newValue = Number(oldValue) + 1;
-//     $('#fileSelectForm').attr('value', newValue);
-
-//     if(fileCount <= 5){
-//             $('#icon1').text('+');
-//         }
-
-// }
-
-
+// 썸네일 추가
 function addThumnail(e, number){
 
 console.log(e);
@@ -819,144 +613,5 @@ reader.onload = function  () {
     };
 };
 }
-
-
-
-// 추가형
-// function addThumnail(e, number){
-
-//     console.log(e);
-//     var imageForm = document.querySelector('.imageThumnail');
-//     // var imgElementFirst = document.createElement('img');
-//     // imgElementFirst.className = "img-thumbnail";
-//     // imgElementFirst.setAttribute('src', path);
-//     // imageForm.appendChild(imgElementFirst);
-
-//     var reader = new FileReader();
-
-//     console.log(reader);
-//     console.log(e.files[0]);
-
-//     reader.readAsDataURL(e.files[0]);
-//     reader.onload = function  () {
-//         var tempImage = new Image();
-//         tempImage.src = reader.result;
-//         tempImage.onload = function () {
-//             var canvas = document.createElement('canvas');
-//             var canvasContext = canvas.getContext("2d");
-//             canvas.width = 100; 
-//             canvas.height = 100;
-//             canvasContext.drawImage(this, 0, 0, 100, 100);
-//             var dataURI = canvas.toDataURL("image/jpeg");
-//             if ($("#thumbnail"+number).length){
-//                 $("#thumbnail"+number).remove();
-//                 var imageThumnail= document.querySelector('#imageThumnail');
-//                 var imgElement = document.createElement('div');
-//                 imgElement.className = "img-thumbnail";
-//                 imgElement.setAttribute('id', 'thumbnail'+number);
-//                 imgElement.setAttribute('style', 'width: 30%;');
-//                 imageThumnail.appendChild(imgElement);
-//                 var imgTag = "<img style='width: 100%;' src='"+dataURI+"'/>";
-//                 $("#thumbnail"+number).append(imgTag);
-//             }
-
-//             else{
-//                 var imageThumnail= document.querySelector('#imageThumnail');
-//                 var imgElement = document.createElement('div');
-//                 imgElement.className = "img-thumbnail";
-//                 imgElement.setAttribute('id', 'thumbnail'+number);
-//                 imgElement.setAttribute('style', 'width: 30%;');
-//                 imageThumnail.appendChild(imgElement);
-//                 var imgTag = "<img style='width: 100%;' src='"+dataURI+"'/>";
-//                 $("#thumbnail"+number).append(imgTag);
-
-//             }
-//         };
-
-//     };
-
-// }
-
-
-
-// function addThumnail(e, number){
-
-// console.log(e);
-
-
-// var imageForm = document.querySelector('.imageThumnail');
-// // var imgElementFirst = document.createElement('img');
-// // imgElementFirst.className = "img-thumbnail";
-// // imgElementFirst.setAttribute('src', path);
-// // imageForm.appendChild(imgElementFirst);
-
-//     var reader = new FileReader();
-
-//     console.log(reader);
-//     console.log(e.files[0]);
-
-//     reader.readAsDataURL(e.files[0]);
-//     reader.onload = function  () {
-//         var tempImage = new Image();
-//         tempImage.src = reader.result;
-//         tempImage.onload = function () {
-//             var canvas = document.createElement('canvas');
-//             var canvasContext = canvas.getContext("2d");
-//             canvas.width = 100; 
-//             canvas.height = 100;
-//             canvasContext.drawImage(this, 0, 0, 100, 100);
-//             var dataURI = canvas.toDataURL("image/jpeg");
-//             var imageThumnail= document.querySelector('#imageThumnail');
-//             console.log(imageThumnail);
-//             var imgElement = document.createElement('div');
-//             imgElement.className = "img-thumbnail";
-//             imgElement.setAttribute('id', 'thumbnail'+number);
-//             imageThumnail.appendChild(imgElement);
-// var imgTag = "<img style='width: 35%;' src='"+dataURI+"'/>";
-//             $("#thumbnail"+number).append(imgTag);
-//         };
-
-//     };
-
-
-// }
-
-
-
-
-
-
-// function checkDuplicate() {
-
-    
-//     let email = $('#emailSignup').val();
-//     let form = $('<form>@csrf');
-//     form.attr("method", "post");
-//     form.attr("action", "{{ route('checkId') }}");
-
-//     let field = $('<input>');
-//     field.attr("type", "hidden");
-//     field.attr("name", "emailPost");
-//     field.attr("value", $('#emailSignup').val());
-//     form.append(field);
-
-//     $(document.body).append(form);
-//     form.submit();
-
-//     alert($checkEmail);
-
-// }
-
-
-
-
-// function checkDuplicate() {
-
-// event.preventDefault();
-// $('#emailPost').val($('#emailSignup').val());
-// alert($('#emailPost').val());
-// $('#checkEmail').submit();
-
-// }
 
 </script>

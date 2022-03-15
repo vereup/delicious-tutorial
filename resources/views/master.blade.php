@@ -3,8 +3,6 @@
 @section('content')
 
 
-
-
 <div class="container-fluid position-relative" style="background-color: #E5E5E5">
     <div class="d-flex flex-row docs-highlight mx-0 mb-0" style="background-color: #E5E5E5">
         <div class="p-2 docs-highlight">

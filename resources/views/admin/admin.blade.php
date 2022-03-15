@@ -2,12 +2,6 @@
 
 @section('content')
 
-{{-- @if (session('error'))
-    <div class="alert alert-success">
-        {{ session('error') }}
-    </div>
-@endif --}}
-
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -123,7 +117,7 @@
               @foreach ($stores as $store)
               <tr style="height: 3rem">
               
-            <th class="text-center border-end border-start border-light" scope="row" style="vertical-align: middle">{{ $loop->index+1 }}</th>
+            <th class="text-center border-end border-start border-light" scope="row" style="vertical-align: middle">{{ ($loop->index+1)+(($stores->currentPage()-1)*5) }}</th>
             <td class="text-center border-end border-light" style="vertical-align: middle">{{ $store->name }}</td>
             <td class="text-center border-end border-light" style="vertical-align: middle">{{ $store->category->name }}</td>
             <td class="text-center border-end border-light" style="vertical-align: middle">{{ $store->county->city->city }} {{ $store->county->county }} {{$store->address_detail}}</td>
@@ -432,7 +426,6 @@ function deleteStore(){
   var id = deleteOkButton.getAttribute('data-storeId');
 
   console.log(id);
-
   $.ajax({
     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             type : 'POST',
@@ -442,17 +435,13 @@ function deleteStore(){
             },
             success : function(data) {
                         console.log(data);
-                        $('#searchSubmit').click();
-                        if(status == 'ok'){
-                          alert('ok');
-                        }
-                        
+                        $('#searchSubmit').click();                        
             },
             error : function(error) {
                 console.log(error);
             }
-        });
-  
+  });
+
 }
 </script>
 @endsection

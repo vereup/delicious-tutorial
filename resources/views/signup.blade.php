@@ -91,13 +91,6 @@
 
 function checkDuplicate(event) {
 
-    // let email = new Array();
-    // email.address = $('#emailSignup').val();
-
-    // checkEmail.id = '$('#emailSignup').val()';
-
-    // console.log(email);
-
     let checkEmail = $('#emailSignup').val();
     let regEmail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 
@@ -224,42 +217,5 @@ function formCheck(event){
 
 };
 
-
-
-
-
-
-// function checkDuplicate() {
-
-    
-//     let email = $('#emailSignup').val();
-//     let form = $('<form>@csrf');
-//     form.attr("method", "post");
-//     form.attr("action", "{{ route('checkId') }}");
-
-//     let field = $('<input>');
-//     field.attr("type", "hidden");
-//     field.attr("name", "emailPost");
-//     field.attr("value", $('#emailSignup').val());
-//     form.append(field);
-
-//     $(document.body).append(form);
-//     form.submit();
-
-//     alert($checkEmail);
-
-// }
-
-
-
-
-// function checkDuplicate() {
-
-// event.preventDefault();
-// $('#emailPost').val($('#emailSignup').val());
-// alert($('#emailPost').val());
-// $('#checkEmail').submit();
-
-// }
 
 </script>
