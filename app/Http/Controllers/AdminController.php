@@ -335,11 +335,14 @@ class AdminController extends Controller
         $user_id = Wish::where('store_id', $request->id)->exists();
         
         if(Wish::where('store_id', $request->id)->exists()){
-            return redirect()->back()->with('error','스토어의 찜을 삭제해주세요.');
+            Session::flash('error', '스토어의 찜을 삭제해주세요.');
+            return response()->json(['status' => 'failed']);
+
         }
         
         if(Review::where('store_id', $request->id)->exists()){
-            return redirect()->back()->with('error','스토어의 리뷰를 삭제해주세요.');
+            Session::flash('error', '스토어의  리뷰를 삭제해주세요.');
+            return response()->json(['status' => 'failed']);
         }
         
         try {
@@ -377,8 +380,9 @@ class AdminController extends Controller
             $store->delete();
             
             DB::commit();
-            
-            return redirect()->back()->with('success','스토어가 삭제되었습니다.');
+            Session::flash('success', '스토어가 삭제되었습니다.');
+
+            return response()->json(['status' => 'ok']);
         } 
         catch (\Exception $exception) {
             DB::rollback();

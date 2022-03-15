@@ -71,19 +71,19 @@
           <span class="px-3"></span>
           <select class="form-select countyList" style="border-radius: 3px" aria-label="Default select example" name="adminCounty" id="countyList">
             <option value="none">시/군/구</option>
-            {{-- @if (isset($_REQUEST['adminCity']) && ($_REQUEST['adminCity']) != "")
+            @if (isset($_REQUEST['adminCity']) && ($_REQUEST['adminCity']) != "")
             @foreach ($counties as $county)
               @if ($county->city_id == ($_REQUEST['adminCity']))
               <option value="{{ $county->id }}" @if (isset($_REQUEST['adminCounty']) && $_REQUEST['adminCounty'] == $county->id ) selected @else @endif>
               {{ $county->county }}</option>
               @endif
               @endforeach
-            @else
+            {{-- @else
             @foreach ($counties as $county)
             <option value="{{ $county->id }}">
               {{ $county->county }}</option>
-              @endforeach
-            @endif --}}
+              @endforeach --}}
+            @endif
           </select>
         </div>
 
@@ -443,6 +443,10 @@ function deleteStore(){
             success : function(data) {
                         console.log(data);
                         $('#searchSubmit').click();
+                        if(status == 'ok'){
+                          alert('ok');
+                        }
+                        
             },
             error : function(error) {
                 console.log(error);

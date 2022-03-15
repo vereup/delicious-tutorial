@@ -114,10 +114,10 @@
                             </div>
                         </div> --}}
                         <p class="ps-3" style="color:#BDBDBD">* 사진은 최대 5장 까지 등록 가능합니다. (jpg, jpeg, png)</p>
-
-                        <div class="d-flex flex-wrap px-2 justify-content-between" style="flex-grow: 1;" id="imageThumnail">
+{{-- 체크 --}}
+                        <div class="d-flex flex-wrap ms-2 gap-3" style="flex-grow: 1;justify-content: flex-start;" id="imageThumnail">
                             @for($i=1;$i<=5;$i++)
-                            <div class="img-thumbnail mb-3" id="thumbnail{{ $i }}" style="width: 30%;" hidden>
+                            <div class="img-thumbnail" id="thumbnail{{ $i }}" style="width: 30%;" hidden>
                                 <img style="width: 100%;" src="">
                             </div>
                             @endfor
@@ -580,8 +580,13 @@ if(value < fileCount){
 
     $('#fileListCheck'+fileCount).attr('value','off');
 
-    $('#fileName'+fileCount).val("");
+    $('#fileName'+fileCount).val('');
     $('#fileName'+fileCount).attr('placeholder','파일선택');
+
+    $('#inputFile'+fileCount).val('');
+    $('#inputFile'+fileCount).attr('type','hidden');
+    $('#inputFile'+fileCount).attr('type','file');
+
 
     $('#thumbnail'+fileCount).attr('hidden','');
 }
@@ -593,8 +598,13 @@ $('#fileSelect'+value).attr('data-value','off');
 
 $('#fileListCheck'+value).attr('value','off');
 
-$('#fileName'+value).val("");
+$('#fileName'+value).val('');
 $('#fileName'+value).attr('placeholder','파일선택');
+
+$('#inputFile'+value).val('');
+$('#inputFile'+value).attr('type','hidden');
+$('#inputFile'+value).attr('type','file');
+
 
 $('#thumbnail'+value).attr('hidden','');
 

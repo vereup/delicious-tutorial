@@ -55,7 +55,7 @@ class MypageController extends Controller
             $review = Review::find($request->reviewId);
 
             if ($review->user_id != $id) {
-                return redirect()->back()->with('error','리뷰 아이디 확인필요');;
+                return redirect()->back()->with('error','사용자아이디와 리뷰 확인필요');;
             }
             
             $review->title = $request->reviewTitle;
@@ -92,7 +92,7 @@ class MypageController extends Controller
             $review = Review::find($request->deleteReviewId);
             
             if ($review->user_id != Auth::id()) {
-                return redirect()->back()->with('error','리뷰 아이디 확인필요');;
+                return redirect()->back()->with('error','사용자아이디와 리뷰 아이디 확인필요');;
             }
             $review->store->decrement('review_count');
             $store = $review->store;

@@ -160,10 +160,10 @@
 
                         
 
-                        <div class="d-flex flex-wrap px-2 justify-content-between" style="flex-grow: 1;" id="imageThumnail">
+                        <div class="d-flex flex-wrap ms-2 gap-3" style="flex-grow: 1; justify-content: flex-start;" id="imageThumnail">
                             @for($i=0;$i<5;$i++)
                             @if($imageNames[$i] != "")
-                            <div class="img-thumbnail mb-3" id="thumbnail{{ $i+1 }}" style="width: 30%;" >
+                            <div class="img-thumbnail" id="thumbnail{{ $i+1 }}" style="width: 30%;" >
                                 <img style="width: 100%;" src="{{$store->images[$i]->path}}">
                             </div>
                             @else
@@ -739,6 +739,10 @@ if(value < fileCount){
     $('#fileName'+fileCount).val("");
     $('#fileName'+fileCount).attr('placeholder','파일선택');
 
+    $('#inputFile'+fileCount).val('');
+    $('#inputFile'+fileCount).attr('type','hidden');
+    $('#inputFile'+fileCount).attr('type','file');
+
     $('#thumbnail'+fileCount).attr('hidden','');
 }
 
@@ -751,6 +755,10 @@ $('#fileListCheck'+value).attr('value','off');
 
 $('#fileName'+value).val("");
 $('#fileName'+value).attr('placeholder','파일선택');
+
+$('#inputFile'+value).val('');
+$('#inputFile'+value).attr('type','hidden');
+$('#inputFile'+value).attr('type','file');
 
 $('#thumbnail'+value).attr('hidden','');
 

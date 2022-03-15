@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+
 
 class CheckIdController extends Controller
 {
@@ -16,10 +18,12 @@ class CheckIdController extends Controller
             ]);
 
             if(!User::where('email', '=', $request->checkId)->exists()) {
+
                 return response()->json(['status' => 'ok']);
             }
     
             else {
+                
                 return response()->json(['status' => 'duplicate']);
             }
 
