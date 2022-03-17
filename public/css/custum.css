@@ -1,0 +1,19 @@
+.modalSize350 {
+  width: 350px;
+}
+
+.nav-pills {
+  --cui-nav-link-color : black;
+  --cui-nav-pills-link-active-bg : #455A64;
+  --cui-nav-link-hover-color : black;
+}
+.pagination{
+  --cui-pagination-color: black;
+  --cui-pagination-active-bg: #455A64;
+  --cui-pagination-active-border-color:#455A64;
+}
+
+.flashbutton{
+  background-color:transparent;
+  border:0;
+}

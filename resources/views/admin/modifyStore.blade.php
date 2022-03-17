@@ -77,12 +77,15 @@
 
                         <div class="p-2 docs-highlight file-select">
                             <label for="address" class="form-label" id="fileSelectForm">사진</label>
-                            <input type="hidden" data-id="deletedFileList" name="deletedFileList">
-                            <input type="hidden" data-id="changedFileList" name="changedFileList">
+                            {{-- <input type="hidden" data-id="deletedFileList" name="deletedFileList">
+                            <input type="hidden" data-id="changedFileList" name="changedFileList"> --}}
+                            <input type="hidden" data-id="fileNameList" name="fileNameList">
+                            {{-- <input type="hidden" data-id="orderList" name="orderList"> --}}
+                            
                             
                             @for($i=0;$i<5;$i++)
                             @if($imageNames[$i] != "")
-                            <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i+1 }}" data-value="on">
+                            <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i+1 }}" data-value="on" data-path="{{ $imageNames[$i] }}" data-order="{{ $i }}">
                                 <input type="hidden" id="fileListCheck{{ $i+1 }}" name="fileListCheck{{ $i+1 }}" value="on">
                                 <input type="text" class="form-control bg-white rounded-start" name="filename{{ $i+1 }}" disabled="disabled" placeholder="{{ $imageNames[$i] }}" value="{{ $imageNames[$i] }}" id="fileName{{ $i+1 }}">
                                 <button class="btn btn-outline-secondary btn-dark" type="button" id="fileNameSelectButton{{ $i+1 }}" onclick="chooseFile({{ $i+1 }});">
@@ -178,30 +181,91 @@ function formCheck(event){
     let middleNumber = $('#middleNumber').val();
     let lastNumber = $('#lastNumber').val();
     let firstImgPath = $('#fileName1').attr('placeholder');
+    let secondImgPath = $('#fileSelect2').attr('data-path');
+    let thirdImgPath = $('#fileSelect3').attr('data-path');
+    let fourthImgPath = $('#fileSelect4').attr('data-path');
+    let fifthImgPath = $('#fileSelect5').attr('data-path');
+    let secondImgValue = $('#fileSelect2').attr('data-value');
+    let thirdImgValue = $('#fileSelect3').attr('data-value');
+    let fourthImgValue = $('#fileSelect4').attr('data-value');
+    let fifthImgValue = $('#fileSelect5').attr('data-value');
 
     var storeNameLength = storeName.length;
     var storeIntroLength = storeIntro.length;
 
-    // 지운 이미지 확인 및 폼채우기
+    // 
 
-    let deleteList = new Array();
-    $("button[data-delete=delete]").each(function(index, item){
-        deleteList.push($(item).attr('data-old-index'));
+    // function makeFileList (order, path){
+        
+    //     class File {
+    //         file(order, path){
+    //         this.order = order;
+    //         this.path = path;
+    //         }
+    //     }
+
+    //     let tempfile = new file(order, path);
+    //     let modifyFiles = modifyFiles.push(tempfile);
+    //     console.log(modifyFiles);
+    // }
+    
+    // let modifyFiles = new Array();
+
+    for(i=1;i<=5;i++){
+    let value = i;
+    let order = $('#addFileSelect'+value).val();
+    let filename = $('#thumbnail'+value).children().attr('src');
+
+
+    // modifyFiles.push({order, filename});
+    // console.log(modifyFiles);
+    }
+
+    //파일 이름과 순서 보내기
+
+    let fileNameList = new Array();
+    let orderList = new Array();
+    $("div[data-value=on]").each(function(index, item){
+        fileNameList.push($(item).attr('data-path'));
+        orderList.push($(item).attr('data-order'));
     });
     
-    console.log('deleteListFormcheck:'+deleteList);
-    deleteList.sort().join(", ");
-    $("input[data-id=deletedFileList]").val(deleteList);
-
-    console.log($("input[data-id=deletedFileList]").val());
-
-    let changedList = new Array();
-    $("button[data-delete=changed]").each(function(index, item){
-        changedList.push($(item).attr('data-old-index'));
-    });
+    console.log('fileNameListFormcheck:'+fileNameList);
+    console.log('orderListFormcheck:'+orderList);
     
-    changedList.sort().join(", ");
-    $("input[data-id=changedFileList]").val(changedList);
+    fileNameList.join(", ");
+    orderList.join(", ");
+    
+    $("input[data-id=fileNameList]").val(fileNameList);
+    $("input[data-id=orderList]").val(orderList);
+
+
+
+
+
+    // // 지운 이미지 확인 및 폼채우기
+
+    // let deleteList = new Array();
+    // $("button[data-delete=delete]").each(function(index, item){
+    //     deleteList.push($(item).attr('data-old-index'));
+    // });
+    
+    // console.log('deleteListFormcheck:'+deleteList);
+
+    // deleteList.sort().join(", ");
+    // $("input[data-id=deletedFileList]").val(deleteList);
+
+    // console.log('deletevalue:'+$("input[data-id=deletedFileList]").val());
+
+    // let changedList = new Array();
+    // $("button[data-delete=changed]").each(function(index, item){
+    //     changedList.push($(item).attr('data-old-index'));
+    // });
+    // console.log('changeListFormcheck:'+changedList);
+    // changedList.sort().join(", ");
+    // $("input[data-id=changedFileList]").val(changedList);
+
+    // console.log('changevalue:'+$("input[data-id=changedFileList]").val());
 
     //전화번호 체크용
     var regMiddleNumber = /\d{3,4}/;
@@ -272,10 +336,27 @@ function formCheck(event){
             return false;
     }
 
-    else if (firstImgPath == '파일선택'){
+    else if (firstImgPath == 'none'){
         alert('사진을 최소 1장이상 등록해주세요.');
             return false;
     }
+    else if (secondImgValue == 'on' && secondImgPath == 'none'){
+        alert('두번째 사진을 등록해주세요.');
+            return false;
+    }
+    else if (thirdImgValue == 'on' && thirdImgPath == 'none'){
+        alert('세번째 사진을 등록해주세요.');
+            return false;
+    }
+    else if (fourthImgValue == 'on' && fourthImgPath == 'none'){
+        alert('네번째 사진을 등록해주세요.');
+            return false;
+    }
+    else if (fifthImgValue == 'on' && fifthImgPath == 'none'){
+        alert('다섯째 사진을 등록해주세요.');
+            return false;
+    }
+
 
     $('#modalOpen').click();
     // readFileList();
@@ -345,10 +426,13 @@ function chooseFile(num){
     console.log(num);
     $('#inputFile'+num).click();
 
-    // 지운이미지표시 -- 파일 업로드시에만 변경
-    var old = event.target;
-    old.setAttribute("data-delete", "delete");
-    console.log(old.getAttribute('data-delete'));
+    // check 필요없어짐 지울예정
+    // if($('#filename'+num).attr('placeholder') != '파일선택'){
+    // // 지운이미지표시
+    // var old = document.getElementById('addFileSelect'+num);
+    // old.setAttribute("data-delete", "delete");
+    // console.log(old.getAttribute('data-delete'));
+    // }
 
 }
 
@@ -387,11 +471,13 @@ function sendFile(obj) {
     var s = sendFileFunction(obj);
     $('#fileName'+num).attr('placeholder', s);
     $('#fileName'+num).val(s);
-    
+
+    $('#fileSelect'+num).attr('data-path', 'new');
+
     addThumnail(obj, num);
 }
 
-// 파일선택시 추가
+// 파일선택리스트 추가
 function addFileList(){
 
 var fileCount = $('.fileSelect:visible').length+1;
@@ -405,6 +491,7 @@ if(fileCount <= 5){
         if($('#fileSelect'+i).attr('data-value') == 'off'){
             $('#fileSelect'+i).removeAttr('hidden');
             $('#fileSelect'+i).attr('data-value','on');
+            $('#fileSelect'+i).attr('data-order', i-1);
             $('#fileListCheck'+i).attr('value','on');
             
             break;
@@ -421,16 +508,25 @@ else{
 }
 }
 
+// 파일 리스트 값 변경 함수
+
 // 파일 리스트 삭제
 function deleteFileList(value){
 
 
 var fileCount = $('.fileSelect:visible').length;
 
-// 지운이미지표시
-var old = event.target;
-old.setAttribute("data-delete", "delete");
-console.log(old.getAttribute('data-delete'));
+    $('#fileSelect'+value).attr('data-value', 'off');
+    $('#fileSelect'+value).attr('data-order', value-1);
+
+
+// check 지울예정
+// if($('#filename'+value).attr('placeholder') != '파일선택'){
+//     // 지운이미지표시
+//     var old = document.getElementById('addFileSelect'+value);
+//     old.setAttribute("data-delete", "delete");
+//     console.log(old.getAttribute('data-delete'));
+//     }
 
 // 모두
 if(value < fileCount){
@@ -456,6 +552,15 @@ if(value < fileCount){
         thumnail1.insertAfter(thumnail2);
 
         // fileSelect 요소값 치환
+        // var tempfilePath = fileSelect2.attr('data-path');
+        // console.log(tempfilePath);
+        fileSelect2.attr('data-path',thumnail2.children().attr('data-path'));
+        // fileSelect1.attr('data-path',tempfilePath);
+
+        var tempfileOrder = fileSelect2.attr('data-order');
+        fileSelect2.attr('data-order',fileSelect1.attr('data-order'));
+        fileSelect1.attr('data-order',tempfileOrder);
+
         var tempfileSelectId = fileSelect2.attr('id');
         fileSelect2.attr('id',fileSelect1.attr('id'));
         fileSelect1.attr('id',tempfileSelectId);
@@ -516,7 +621,7 @@ if(value < fileCount){
         addFileSelect2.attr('onclick',addFileSelect1.attr('onclick'));
         addFileSelect1.attr('onclick',tempaddFileSelectOnclick);
         
-        addFileSelect2.attr('data-delete', 'changed');
+        // addFileSelect2.attr('data-delete', 'changed');
 
         var tempaddFileSelectId = addFileSelect2.attr('id');
         addFileSelect2.attr('id',addFileSelect1.attr('id'));
@@ -547,6 +652,8 @@ if(value < fileCount){
         // 하나 지우기
         $('#fileSelect'+fileCount).attr('hidden','');
         $('#fileSelect'+fileCount).attr('data-value','off');
+        $('#fileSelect'+fileCount).attr('data-path', 'none');
+
 
         $('#fileListCheck'+fileCount).attr('value','off');
 
@@ -564,6 +671,8 @@ if(value < fileCount){
 
     $('#fileSelect'+value).attr('hidden','');
     $('#fileSelect'+value).attr('data-value','off');
+    $('#fileSelect'+fileCount).attr('data-path', 'none');
+
 
     $('#fileListCheck'+value).attr('value','off');
 

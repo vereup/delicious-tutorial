@@ -72,7 +72,7 @@
                         <div class="p-2 docs-highlight file-select">
                             <label for="address" class="form-label" id="fileSelectForm" value="1">사진</label>
                             @for($i=1;$i<=5;$i++)
-                            <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i }}" @if($i != 1) hidden data-value="off" @else data-value="on"@endif>
+                            <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i }}" @if($i != 1) hidden data-value="off" data-path="none" @else data-value="on" data-path="none" @endif>
                                 <input type="text" class="form-control bg-white rounded-start fileSelectItem{{ $i }}" name="filename{{ $i }}" disabled="disabled" placeholder="파일선택" value="" id="fileName{{ $i }}">
                                 <button class="btn btn-outline-secondary btn-dark fileSelectItem{{ $i }}" type="button" id="fileNameSelectButton{{ $i }}" onclick="chooseFile({{ $i }});">
                                     <span style="color: white;">파일선택</span>
@@ -146,6 +146,15 @@ function formCheck(event){
     let middleNumber = $('#middleNumber').val();
     let lastNumber = $('#lastNumber').val();
     let firstImgPath = $('#fileName1').attr('placeholder');
+    let secondImgPath = $('#fileSelect2').attr('data-path');
+    let thirdImgPath = $('#fileSelect3').attr('data-path');
+    let fourthImgPath = $('#fileSelect4').attr('data-path');
+    let fifthImgPath = $('#fileSelect5').attr('data-path');
+    let secondImgValue = $('#fileSelect2').attr('data-value');
+    let thirdImgValue = $('#fileSelect3').attr('data-value');
+    let fourthImgValue = $('#fileSelect4').attr('data-value');
+    let fifthImgValue = $('#fileSelect5').attr('data-value');
+
 
     var storeNameLength = storeName.length;
     var storeIntroLength = storeIntro.length;
@@ -219,8 +228,24 @@ function formCheck(event){
             return false;
     }
 
-    else if (firstImgPath == '파일선택'){
+    else if (firstImgPath == 'none'){
         alert('사진을 최소 1장이상 등록해주세요.');
+            return false;
+    }
+    else if (secondImgValue == 'on' && secondImgPath == 'none'){
+        alert('두번째 사진을 등록해주세요.');
+            return false;
+    }
+    else if (thirdImgValue == 'on' && thirdImgPath == 'none'){
+        alert('세번째 사진을 등록해주세요.');
+            return false;
+    }
+    else if (fourthImgValue == 'on' && fourthImgPath == 'none'){
+        alert('네번째 사진을 등록해주세요.');
+            return false;
+    }
+    else if (fifthImgValue == 'on' && fifthImgPath == 'none'){
+        alert('다섯째 사진을 등록해주세요.');
             return false;
     }
 
@@ -291,6 +316,13 @@ $.ajax({
 function chooseFile(num){
     console.log(num);
     $('#inputFile'+num).click();
+
+    if($('#filename'+num).attr('placeholder') != '파일선택'){
+    // 지운이미지표시
+    var old = document.getElementById('addFileSelect'+num);
+    old.setAttribute("data-delete", "delete");
+    console.log(old.getAttribute('data-delete'));
+    }
 }
 
 // 파일 이름 얻기
@@ -326,11 +358,16 @@ function sendFile(obj) {
     console.log(num);
     var s = sendFileFunction(obj);
     $('#fileName'+num).attr('placeholder', s);
+    $('#fileName'+num).val(s);
+
+    $('#fileSelect'+num).attr('data-path', 'new');
+
     addThumnail(obj, num);
 }
 
 
-// 파일선택시 추가
+// 파일선택리스트 추가
+// 파일선택리스트 추가
 function addFileList(){
 
 var fileCount = $('.fileSelect:visible').length+1;
@@ -344,6 +381,7 @@ if(fileCount <= 5){
         if($('#fileSelect'+i).attr('data-value') == 'off'){
             $('#fileSelect'+i).removeAttr('hidden');
             $('#fileSelect'+i).attr('data-value','on');
+            $('#fileSelect'+i).attr('data-order', i-1);
             $('#fileListCheck'+i).attr('value','on');
             
             break;
@@ -359,7 +397,6 @@ else{
     alert('이미지는 최대 5개까지 업로드 가능합니다.');
 }
 }
-
 // 파일 리스트 삭제
 function deleteFileList(value){
 
@@ -367,12 +404,17 @@ var fileCount = $('.fileSelect:visible').length;
 console.log(fileCount);
 console.log(value);
 
+$('#fileSelect'+value).attr('data-value', 'off');
+$('#fileSelect'+value).attr('data-order', value-1);
+
 // 모두
 if(value < fileCount){
     for(i=value;i<fileCount;i++){
         var j = i+1
         var fileSelect1 = $('#fileSelect'+i);
         var fileSelect2 = $('#fileSelect'+j);
+        var fileListCheck1 = $('#fileListCheck'+i);
+        var fileListCheck2 = $('#fileListCheck'+j);
         var fileName1 = $('#fileName'+i);
         var fileName2 = $('#fileName'+j);
         var fileSelectButton1 = $('#fileNameSelectButton'+i);
@@ -389,10 +431,32 @@ if(value < fileCount){
         thumnail1.insertAfter(thumnail2);
 
         // fileSelect 요소값 치환
+        // var tempfilePath = fileSelect2.attr('data-path');
+        // console.log(tempfilePath);
+        fileSelect2.attr('data-path',thumnail2.children().attr('data-path'));
+        // fileSelect1.attr('data-path',tempfilePath);
+
+        var tempfileOrder = fileSelect2.attr('data-order');
+        fileSelect2.attr('data-order',fileSelect1.attr('data-order'));
+        fileSelect1.attr('data-order',tempfileOrder);
+
         var tempfileSelectId = fileSelect2.attr('id');
         fileSelect2.attr('id',fileSelect1.attr('id'));
         fileSelect1.attr('id',tempfileSelectId);
-        
+
+        // fileListCheck 요소값 치환
+        var tempfileListCheckName = fileListCheck2.attr('name');
+        fileListCheck2.attr('name',fileListCheck1.attr('name'));
+        fileListCheck1.attr('name',tempfileListCheckName);
+
+        var tempfileListCheckValue = fileListCheck2.attr('value');
+        fileListCheck2.attr('value',fileListCheck1.attr('value'));
+        fileListCheck1.attr('value',tempfileListCheckValue);
+
+        var tempfileListCheckId = fileListCheck2.attr('id');
+        fileListCheck2.attr('id',fileListCheck1.attr('id'));
+        fileListCheck1.attr('id',tempfileListCheckId);
+
         // fileName 요소값 치환
         var tempfileName = fileName2.attr('name');
         fileName2.attr('name',fileName1.attr('name'));
@@ -435,6 +499,8 @@ if(value < fileCount){
         var tempaddFileSelectOnclick = addFileSelect2.attr('onclick');
         addFileSelect2.attr('onclick',addFileSelect1.attr('onclick'));
         addFileSelect1.attr('onclick',tempaddFileSelectOnclick);
+        
+        // addFileSelect2.attr('data-delete', 'changed');
 
         var tempaddFileSelectId = addFileSelect2.attr('id');
         addFileSelect2.attr('id',addFileSelect1.attr('id'));
@@ -461,20 +527,21 @@ if(value < fileCount){
         inputFile2.attr('id',inputFile1.attr('id'));
         inputFile1.attr('id',tempinputFileId);
 
-        }
+    }
         // 하나 지우기
         $('#fileSelect'+fileCount).attr('hidden','');
         $('#fileSelect'+fileCount).attr('data-value','off');
+        $('#fileSelect'+fileCount).attr('data-path', 'none');
+
 
         $('#fileListCheck'+fileCount).attr('value','off');
 
-        $('#fileName'+fileCount).val('');
+        $('#fileName'+fileCount).val("");
         $('#fileName'+fileCount).attr('placeholder','파일선택');
 
         $('#inputFile'+fileCount).val('');
         $('#inputFile'+fileCount).attr('type','hidden');
         $('#inputFile'+fileCount).attr('type','file');
-
 
         $('#thumbnail'+fileCount).attr('hidden','');
     }
@@ -483,16 +550,17 @@ if(value < fileCount){
 
     $('#fileSelect'+value).attr('hidden','');
     $('#fileSelect'+value).attr('data-value','off');
+    $('#fileSelect'+fileCount).attr('data-path', 'none');
+
 
     $('#fileListCheck'+value).attr('value','off');
 
-    $('#fileName'+value).val('');
+    $('#fileName'+value).val("");
     $('#fileName'+value).attr('placeholder','파일선택');
 
     $('#inputFile'+value).val('');
     $('#inputFile'+value).attr('type','hidden');
     $('#inputFile'+value).attr('type','file');
-
 
     $('#thumbnail'+value).attr('hidden','');
 
@@ -503,7 +571,6 @@ if(value < fileCount){
     }
 
 }
-
 
 // 썸네일추가
 function addThumnail(e, number){
