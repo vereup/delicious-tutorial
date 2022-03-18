@@ -121,11 +121,11 @@
                                 @for($i=0;$i<5;$i++)
                                 @if($imageNames[$i] != "")
                                 <div class="col mb-3" id="thumbnail{{ $i+1 }}">
-                                    <img class="img-thumbnail align-middle" style="height: 100%;" src="{{$store->images[$i]->path}}">
+                                    <img class="img-thumbnail align-middle" src="{{$store->images[$i]->path}}">
                                 </div>
                                 @else
                                 <div class="col mb-3" id="thumbnail{{ $i+1 }}" hidden>
-                                    <img class="img-thumbnail align-middle" style="height: 100%;" src="">
+                                    <img class="img-thumbnail align-middle" src="">
                                 </div>
                                 @endif
                                 @endfor
