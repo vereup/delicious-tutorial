@@ -73,7 +73,6 @@ class AdminController extends Controller
 
     }
 
-
     public function getRegistDatas(Request $request){
 
         $categories = Category::get();

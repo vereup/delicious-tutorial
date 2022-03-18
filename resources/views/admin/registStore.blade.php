@@ -89,12 +89,15 @@
 
                         <p class="ps-3" style="color:#BDBDBD">* 사진은 최대 5장 까지 등록 가능합니다. (jpg, jpeg, png)</p>
 {{-- 체크 --}}
-                        <div class="d-flex flex-wrap ms-2 gap-3" style="flex-grow: 1;justify-content: flex-start;" id="imageThumnail">
+                        <div class="p-2 docs-highlight">
+
+                        <div class="d-flex flex-wrap gap-3" style="flex-basis:auto; justify-content: flex-start;" id="imageThumnail">
                             @for($i=1;$i<=5;$i++)
-                            <div class="img-thumbnail" id="thumbnail{{ $i }}" style="width: 30%;" hidden>
-                                <img style="width: 100%;" src="">
+                            <div class="img-thumbnail" id="thumbnail{{ $i }}" style="width: 30%; min-height:auto;" hidden>
+                                <img style="width: 100%; height:auto;" src="">
                             </div>
                             @endfor
+                        </div>
                         </div>
                         <div class="d-grid gap-2 py-3 px-2">
                             <button type="button" class="btn btn-primary btn-dark rounded-pill"  id="signupButton" onclick="formCheck(event);">맛집 등록</button>
@@ -596,7 +599,6 @@ reader.onload = function  () {
 
         $("#thumbnail"+number).removeAttr('hidden');
         $("#thumbnail"+number).children('img').attr('src',dataURI);
-
     };
 };
 }
