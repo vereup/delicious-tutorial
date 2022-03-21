@@ -101,12 +101,16 @@ class DetailController extends Controller
 
                 $reviews = Review::where('store_id', $request->storeId)->get();
 
-                $sum = 0;
-                foreach($reviews as $review){
-                    $sum = $sum + $review->rating;
-                }
-                $average = 0;
-                $average = $sum / $reviews->count();
+                // sum(), avg() 활용
+                $sum = $reviews->sum('rating');
+                $average = $reviews->avg('rating');
+                
+                // $sum = 0;
+                // foreach($reviews as $review){
+                //     $sum = $sum + $review->rating;
+                // }
+                // $average = 0;
+                // $average = $sum / $reviews->count();
                 $store->rating_average = $average;
                 
             }

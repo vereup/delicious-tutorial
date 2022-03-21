@@ -121,11 +121,11 @@
                                 @for($i=0;$i<5;$i++)
                                 @if($imageNames[$i] != "")
                                 <div class="col mb-3" id="thumbnail{{ $i+1 }}">
-                                    <img class="img-thumbnail align-middle" src="{{$store->images[$i]->path}}">
+                                    <img class="img-thumbnail" src="{{$store->images[$i]->path}}">
                                 </div>
                                 @else
                                 <div class="col mb-3" id="thumbnail{{ $i+1 }}" hidden>
-                                    <img class="img-thumbnail align-middle" src="">
+                                    <img class="img-thumbnail" src="">
                                 </div>
                                 @endif
                                 @endfor
@@ -199,6 +199,10 @@ function formCheck(event){
     let localCode = $('#localCode').val();
     let middleNumber = $('#middleNumber').val();
     let lastNumber = $('#lastNumber').val();
+    
+    // for(i=1;i<=5;i++){
+    //     let imgPath+i
+    // }
     let firstImgPath = $('#fileName1').attr('placeholder');
     let secondImgPath = $('#fileSelect2').attr('data-path');
     let thirdImgPath = $('#fileSelect3').attr('data-path');
@@ -730,9 +734,9 @@ reader.onload = function  () {
     tempImage.onload = function () {
         var canvas = document.createElement('canvas');
         var canvasContext = canvas.getContext("2d");
-        canvas.width = 100; 
-        canvas.height = 100;
-        canvasContext.drawImage(this, 0, 0, 100, 100);
+        canvas.width = 300; 
+        canvas.height = 300;
+        canvasContext.drawImage(this, 0, 0, 300, 300);
         var dataURI = canvas.toDataURL("image/jpeg");
 
         $("#thumbnail"+number).removeAttr('hidden');

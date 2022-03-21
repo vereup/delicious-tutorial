@@ -74,13 +74,13 @@
                             @for($i=1;$i<=5;$i++)
                             <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i }}" @if($i != 1) hidden data-value="off" data-path="none" @else data-value="on" data-path="none" @endif>
                                 <input type="text" class="form-control bg-white rounded-start fileSelectItem{{ $i }}" name="filename{{ $i }}" disabled="disabled" placeholder="파일선택" value="" id="fileName{{ $i }}">
-                                <button class="btn btn-outline-secondary btn-dark fileSelectItem{{ $i }}" type="button" id="fileNameSelectButton{{ $i }}" onclick="chooseFile({{ $i }});">
+                                <button class="btn btn-outline-secondary btn-dark testFileSelect fileSelectItem{{ $i }}" type="button" id="fileNameSelectButton{{ $i }}" onclick="chooseFile({{ $i }});">
                                     <span style="color: white;">파일선택</span>
                                 </button>                                
                                 <button class="btn btn-outline-secondary btn-white rounded-end fileSelectItem{{ $i }}" style="width: 40px;" type="button" id="addFileSelect{{ $i }}" value="{{ $i }}" @if($i == 1) onclick="addFileList()"@else onclick="deleteFileList({{ $i }}) @endif">
                                     <span style="color: black;" id="icon1">@if($i== 1)+@else-@endif</span>
                                 </button>                                
-                                <input type="file" class="form-control fileSelectItem{{ $i }}" hidden id="inputFile{{ $i }}" data-id="{{ $i }}" name="inputFile{{ $i }}" onchange="sendFile(this)">
+                                <input type="file" class="form-control fileSelectItem{{ $i }}" hidden id="inputFile{{ $i }}" data-id="{{ $i }}" name="inputFile{{ $i }}">
                             </div>
                             @endfor
 
@@ -328,45 +328,92 @@ function chooseFile(num){
     }
 }
 
-// 파일 이름 얻기
-function sendFileFunction(obj) {
-    var fileObj, pathHeader , pathMiddle, pathEnd, allFilename, fileName, extName;
-    
-    // check
-    if(obj == "[object HTMLInputElement]") {
-        fileObj = obj.value
-    } else {
-        fileObj = document.getElementById(obj).value;
-    }
+// // 파일 이름 얻기
+// function sendFileFunction(obj) {
+//     var fileObj, pathHeader , pathMiddle, pathEnd, allFilename, fileName, extName;
 
-    if (fileObj != "") {
-            pathHeader = fileObj.lastIndexOf("\\");
-            pathMiddle = fileObj.lastIndexOf(".");
-            pathEnd = fileObj.length;
-            fileName = fileObj.substring(pathHeader+1, pathMiddle);
-            extName = fileObj.substring(pathMiddle+1, pathEnd);
-            allFilename = fileName+"."+extName;
+//     // check
+//     if(obj == "[object HTMLInputElement]") {
+//         fileObj = obj.value
+//     } else {
+//         fileObj = document.getElementById(obj).value;
+//     }
 
-            return allFilename; // 확장자 포함 파일명
-    } 
+//     if (fileObj != "") {
+//             pathHeader = fileObj.lastIndexOf("\\");
+//             pathMiddle = fileObj.lastIndexOf(".");
+//             pathEnd = fileObj.length;
+//             fileName = fileObj.substring(pathHeader+1, pathMiddle);
+//             extName = fileObj.substring(pathMiddle+1, pathEnd);
+//             allFilename = fileName+"."+extName;
 
-    else {
-            alert("파일을 선택해주세요");
-            return false;
-    }
-}
+//             return allFilename; // 확장자 포함 파일명
+//     } 
 
-function sendFile(obj) {
-    var num = obj.getAttribute('data-id');
-    console.log(num);
-    var s = sendFileFunction(obj);
-    $('#fileName'+num).attr('placeholder', s);
-    $('#fileName'+num).val(s);
+//     else {
+//             alert("파일을 선택해주세요");
+//             return false;
+//     }
+// }
 
-    $('#fileSelect'+num).attr('data-path', 'new');
 
-    addThumnail(obj, num);
-}
+var testtest = document.getElementById("fileSelect1");
+console.log(testtest);
+
+var wowtest = testtest.getAttribute('id');
+console.log(wowtest);
+
+// // ?!?!?!?!
+// testtest.addEventListener('click', function(item){
+//     console.log(item);
+// })
+
+// let sendFileVar = document.querySelectorAll('.testFileSelect');
+// console.log('???:'+sendFileVar);
+
+// sendFileVar.forEach(function(item){
+//     console.log(item);
+
+//     item.addEventListener('click', function(event){
+//     console.log('clicked kk');
+//     console.log(event);
+//     });
+// });
+
+
+// sendFileVar.forEach(function(item) {
+//     item.addEventListner('click', function sendFile(event){
+//     var num = event.target.getAttribute('data-id');
+//     console.log(num);
+//     // var s = sendFileFunction(obj);
+
+//     var s = event.target.files[0].name;
+//     $('#fileName'+num).attr('placeholder', s);
+//     $('#fileName'+num).val(s);
+
+//     $('#fileSelect'+num).attr('data-path', 'new');
+
+//     addThumnail(event.target, num);
+
+//     })    
+// });
+
+
+// function sendFile(event) {
+//     var num = event.target.getAttribute('data-id');
+//     console.log(num);
+//     // var s = sendFileFunction(obj);
+
+//     var s = event.target.files[0].name;
+//     $('#fileName'+num).attr('placeholder', s);
+//     $('#fileName'+num).val(s);
+
+//     $('#fileSelect'+num).attr('data-path', 'new');
+
+//     addThumnail(event.target, num);
+// }
+
+
 
 
 // 파일선택리스트 추가

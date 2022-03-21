@@ -47,16 +47,27 @@ class AdminController extends Controller
         }
 
         // 주소 검색
-        if($countyId != null && $countyId != 'none'){
-            $filtered_stores->where('county_id', $countyId);
-        }
 
-        else{
-            if($cityId != null){
-                $filteredCountiesId = City::find($cityId)->counties()->get()->pluck('id');
-                $filtered_stores->whereIn('county_id', $filteredCountiesId);
+        // whereHas 사용 !!
+        if($cityId){
+            $filtered_stores->whereHas('county.city', function($query) use($cityId){
+                $query->where('id', $cityId);
+            });
+            if($countyId != null && $countyId != 'none'){
+                $filtered_stores->where('county_id', $countyId);
             }
         }
+
+        // if($countyId != null && $countyId != 'none'){
+        //     $filtered_stores->where('county_id', $countyId);
+        // }
+
+        // else{
+        //     if($cityId != null){
+        //         $filteredCountiesId = City::find($cityId)->counties()->get()->pluck('id');
+        //         $filtered_stores->whereIn('county_id', $filteredCountiesId);
+        //     }
+        // }
 
         $filtered_stores = $filtered_stores->paginate(5);
         $stores = $filtered_stores;
@@ -77,13 +88,13 @@ class AdminController extends Controller
 
         $categories = Category::get();
         $cities = City::with(['counties'])->get();
-        $counties = County::get();
+        // $counties = County::get();
         $localCodes = LocalCode::get();        
 
         return view('admin/registStore', [
             'categories' => $categories,
             'cities' => $cities,
-            'counties' => $counties,
+            // 'counties' => $counties,
             'localCodes' => $localCodes
         ]);
 

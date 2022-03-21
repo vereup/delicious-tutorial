@@ -110,6 +110,8 @@ function checkDuplicate(event) {
         .then( response => {
             if(response.status == 'ok'){
                 alert('가입 가능한 이메일입니다.');
+
+                // coreui validation : 전체 폼 validation시
                 $('#emailSignup').attr('style', 'border: solid green;');
                 $('#emailCheck').val('check');
             }
