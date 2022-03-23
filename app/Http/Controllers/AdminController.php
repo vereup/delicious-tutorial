@@ -176,7 +176,8 @@ class AdminController extends Controller
 
     public function modifyStores(Request $request){
 
-        
+        // dd($request->fileNamePk);
+
         try {
             
             $request->validate([
@@ -202,6 +203,7 @@ class AdminController extends Controller
             Store::find($storeId)->update(['name' => $request->storeName, 'introduction' => $request->storeIntro, 'category_id' => $request->category_id, 'address_detail' => $request->addressDetail,
             'county_id' => $request->adminCounty, 'local_code_id' => $request->localCode, 'telephone_number' => $telephoneNumber]);
 
+            
             // 이미지 이름 추출
             $imageNames = array(0 => "", 1 => "", 2 => "", 3 => "", 4 => "");
             foreach($store->images as $image){
@@ -228,72 +230,83 @@ class AdminController extends Controller
                     }
                 }
 
-                                    
-            // $deleteFileList = explode(",", $request->deletedFileList);
-
-            // $changedFileList = explode(",", $request->changedFileList);
-
-            $fileNameList = explode(",", $request->fileNameList);
-
-            // dd($fileNameList);
-
-            // $orderList = explode(",", $request->orderList);
-
+                // $fileNameList = explode(",", $request->fileNameList);
+                $fileNamePks = explode(",", $request->fileNamePk);
             
             
             // 이미지 삭제 및 등록
             $input = $request->all();
 
-            
-            // 수정중
-            
-            // DB의 파일명이 $fileName에 없으면 삭제한다.
-            // *체크*
-            // Image PK 활용
-            $diffrentFiles = array_diff($imageNames, $fileNameList);
-
-            foreach($diffrentFiles as $index => $diffrentFileName){
-                if($diffrentFileName != 'new' || $diffrentFileName != 'none' || $diffrentFileName != ''){
-                    if(Image::where('path', '/storage/images/'.$diffrentFileName)->exists()){
-                        $imagedeletequery = Image::where('path', '/storage/images/'.$diffrentFileName)->first();
-                        $imagedeletequery->delete();
-                        Storage::disk('images')->delete($diffrentFileName);
-                    }
-                    elseif(Image::where('path', '/images/'.$diffrentFileName)->exists()){
-                        $imagedeletequery = Image::where('path', '/images/'.$diffrentFileName)->first();
-                        $imagedeletequery->delete();
-                        File::delete(public_path('images/'.$diffrentFileName));
+            // PK의 이미지 삭제 및 DB삭제
+            if($fileNamePks[0] != ''){
+                foreach($fileNamePks as $index => $fileNamePk){
+                    if($fileNamePk != 'none'){
+                    $imagequery = Image::find($fileNamePk);
+                    // dd($imagequery);
+                    // dd(File::delete(public_path($imagequery->path)));
+                    File::delete(public_path($imagequery->path));
+                    $imagequery->delete();
                     }
                 }
             }
+            
+            // 이미지 순서에 따라 이미지 이름 변경
+            $newImages = $store->images()->get();
+            foreach($newImages as $index => $image){
+                $nameIndex = intval((substr($image->path, -5, 1)))-1;
+                if($nameIndex != $index){
+                    $newName = (substr($image->path, 0, -5)).($index+1).(substr($image->path, -4, 4));
+                    File::move(public_path($image->path), public_path($newName));
+                    Image::find($image->id)->update(['path' => $newName]);
+                }
+            }
 
-            // DB의 파일명이 순서와 다르면 파일이름을 변경한다.
-            foreach($fileNameList as $index => $fileName){
-                if($fileName != 'new' || $fileName != 'none'){
-                    $fileNameIndex = intval(substr($fileName, -5, 1));
-                    if($fileNameIndex > $index+1){
-                        $imageNewName = 'store_Img_'.$storeId.'-'.($index+1).'.png';
-                            if(Image::where('path', '/storage/images/'.$fileName)->exists()){
-                                $imageupdatequery = Image::where('path', '/storage/images/'.$fileName)->update(['path' => '/storage/images/'.$imageNewName]);
-                                if(Storage::disk('images')->exists($imageNewName)){
-                                    Storage::disk('images')->delete($imageNewName);
-                                }
-                                Storage::disk('images')->move($fileName, $imageNewName);
-                            }
-                            elseif(Image::where('path', '/images/'.$fileName)->exists()){
-                                $imageupdatequery = Image::where('path', '/images/'.$fileName)->update(['path' => '/storage/images/'.$imageNewName]);
-                                $overwriteFile = public_path('images/'.$fileName);
-                                if(Storage::disk('images')->exists($imageNewName)){
-                                    Storage::disk('images')->delete($imageNewName);
-                                }
-                                copy($overwriteFile, public_path('storage/images/'.$imageNewName));
-                                File::delete($overwriteFile);
-                            }
+            // // DB의 파일명이 $fileName에 없으면 삭제한다.
+
+            // $diffrentFiles = array_diff($imageNames, $fileNameList);
+            // foreach($diffrentFiles as $index => $diffrentFileName){
+            //     if($diffrentFileName != 'new' || $diffrentFileName != 'none' || $diffrentFileName != ''){
+            //         if(Image::where('path', '/storage/images/'.$diffrentFileName)->exists()){
+            //             $imagedeletequery = Image::where('path', '/storage/images/'.$diffrentFileName)->first();
+            //             $imagedeletequery->delete();
+            //             Storage::disk('images')->delete($diffrentFileName);
+            //         }
+            //         elseif(Image::where('path', '/images/'.$diffrentFileName)->exists()){
+            //             $imagedeletequery = Image::where('path', '/images/'.$diffrentFileName)->first();
+            //             $imagedeletequery->delete();
+            //             File::delete(public_path('images/'.$diffrentFileName));
+            //         }
+            //     }
+            // }
+
+            // // DB의 파일명이 순서와 다르면 파일이름을 변경한다.
+            // foreach($fileNameList as $index => $fileName){
+            //     if($fileName != 'new' || $fileName != 'none'){
+            //         $fileNameIndex = intval(substr($fileName, -5, 1));
+            //         if($fileNameIndex > $index+1){
+            //             $imageNewName = 'store_Img_'.$storeId.'-'.($index+1).'.png';
+            //                 if(Image::where('path', '/storage/images/'.$fileName)->exists()){
+            //                     $imageupdatequery = Image::where('path', '/storage/images/'.$fileName)->update(['path' => '/storage/images/'.$imageNewName]);
+            //                     if(Storage::disk('images')->exists($imageNewName)){
+            //                         Storage::disk('images')->delete($imageNewName);
+            //                     }
+            //                     Storage::disk('images')->move($fileName, $imageNewName);
+            //                 }
+            //                 elseif(Image::where('path', '/images/'.$fileName)->exists()){
+            //                     $imageupdatequery = Image::where('path', '/images/'.$fileName)->update(['path' => '/storage/images/'.$imageNewName]);
+            //                     $overwriteFile = public_path('images/'.$fileName);
+            //                     if(Storage::disk('images')->exists($imageNewName)){
+            //                         Storage::disk('images')->delete($imageNewName);
+            //                     }
+            //                     copy($overwriteFile, public_path('storage/images/'.$imageNewName));
+            //                     File::delete($overwriteFile);
+            //                 }
     
-                    }
-                }
-            }
+            //         }
+            //     }
+            // }
             
+
             // 이미지등록
             for($i=0;$i<5;$i++){
                 if($request->hasFile('inputFile'.($i+1))){
@@ -307,6 +320,7 @@ class AdminController extends Controller
                 }
             }
             
+    
             DB::commit();
             
             return redirect()->back()->with('success','맛집이 수정되었습니다.');

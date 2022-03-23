@@ -81,16 +81,14 @@
                             {{-- <input type="hidden" data-id="deletedFileList" name="deletedFileList">
                             <input type="hidden" data-id="changedFileList" name="changedFileList"> --}}
                             <input type="hidden" data-id="fileNameList" name="fileNameList">
-                            {{-- <input type="hidden" data-id="fileNamePk" name="fileNamePk"> --}}
+                            <input type="hidden" data-id="fileNamePk" name="fileNamePk">
                             {{-- <input type="hidden" data-id="orderList" name="orderList"> --}}
-                            
                             
                             
                             @for($i=0;$i<5;$i++)
                             @if($store->images->count() > $i)
-                            <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i+1 }}" data-value="on" data-path="{{ $store->images[$i]->path }}" data-order="{{ $i }}">
-                                {{-- <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i+1 }}" data-value="on" data-path="{{ $store->images[$i]->path }}" data-order="{{ $i }}" data-pk="{{ $store->images[$i]->id }}" data-change="none"> --}}
-                                    <input type="hidden" id="fileListCheck{{ $i+1 }}" name="fileListCheck{{ $i+1 }}" value="on">
+                            <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i+1 }}" data-value="on" data-path="{{ $store->images[$i]->path }}" data-order="{{ $i }}" data-pk="{{ $store->images[$i]->id }}" data-change="none">
+                                <input type="hidden" id="fileListCheck{{ $i+1 }}" name="fileListCheck{{ $i+1 }}" value="on">
                                 @php
                                     $placeHolderName = str_replace('/storage/images/','',$store->images[$i]->path);
                                     $placeHolderName = str_replace('/images/','',$placeHolderName);
@@ -106,8 +104,7 @@
                             </div>
                             @else
                             <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i+1 }}" hidden data-value="off" data-pk="none" data-change="none">
-                                {{-- <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i+1 }}" hidden data-value="off"> --}}
-                                    <input type="hidden" id="fileListCheck{{ $i+1 }}" name="fileListCheck{{ $i+1 }}" value="off">
+                                <input type="hidden" id="fileListCheck{{ $i+1 }}" name="fileListCheck{{ $i+1 }}" value="off">
                                 <input type="text" class="form-control bg-white rounded-start" name="filename{{ $i+1 }}" disabled="disabled" placeholder="파일선택" value="" id="fileName{{ $i+1 }}">
                                 <button class="btn btn-outline-secondary btn-dark" type="button" id="fileNameSelectButton{{ $i+1 }}" onclick="chooseFile({{ $i+1 }});">
                                     <span style="color: white;">파일선택</span>
@@ -273,20 +270,14 @@ function formCheck(event){
         orderList.push($(item).attr('data-order'));
     });
     
-    // let fileNamePk = new Array();
-    // $("div[data-change=deleted]").each(function(index, item){
-    //     fileNamePk.push($(item).attr('data-pk'));
-    // });
 
     console.log('fileNameListFormcheck:'+fileNameList);
     console.log('orderListFormcheck:'+orderList);
     
     fileNameList.join(", ");
-    // fileNamePk.join(", ");
     orderList.join(", ");
     
     $("input[data-id=fileNameList]").val(fileNameList);
-    // $("input[data-id=fileNamePk]").val(fileNamePk);
     $("input[data-id=orderList]").val(orderList);
 
 
@@ -527,25 +518,25 @@ function sendFile(obj) {
     $('#fileName'+num).attr('placeholder', s);
     $('#fileName'+num).val(s);
 
-    // // 지운 pk저장
-    // var deletedPk = $('#fileSelect'+num).attr('data-pk');
-    // if (deletedPk != 'none'){
-    //     var fileNamePk = $("input[data-id=fileNamePk]").val();
+    // 지운 pk저장
+    var deletedPk = $('#fileSelect'+num).attr('data-pk');
+    if (deletedPk != 'none'){
+        var fileNamePk = $("input[data-id=fileNamePk]").val();
 
-    //     if(fileNamePk != ''){
-    //         fileNamePk = fileNamePk + ',' + deletedPk;
-    //     }
-    //     else{
-    //         fileNamePk = deletedPk;
-    //     }
-    //     $("input[data-id=fileNamePk]").val(fileNamePk);
+        if(fileNamePk != ''){
+            fileNamePk = fileNamePk + ',' + deletedPk;
+        }
+        else{
+            fileNamePk = deletedPk;
+        }
+        $("input[data-id=fileNamePk]").val(fileNamePk);
 
-    // }
-    // console.log($("input[data-id=fileNamePk]").val());
+    }
+    console.log($("input[data-id=fileNamePk]").val());
 
-    // $('#fileSelect'+num).attr('data-pk','none');
+    $('#fileSelect'+num).attr('data-pk','none');
     $('#fileSelect'+num).attr('data-path', 'new');
-    // $('#fileSelect'+num).attr('data-changed', 'deleted');
+    $('#fileSelect'+num).attr('data-changed', 'deleted');
     
 
     addThumnail(obj, num);
@@ -591,27 +582,27 @@ function deleteFileList(value){
 var fileCount = $('.fileSelect:visible').length;
 
 
-// // 지운 pk저장
-// var deletedPk = $('#fileSelect'+value).attr('data-pk');
-// if (deletedPk != 'none'){
-//     var fileNamePk = $("input[data-id=fileNamePk]").val();
+// 지운 pk저장
+var deletedPk = $('#fileSelect'+value).attr('data-pk');
+if (deletedPk != 'none'){
+    var fileNamePk = $("input[data-id=fileNamePk]").val();
 
-//     if(fileNamePk != ''){
-//         fileNamePk = fileNamePk + ',' + deletedPk;
-//     }
-//     else{
-//         fileNamePk = deletedPk;
+    if(fileNamePk != ''){
+        fileNamePk = fileNamePk + ',' + deletedPk;
+    }
+    else{
+        fileNamePk = deletedPk;
 
-//     }
-//     $("input[data-id=fileNamePk]").val(fileNamePk);
+    }
+    $("input[data-id=fileNamePk]").val(fileNamePk);
 
-// }
-// console.log($("input[data-id=fileNamePk]").val());
+}
+console.log($("input[data-id=fileNamePk]").val());
 
 
-// $('#fileSelect'+value).attr('data-pk','none');
+$('#fileSelect'+value).attr('data-pk','none');
 $('#fileSelect'+value).attr('data-value', 'off');
-// $('#fileSelect'+value).attr('data-change', 'deleted');
+$('#fileSelect'+value).attr('data-change', 'deleted');
 $('#fileSelect'+value).attr('data-order', value-1);
 
 
@@ -667,9 +658,9 @@ if(value < fileCount){
         fileSelect2.attr('data-path',fileSelect1.attr('data-path'));
         fileSelect1.attr('data-path',tempfilePath);
 
-        // var tempfileChange = fileSelect2.attr('data-change');
-        // fileSelect2.attr('data-change',fileSelect1.attr('data-change'));
-        // fileSelect1.attr('data-change',tempfileChange);
+        var tempfileChange = fileSelect2.attr('data-change');
+        fileSelect2.attr('data-change',fileSelect1.attr('data-change'));
+        fileSelect1.attr('data-change',tempfileChange);
 
         var tempfileSelectId = fileSelect2.attr('id');
         fileSelect2.attr('id',fileSelect1.attr('id'));
