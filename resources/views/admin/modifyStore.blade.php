@@ -6,6 +6,7 @@
 <div class="py-1" style="background-color: #E5E5E5">
     <form method="POST" id="registForm" action="{{ route('modifyStore') }}" enctype="multipart/form-data">
         @csrf
+        <input type="hidden" name="_method" value="PATCH"/>
         <div class="container-fluid">
             <div class="d-flex justify-content-center">
                     <div class="d-flex flex-column docs-highlight p-3 mt-3 mb-1 w-50" style="background:white;">
@@ -80,14 +81,21 @@
                             {{-- <input type="hidden" data-id="deletedFileList" name="deletedFileList">
                             <input type="hidden" data-id="changedFileList" name="changedFileList"> --}}
                             <input type="hidden" data-id="fileNameList" name="fileNameList">
+                            {{-- <input type="hidden" data-id="fileNamePk" name="fileNamePk"> --}}
                             {{-- <input type="hidden" data-id="orderList" name="orderList"> --}}
                             
                             
+                            
                             @for($i=0;$i<5;$i++)
-                            @if($imageNames[$i] != "")
-                            <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i+1 }}" data-value="on" data-path="{{ $imageNames[$i] }}" data-order="{{ $i }}">
-                                <input type="hidden" id="fileListCheck{{ $i+1 }}" name="fileListCheck{{ $i+1 }}" value="on">
-                                <input type="text" class="form-control bg-white rounded-start" name="filename{{ $i+1 }}" disabled="disabled" placeholder="{{ $imageNames[$i] }}" value="{{ $imageNames[$i] }}" id="fileName{{ $i+1 }}">
+                            @if($store->images->count() > $i)
+                            <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i+1 }}" data-value="on" data-path="{{ $store->images[$i]->path }}" data-order="{{ $i }}">
+                                {{-- <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i+1 }}" data-value="on" data-path="{{ $store->images[$i]->path }}" data-order="{{ $i }}" data-pk="{{ $store->images[$i]->id }}" data-change="none"> --}}
+                                    <input type="hidden" id="fileListCheck{{ $i+1 }}" name="fileListCheck{{ $i+1 }}" value="on">
+                                @php
+                                    $placeHolderName = str_replace('/storage/images/','',$store->images[$i]->path);
+                                    $placeHolderName = str_replace('/images/','',$placeHolderName);
+                                @endphp
+                                <input type="text" class="form-control bg-white rounded-start" name="filename{{ $i+1 }}" disabled="disabled" placeholder="{{ $placeHolderName }}" value="{{ $placeHolderName }}" id="fileName{{ $i+1 }}">
                                 <button class="btn btn-outline-secondary btn-dark" type="button" id="fileNameSelectButton{{ $i+1 }}" onclick="chooseFile({{ $i+1 }});">
                                     <span style="color: white;">파일선택</span>
                                 </button>                                
@@ -97,8 +105,9 @@
                                 <input type="file" class="form-control" hidden id="inputFile{{ $i+1 }}" data-id="{{ $i+1 }}" name="inputFile{{ $i+1 }}" onchange="sendFile(this)">
                             </div>
                             @else
-                            <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i+1 }}" hidden data-value="off">
-                                <input type="hidden" id="fileListCheck{{ $i+1 }}" name="fileListCheck{{ $i+1 }}" value="off">
+                            <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i+1 }}" hidden data-value="off" data-pk="none" data-change="none">
+                                {{-- <div class="input-group mb-3 fileSelect" id="fileSelect{{ $i+1 }}" hidden data-value="off"> --}}
+                                    <input type="hidden" id="fileListCheck{{ $i+1 }}" name="fileListCheck{{ $i+1 }}" value="off">
                                 <input type="text" class="form-control bg-white rounded-start" name="filename{{ $i+1 }}" disabled="disabled" placeholder="파일선택" value="" id="fileName{{ $i+1 }}">
                                 <button class="btn btn-outline-secondary btn-dark" type="button" id="fileNameSelectButton{{ $i+1 }}" onclick="chooseFile({{ $i+1 }});">
                                     <span style="color: white;">파일선택</span>
@@ -115,20 +124,39 @@
                         <p class="ps-3" style="color:#BDBDBD">* 사진은 최대 5장 까지 등록 가능합니다. (jpg, jpeg, png)</p>
 
                         
+                        <div class="p-2 docs-highlight">
 
-                        <div class="d-flex flex-wrap ms-2 gap-3" style="flex-grow: 1; justify-content: flex-start;" id="imageThumnail">
+                            <div class="row row-cols-3">
+                                @for($i=0;$i<5;$i++)
+                                @if($store->images->count() > $i)
+                                <div class="col mb-3" id="thumbnail{{ $i+1 }}">
+                                    <img class="img-thumbnail" src="{{$store->images[$i]->path}}">
+                                </div>
+                                @else
+                                <div class="col mb-3" id="thumbnail{{ $i+1 }}" hidden>
+                                    <img class="img-thumbnail" src="">
+                                </div>
+                                @endif
+                                @endfor
+                            </div>
+                        </div>
+
+                        {{-- <div class="d-flex flex-wrap gap-3" style="justify-content: flex-start;" id="imageThumnail">
                             @for($i=0;$i<5;$i++)
                             @if($imageNames[$i] != "")
-                            <div class="img-thumbnail" id="thumbnail{{ $i+1 }}" style="width: 30%;" >
-                                <img style="width: 100%;" src="{{$store->images[$i]->path}}">
+                            <div class="img-thumbnail" id="thumbnail{{ $i+1 }}" style="width: 30%; max-height:10%;" >
+                                <img style="width: 100%; height:auto;" src="{{$store->images[$i]->path}}">
                             </div>
                             @else
-                            <div class="img-thumbnail mb-3" id="thumbnail{{ $i+1 }}" style="width: 30%;" hidden>
-                                <img style="width: 100%;" src="">
+                            <div class="img-thumbnail" id="thumbnail{{ $i+1 }}" style="width: 30%; max-height:30%;" hidden>
+                                <img style="width: 100%; height:auto;" src="">
                             </div>
                             @endif
                             @endfor
-                        </div>
+
+                        </div> --}}
+                        
+                        
                         <div class="d-grid gap-2 py-3 px-2">
                             <button type="button" class="btn btn-primary btn-dark rounded-pill"  id="signupButton" onclick="formCheck(event);">맛집 수정</button>
                             
@@ -180,15 +208,30 @@ function formCheck(event){
     let localCode = $('#localCode').val();
     let middleNumber = $('#middleNumber').val();
     let lastNumber = $('#lastNumber').val();
-    let firstImgPath = $('#fileName1').attr('placeholder');
-    let secondImgPath = $('#fileSelect2').attr('data-path');
-    let thirdImgPath = $('#fileSelect3').attr('data-path');
-    let fourthImgPath = $('#fileSelect4').attr('data-path');
-    let fifthImgPath = $('#fileSelect5').attr('data-path');
-    let secondImgValue = $('#fileSelect2').attr('data-value');
-    let thirdImgValue = $('#fileSelect3').attr('data-value');
-    let fourthImgValue = $('#fileSelect4').attr('data-value');
-    let fifthImgValue = $('#fileSelect5').attr('data-value');
+    
+    // 파일리스트 이미지 정보 배열에 담기
+    let imgInfos = new Array();
+    function Img(path, value){
+        this.path = path;
+        this.value = value;
+    }
+    for(i=0;i<5;i++){
+        imgInfos[i] = new Img($('#fileSelect'+(i+1)).attr('data-path'),$('#fileSelect'+(i+1)).attr('data-value'));
+        // imgInfo.path[i] = $('#fileSelect'+(i+1)).attr('data-path');
+        // imgInfo.value[i] = $('#fileSelect'+(i+1)).attr('data-value');
+        console.log(imgInfos);
+    }
+
+
+    // let firstImgPath = $('#fileName1').attr('placeholder');
+    // let secondImgPath = $('#fileSelect2').attr('data-path');
+    // let thirdImgPath = $('#fileSelect3').attr('data-path');
+    // let fourthImgPath = $('#fileSelect4').attr('data-path');
+    // let fifthImgPath = $('#fileSelect5').attr('data-path');
+    // let secondImgValue = $('#fileSelect2').attr('data-value');
+    // let thirdImgValue = $('#fileSelect3').attr('data-value');
+    // let fourthImgValue = $('#fileSelect4').attr('data-value');
+    // let fifthImgValue = $('#fileSelect5').attr('data-value');
 
     var storeNameLength = storeName.length;
     var storeIntroLength = storeIntro.length;
@@ -230,13 +273,20 @@ function formCheck(event){
         orderList.push($(item).attr('data-order'));
     });
     
+    // let fileNamePk = new Array();
+    // $("div[data-change=deleted]").each(function(index, item){
+    //     fileNamePk.push($(item).attr('data-pk'));
+    // });
+
     console.log('fileNameListFormcheck:'+fileNameList);
     console.log('orderListFormcheck:'+orderList);
     
     fileNameList.join(", ");
+    // fileNamePk.join(", ");
     orderList.join(", ");
     
     $("input[data-id=fileNameList]").val(fileNameList);
+    // $("input[data-id=fileNamePk]").val(fileNamePk);
     $("input[data-id=orderList]").val(orderList);
 
 
@@ -335,27 +385,32 @@ function formCheck(event){
         alert('전화번호를 형식에 맞게 입력해주세요');
             return false;
     }
-
-    else if (firstImgPath == 'none'){
-        alert('사진을 최소 1장이상 등록해주세요.');
+    for(i=0;i<5;i++){
+        if (imgInfos[i].value == 'on' && imgInfos[i].path == 'none'){
+            alert((i+1)+'번째 사진을 등록해주세요.');
             return false;
+        }
     }
-    else if (secondImgValue == 'on' && secondImgPath == 'none'){
-        alert('두번째 사진을 등록해주세요.');
-            return false;
-    }
-    else if (thirdImgValue == 'on' && thirdImgPath == 'none'){
-        alert('세번째 사진을 등록해주세요.');
-            return false;
-    }
-    else if (fourthImgValue == 'on' && fourthImgPath == 'none'){
-        alert('네번째 사진을 등록해주세요.');
-            return false;
-    }
-    else if (fifthImgValue == 'on' && fifthImgPath == 'none'){
-        alert('다섯째 사진을 등록해주세요.');
-            return false;
-    }
+    // else if (firstImgPath == 'none'){
+    //     alert('사진을 최소 1장이상 등록해주세요.');
+    //         return false;
+    // }
+    // else if (secondImgValue == 'on' && secondImgPath == 'none'){
+    //     alert('두번째 사진을 등록해주세요.');
+    //         return false;
+    // }
+    // else if (thirdImgValue == 'on' && thirdImgPath == 'none'){
+    //     alert('세번째 사진을 등록해주세요.');
+    //         return false;
+    // }
+    // else if (fourthImgValue == 'on' && fourthImgPath == 'none'){
+    //     alert('네번째 사진을 등록해주세요.');
+    //         return false;
+    // }
+    // else if (fifthImgValue == 'on' && fifthImgPath == 'none'){
+    //     alert('다섯째 사진을 등록해주세요.');
+    //         return false;
+    // }
 
 
     $('#modalOpen').click();
@@ -472,7 +527,26 @@ function sendFile(obj) {
     $('#fileName'+num).attr('placeholder', s);
     $('#fileName'+num).val(s);
 
+    // // 지운 pk저장
+    // var deletedPk = $('#fileSelect'+num).attr('data-pk');
+    // if (deletedPk != 'none'){
+    //     var fileNamePk = $("input[data-id=fileNamePk]").val();
+
+    //     if(fileNamePk != ''){
+    //         fileNamePk = fileNamePk + ',' + deletedPk;
+    //     }
+    //     else{
+    //         fileNamePk = deletedPk;
+    //     }
+    //     $("input[data-id=fileNamePk]").val(fileNamePk);
+
+    // }
+    // console.log($("input[data-id=fileNamePk]").val());
+
+    // $('#fileSelect'+num).attr('data-pk','none');
     $('#fileSelect'+num).attr('data-path', 'new');
+    // $('#fileSelect'+num).attr('data-changed', 'deleted');
+    
 
     addThumnail(obj, num);
 }
@@ -516,8 +590,32 @@ function deleteFileList(value){
 
 var fileCount = $('.fileSelect:visible').length;
 
-    $('#fileSelect'+value).attr('data-value', 'off');
-    $('#fileSelect'+value).attr('data-order', value-1);
+
+// // 지운 pk저장
+// var deletedPk = $('#fileSelect'+value).attr('data-pk');
+// if (deletedPk != 'none'){
+//     var fileNamePk = $("input[data-id=fileNamePk]").val();
+
+//     if(fileNamePk != ''){
+//         fileNamePk = fileNamePk + ',' + deletedPk;
+//     }
+//     else{
+//         fileNamePk = deletedPk;
+
+//     }
+//     $("input[data-id=fileNamePk]").val(fileNamePk);
+
+// }
+// console.log($("input[data-id=fileNamePk]").val());
+
+
+// $('#fileSelect'+value).attr('data-pk','none');
+$('#fileSelect'+value).attr('data-value', 'off');
+// $('#fileSelect'+value).attr('data-change', 'deleted');
+$('#fileSelect'+value).attr('data-order', value-1);
+
+
+
 
 
 // check 지울예정
@@ -560,6 +658,18 @@ if(value < fileCount){
         var tempfileOrder = fileSelect2.attr('data-order');
         fileSelect2.attr('data-order',fileSelect1.attr('data-order'));
         fileSelect1.attr('data-order',tempfileOrder);
+
+        var tempfileValue = fileSelect2.attr('data-value');
+        fileSelect2.attr('data-value',fileSelect1.attr('data-value'));
+        fileSelect1.attr('data-value',tempfileValue);
+
+        var tempfilePath = fileSelect2.attr('data-path');
+        fileSelect2.attr('data-path',fileSelect1.attr('data-path'));
+        fileSelect1.attr('data-path',tempfilePath);
+
+        // var tempfileChange = fileSelect2.attr('data-change');
+        // fileSelect2.attr('data-change',fileSelect1.attr('data-change'));
+        // fileSelect1.attr('data-change',tempfileChange);
 
         var tempfileSelectId = fileSelect2.attr('id');
         fileSelect2.attr('id',fileSelect1.attr('id'));
@@ -711,9 +821,9 @@ reader.onload = function  () {
     tempImage.onload = function () {
         var canvas = document.createElement('canvas');
         var canvasContext = canvas.getContext("2d");
-        canvas.width = 100; 
-        canvas.height = 100;
-        canvasContext.drawImage(this, 0, 0, 100, 100);
+        canvas.width = 300; 
+        canvas.height = 300;
+        canvasContext.drawImage(this, 0, 0, 300, 300);
         var dataURI = canvas.toDataURL("image/jpeg");
 
         $("#thumbnail"+number).removeAttr('hidden');

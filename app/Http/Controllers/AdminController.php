@@ -47,14 +47,13 @@ class AdminController extends Controller
         }
 
         // 주소 검색
-        // *체크//*
-        if($cityId) {
-            $filtered_stores->whereHas('county.city', function($query) use($cityId) {
-                $query->where('id', $cityId);
 
-                dd($query);
+        // whereHas 사용 !!
+        if($cityId){
+            $filtered_stores->whereHas('county.city', function($query) use($cityId){
+                $query->where('id', $cityId);
             });
-            if($countyId != null && $countyId != 'none') {
+            if($countyId != null && $countyId != 'none'){
                 $filtered_stores->where('county_id', $countyId);
             }
         }
@@ -74,19 +73,15 @@ class AdminController extends Controller
 
     }
 
-
     public function getRegistDatas(Request $request){
 
         $categories = Category::get();
         $cities = City::with(['counties'])->get();
-        // * 체크//*
-        // $counties = County::get();
         $localCodes = LocalCode::get();        
 
         return view('admin/registStore', [
             'categories' => $categories,
             'cities' => $cities,
-            // 'counties' => $counties,
             'localCodes' => $localCodes
         ]);
 
@@ -96,16 +91,15 @@ class AdminController extends Controller
     public function registStores(Request $request){
 
 
+
         try {
-            // *체크//*
-            // 아예 배열로 받아 올 수 있음 inputFiles[]
+        
+            // inputFiles[] 배열로??
             $fileRules = [];
             for($i=1; $i<=5; $i++){
                 $isRequired = $i === 1 ? 'required' : 'nullable';
                 $fileRules["inputFile{$i}"] = "bail|{$isRequired}|file|mimes:jpeg,jpg,bmp,png";
             }
-
-            dd($fileRules);
 
             $request->validate(array_merge([
                 'storeName' => 'bail|required|between:1,30',
@@ -118,12 +112,9 @@ class AdminController extends Controller
                 'middleNumber' => 'bail|required|',
                 'lastNumber' => 'bail|required|',
                 'category_id' => 'bail|required|',
-                // 배열로 받아왔을 때
-                // 'inputFiles' => 'bail|array',
-                // 'inputFiles.*' => 'bail|file|mimes:jpeg,jpg,bmp,png',
             ], $fileRules));
 
-                    
+
             DB::beginTransaction();
             
             $telephoneNumber = $request->middleNumber.$request->lastNumber;
@@ -166,9 +157,10 @@ class AdminController extends Controller
         $lastNumber = substr($store->telephone_number, -4);
         $categories = Category::get();
         $cities = City::get();
-        $counties = County::where('city_id',$city)->get();
+        $counties = County::where('city_id',$store->county->city->id)->get();
         $localCodes = LocalCode::get();
         $store->get();
+
 
         return view('admin/modifyStore', [
 
@@ -331,7 +323,6 @@ class AdminController extends Controller
 
     public function deleteStore(Request $request){
 
-        // dd(Review::where('store_id', $request->id)->exists());
         // 찜 있을시 제외
         $user_id = Wish::where('store_id', $request->id)->exists();
         
@@ -346,10 +337,8 @@ class AdminController extends Controller
             return response()->json(['status' => 'failed']);
         }
         
-        try {
+    try {
             
-            // *체크??*
-            // 리뷰나 찜한 스토어인 경우?
             DB::beginTransaction();
             
             // 스토어 찾기
