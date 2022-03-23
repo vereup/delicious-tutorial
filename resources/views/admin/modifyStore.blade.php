@@ -115,39 +115,20 @@
                         <p class="ps-3" style="color:#BDBDBD">* 사진은 최대 5장 까지 등록 가능합니다. (jpg, jpeg, png)</p>
 
                         
-                        <div class="p-2 docs-highlight">
 
-                            <div class="row row-cols-3">
-                                @for($i=0;$i<5;$i++)
-                                @if($imageNames[$i] != "")
-                                <div class="col mb-3" id="thumbnail{{ $i+1 }}">
-                                    <img class="img-thumbnail" src="{{$store->images[$i]->path}}">
-                                </div>
-                                @else
-                                <div class="col mb-3" id="thumbnail{{ $i+1 }}" hidden>
-                                    <img class="img-thumbnail" src="">
-                                </div>
-                                @endif
-                                @endfor
-                            </div>
-                        </div>
-
-                        {{-- <div class="d-flex flex-wrap gap-3" style="justify-content: flex-start;" id="imageThumnail">
+                        <div class="d-flex flex-wrap ms-2 gap-3" style="flex-grow: 1; justify-content: flex-start;" id="imageThumnail">
                             @for($i=0;$i<5;$i++)
                             @if($imageNames[$i] != "")
-                            <div class="img-thumbnail" id="thumbnail{{ $i+1 }}" style="width: 30%; max-height:10%;" >
-                                <img style="width: 100%; height:auto;" src="{{$store->images[$i]->path}}">
+                            <div class="img-thumbnail" id="thumbnail{{ $i+1 }}" style="width: 30%;" >
+                                <img style="width: 100%;" src="{{$store->images[$i]->path}}">
                             </div>
                             @else
-                            <div class="img-thumbnail" id="thumbnail{{ $i+1 }}" style="width: 30%; max-height:30%;" hidden>
-                                <img style="width: 100%; height:auto;" src="">
+                            <div class="img-thumbnail mb-3" id="thumbnail{{ $i+1 }}" style="width: 30%;" hidden>
+                                <img style="width: 100%;" src="">
                             </div>
                             @endif
                             @endfor
-
-                        </div> --}}
-                        
-                        
+                        </div>
                         <div class="d-grid gap-2 py-3 px-2">
                             <button type="button" class="btn btn-primary btn-dark rounded-pill"  id="signupButton" onclick="formCheck(event);">맛집 수정</button>
                             
@@ -199,10 +180,6 @@ function formCheck(event){
     let localCode = $('#localCode').val();
     let middleNumber = $('#middleNumber').val();
     let lastNumber = $('#lastNumber').val();
-    
-    // for(i=1;i<=5;i++){
-    //     let imgPath+i
-    // }
     let firstImgPath = $('#fileName1').attr('placeholder');
     let secondImgPath = $('#fileSelect2').attr('data-path');
     let thirdImgPath = $('#fileSelect3').attr('data-path');
@@ -734,9 +711,9 @@ reader.onload = function  () {
     tempImage.onload = function () {
         var canvas = document.createElement('canvas');
         var canvasContext = canvas.getContext("2d");
-        canvas.width = 300; 
-        canvas.height = 300;
-        canvasContext.drawImage(this, 0, 0, 300, 300);
+        canvas.width = 100; 
+        canvas.height = 100;
+        canvasContext.drawImage(this, 0, 0, 100, 100);
         var dataURI = canvas.toDataURL("image/jpeg");
 
         $("#thumbnail"+number).removeAttr('hidden');

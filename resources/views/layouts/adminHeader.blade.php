@@ -22,7 +22,7 @@
                 </a>
         @else
             <li class="nav-item"> 
-                <a class ="nav-link fw-bolder text-black" href="/admin/regist">맛집등록</a>
+                <a class ="nav-link fw-bolder text-black" href="/admin/store">맛집등록</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link fw-bolder text-black" href="{{ route('logout') }}" onclick="event.preventDefault();

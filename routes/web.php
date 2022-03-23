@@ -42,10 +42,10 @@ Route::get('/test','TestController@getTestDatas');
 
 Route::middleware(['admin'])->prefix('admin')->group(function () {
     Route::get('', 'AdminController@getAdminDatas')->name('admin');
-    Route::post('deleteStore', 'AdminController@deleteStore')->name('deleteStore');
-    Route::get('search', 'AdminController@getAdminDatas')->name('adminSearch');
-    Route::get('regist', 'AdminController@getRegistDatas')->name('regist');
-    Route::post('registStore', 'AdminController@registStores')->name('registStore');
-    Route::get('modify/{storeId}', 'AdminController@getModifyStoresDatas')->name('modify');
-    Route::post('modifyStore', 'AdminController@modifyStores')->name('modifyStore');
+    Route::get('', 'AdminController@getAdminDatas')->name('adminSearch');
+    Route::delete('', 'AdminController@deleteStore')->name('deleteStore');
+    Route::get('store', 'AdminController@getRegistDatas')->name('regist');
+    Route::post('store', 'AdminController@registStores')->name('registStore');
+    Route::get('store/{storeId}', 'AdminController@getModifyStoresDatas')->name('modify');
+    Route::patch('store', 'AdminController@modifyStores')->name('modifyStore');
 });

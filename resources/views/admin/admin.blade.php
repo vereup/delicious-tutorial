@@ -138,7 +138,7 @@
               data-storeReviewCount="{{ $store->review_count }}"
               data-storeWishCount="{{ $store->wishes->count() }}"
               >보기</a></td>
-            <td class="text-center border-end border-light" style="vertical-align: middle"><a class="text-dark" href="/admin/modify/{{ $store->id }}" style="cursor: pointer">수정</a></td>
+            <td class="text-center border-end border-light" style="vertical-align: middle"><a class="text-dark" href="/admin/store/{{ $store->id }}" style="cursor: pointer">수정</a></td>
             <td class="text-center border-end border-light" style="vertical-align: middle"><a class="text-dark" style="cursor: pointer" data-coreui-toggle="modal" data-coreui-target="#deleteCheckModal" data-storeId="{{ $store->id }}">삭제</a></td>
           </tr>
             @endforeach
@@ -428,7 +428,7 @@ function deleteStore(){
   console.log(id);
   $.ajax({
     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            type : 'POST',
+            type : 'delete',
             url : "{{ route('deleteStore') }}",
             data : {
                 'id' : id,
