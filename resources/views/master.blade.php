@@ -20,7 +20,7 @@
                         @foreach ($stores as $store)
                         {{-- 맛집카드 --}}
                         <div class="card rounded m-2 w-auto" style="min-width: 274px; max-width: 274px; min-height: 238px;">
-                            <a style="min-height: 238px; background-image: url({{$store->images[0]->path}}); background-size:cover;" href="/store/{{$store->id}}"></a>
+                            <a class="rounded-top" style="min-height: 238px; background-image: url({{$store->images[0]->path}}); background-size:cover;" href="/store/{{$store->id}}"></a>
                                 @guest
                                 <div class="p-2 bg-white" style="position: absolute; top: 10px; right: 10px; border: 1px solid #A0A0A0; border-radius: 50%;">
                                 <img type="button" src="/images/whiteheart.png" width="23" height="26" onclick="alert('로그인해주세요');" id="heart{{ $store->id }}" value="1">
